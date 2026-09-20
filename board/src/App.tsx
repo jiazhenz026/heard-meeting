@@ -470,7 +470,7 @@ function tone(card: Card): number {
   if (card.seeded) return 0;
   let h = 0;
   for (const ch of card.id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return 1 + (h % 5);
+  return 1 + (h % 11);
 }
 
 function tilt(card: Card): number {

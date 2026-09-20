@@ -152,6 +152,12 @@ h2, h3, p { margin: 0; }
 .card.tone-3 { --paper-tone: #dbe9ff; }   /* sky */
 .card.tone-4 { --paper-tone: #ece3ff; }   /* lavender */
 .card.tone-5 { --paper-tone: #ffe4cc; }   /* peach */
+.card.tone-6 { --paper-tone: #fbf6b8; }   /* lemon */
+.card.tone-7 { --paper-tone: #f8dcef; }   /* blush */
+.card.tone-8 { --paper-tone: #d3f0f2; }   /* aqua */
+.card.tone-9 { --paper-tone: #e4efd2; }   /* sage */
+.card.tone-10 { --paper-tone: #f1e7d4; }  /* sand */
+.card.tone-11 { --paper-tone: #ffd9d2; }  /* coral */
 .card.tilt-0 { --tilt: -1.1deg; }
 .card.tilt-1 { --tilt: 0.6deg; }
 .card.tilt-2 { --tilt: 1.3deg; }
