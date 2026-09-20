@@ -30,7 +30,7 @@ import base64
 import logging
 import re
 from pathlib import Path
-from typing import Awaitable, Callable, Protocol
+from typing import Any, Awaitable, Callable, Protocol
 
 import httpx
 
@@ -209,7 +209,10 @@ class Voice:
             "xi-api-key": self._config.elevenlabs_api_key,
             "accept": "audio/mpeg",
         }
-        body = {"text": text, "model_id": self._config.tts_model_id}
+        body: dict[str, Any] = {"text": text, "model_id": self._config.tts_model_id}
+        speed = float(getattr(self._config, "tts_speed", 1.0) or 1.0)
+        if speed != 1.0:
+            body["voice_settings"] = {"speed": max(0.7, min(1.2, speed))}
         chunks: list[bytes] = []
         try:
             async with client.stream(

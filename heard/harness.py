@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import random
 import re
 from dataclasses import dataclass
 from typing import Any, Protocol
@@ -83,6 +84,22 @@ class Harness:
                                   f"{self.config.unsolicited_gap_s - gap:.0f}s to go")
         return Verdict(True, "finding", text)
 
+    # -- the quick acknowledgement ------------------------------------------
+
+    async def ack(self) -> None:
+        """Someone just addressed Heard: say so at once, before the answer.
+
+        Not a `say`: no reason, no budget, never more than a few words. It
+        waits for the same gap as everything else so it never talks over the
+        end of the question.
+        """
+        lines = [x.strip() for x in (self.config.ack_lines or "").split("|") if x.strip()]
+        if not lines or self.voice is None:
+            return
+        text = random.choice(lines)
+        self.store.log_event("said", f"[ack] {text}")
+        asyncio.create_task(self._floor(text, "ack", [], [], record=False))
+
     # -- the door ----------------------------------------------------------
 
     async def say(self, text: str, reason: str, refs: list[str] | None = None) -> Verdict:
@@ -112,22 +129,26 @@ class Harness:
         asyncio.create_task(self._floor(v.text, reason, refs, evidence))
         return v
 
-    async def _floor(self, text: str, reason: str, refs: list[str], evidence: list[str]) -> None:
+    async def _floor(self, text: str, reason: str, refs: list[str], evidence: list[str], *, record: bool = True) -> None:
         async with self._floor_lock:
             started = now()
+            timeout = 4.0 if not record else self.config.floor_timeout_s
             while True:
                 quiet = now() - self.store.last_speech_at
                 if quiet >= self.config.floor_gap_s:
                     break
-                if now() - started > self.config.floor_timeout_s:
+                if now() - started > timeout:
+                    if not record:
+                        return  # an acknowledgement that missed its moment is just dropped
                     self.store.work_done("floor")
                     self.store.record_said(text, reason, refs, evidence, delivered=False)
                     self._highlight(refs, text)
                     log.info("floor never opened; dropped to the card: %s", text)
                     return
                 await asyncio.sleep(0.15)
-            self.store.work_done("floor")
-            self.store.record_said(text, reason, refs, evidence, delivered=True)
+            if record:
+                self.store.work_done("floor")
+                self.store.record_said(text, reason, refs, evidence, delivered=True)
             if self.voice is not None:
                 await self.voice.speak(text, "line")
             log.info("[say/%s] %s", reason, text)

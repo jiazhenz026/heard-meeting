@@ -137,8 +137,16 @@ class Classifier:
         if focus:
             self.store.set_focus(focus)
         if signal.get("addressed"):
-            self.store.mark_asked(new[-1].id, signal.get("request") or new[-1].text,
-                                  signal.get("intent") or "other")
+            a = self.store.asked
+            if a is not None and a.utterance_id in {u.id for u in new}:
+                # The fast path already opened (and maybe answered) this one:
+                # keep its clock, refine the intent, and do not wake the desk twice.
+                if signal.get("intent") and a.intent == "other":
+                    a.intent = signal["intent"]
+                signal["addressed"] = False
+            else:
+                self.store.mark_asked(new[-1].id, signal.get("request") or new[-1].text,
+                                      signal.get("intent") or "other")
         self.store.log_event("classify", _describe(signal))
         r = self.on_signal(signal)
         if asyncio.iscoroutine(r):

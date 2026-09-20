@@ -12,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -57,6 +58,20 @@ HEARD_CARD_NOTES = [
     "Speech: ElevenLabs Scribe v2 realtime in, ElevenLabs TTS out, echo tagging on the way back in.",
     "Board: React + Vite over one WebSocket; full-state resync on every push.",
 ]
+
+
+#: A direct address, caught on the transcript line itself so the front desk
+#: is woken at once instead of after the classifier's next pass. Tolerant of
+#: what speech-to-text makes of "Heard".
+_ADDRESS = re.compile(
+    r"\b(?:hey|hi|ok|okay|yo)[ ,]+(?:heard|herd|hurd|hird|hurt)\b"
+    r"|^(?:heard|herd)[ ,:!?]"
+    r"|\bwhat (?:does|do you think|would) (?:heard|herd)\b"
+    r"|\b(?:heard|herd),\s*(?:what|can|could|do|is|are|how|look|check|tell|search|find|please)\b",
+    re.IGNORECASE,
+)
+
+_HOW_BUILT = re.compile(r"\b(how (?:were|was|are|is) (?:you|heard|it) (?:built|made)|tech stack|how (?:did|do) you (?:build|work))\b", re.IGNORECASE)
 
 
 @dataclass(slots=True)
@@ -176,8 +191,25 @@ class Heard:
         text = str(signal.payload.get("text") or "").strip()
         if not text:
             return
-        self.store.commit(text, str(signal.payload.get("speaker") or "?"))
+        u = self.store.commit(text, str(signal.payload.get("speaker") or "?"))
+        if _ADDRESS.search(text):
+            await self._addressed_now(u.id, text)
         self.classifier.notify()
+
+    async def _addressed_now(self, utterance_id: str, text: str) -> None:
+        """The fast path: the room said Heard's name. Acknowledge, and wake the
+        front desk this instant with a synthetic signal; the classifier's own
+        pass a few seconds later will find `asked` already open and add nothing."""
+        intent = "how_built" if _HOW_BUILT.search(text) else "other"
+        self.store.mark_asked(utterance_id, text, intent)
+        self.store.work_start("desk", "Heard you, thinking")
+        self.store.log_event("classify", "addressed (fast path)")
+        await self.harness.ack()
+        await self.frontdesk.on_signal({
+            "at": now(), "utterances": [utterance_id], "text": text,
+            "new_subject": None, "questions": [], "addressed": True,
+            "intent": intent, "request": text, "discussing": None, "salience": 1,
+        })
 
     async def on_inject(self, text: str, speaker: str = "?") -> None:
         await self.on_signal(Signal(kind="utterance", payload={"text": text, "speaker": speaker}))

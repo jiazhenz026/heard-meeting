@@ -285,7 +285,7 @@ class Store:
         self.touch()
 
     def _prune_working(self) -> None:
-        cutoff = now() - 25.0
+        cutoff = now() - 8.0
         self.working = [w for w in self.working if not (w["done"] and (w["done_at"] or 0) < cutoff)]
 
     def set_focus(self, card_id: str | None) -> None:
@@ -373,7 +373,10 @@ class Store:
 
     def _working_view(self) -> list[dict[str, Any]]:
         self._prune_working()
-        return [dict(w) for w in self.working]
+        # In progress first, newest on top; then the ticked ones.
+        active = sorted((w for w in self.working if not w["done"]), key=lambda w: -w["at"])
+        done = sorted((w for w in self.working if w["done"]), key=lambda w: -(w["done_at"] or 0))
+        return [dict(w) for w in active + done]
 
 
 def _slug(text: str) -> str:
