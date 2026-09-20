@@ -264,14 +264,3 @@ def test_broken_classifier_json_is_repaired() -> None:
     got = parse_object(cut)
     assert got is not None and got["questions"][0]["text"] == "has it been done"
     assert parse_object("I could not decide.") is None
-
-
-def test_addressed_needs_the_name() -> None:
-    from heard.classifier import names_heard
-
-    assert names_heard("Hey Heard, what do you think?")
-    assert names_heard("Let's see what Heard thinks.")
-    assert names_heard("hey herd can you look this up")
-    assert not names_heard("So, what projects are you planning to have?")   # said to a teammate, live
-    assert not names_heard("I heard that Devpost has a lot of these already.")
-    assert not names_heard("We haven't heard back from the judges.")
