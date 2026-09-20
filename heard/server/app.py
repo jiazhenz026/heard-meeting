@@ -96,6 +96,8 @@ class Heard:
         self.classifier = Classifier(self.store, on_signal=self.frontdesk.on_signal, config=config)
         self.notes = NotesAgent(self.store, config=config)
         self.tasks: list[asyncio.Task[None]] = []
+        #: When mic audio (or a browser transcript) last reached this process.
+        self.audio_at: float = 0.0
 
     # -- assembly ----------------------------------------------------------
 
@@ -170,6 +172,7 @@ class Heard:
             "frontdesk_error": self.frontdesk.last_error,
             "wakes": self.frontdesk.wakes,
             "research_running": len(self.store.running_tasks()),
+            "audio_age": (now() - self.audio_at) if self.audio_at else None,
         }
 
     async def push_board(self) -> None:
@@ -215,10 +218,12 @@ class Heard:
         await self.on_signal(Signal(kind="utterance", payload={"text": text, "speaker": speaker}))
 
     async def on_audio_chunk(self, pcm: bytes) -> None:
+        self.audio_at = now()
         if self.stt is not None:
             await self.stt.feed(pcm)
 
     async def on_transcript(self, text: str, final: bool) -> None:
+        self.audio_at = now()
         if self.stt is not None:
             await self.stt.on_transcript(text, final)
 

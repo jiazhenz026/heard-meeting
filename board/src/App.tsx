@@ -22,6 +22,7 @@ export default function App() {
   const [partial, setPartial] = useState("");
   const [micLevel, setMicLevel] = useState(0);
   const [micNote, setMicNote] = useState<string | null>(null);
+  const [micOn, setMicOn] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [banner, setBanner] = useState<Said | null>(null);
   const [view, setView] = useState<View>("canvas");
@@ -185,8 +186,24 @@ export default function App() {
       onError: (what) => setMicNote(what),
     });
     mic.current = m;
-    await m.start();
+    const ok = await m.start();
+    setMicOn(ok);
     setStarted(true);
+  }, []);
+
+  /** The mic stopped or was never granted: try again from a click. */
+  const micAgain = useCallback(async () => {
+    mic.current?.stop();
+    await audio.current.unlock();
+    const m = new Mic({
+      onChunk: (pcm_b64) => sock.current?.send({ type: "audio_chunk", pcm_b64 }),
+      onTranscript: (text, final) => sock.current?.send({ type: "transcript", text, final }),
+      onLevel: setMicLevel,
+      onError: (what) => setMicNote(what),
+    });
+    mic.current = m;
+    setMicNote(null);
+    setMicOn(await m.start());
   }, []);
 
   const inject = useCallback(() => {
@@ -204,7 +221,8 @@ export default function App() {
   );
   const shown = open ? state.cards.find((c) => c.id === open) ?? null : null;
   const minute = state.started_at ? elapsed(now - state.started_at) : "0:00";
-  const status = statusLine(link, state, micNote);
+  const status = statusLine(link, state, micNote, micOn);
+  const noAudio = started && (!micOn || state.health.audio_age === null || state.health.audio_age > 6);
 
   if (!started) {
     return (
@@ -248,6 +266,7 @@ export default function App() {
             onKeyDown={(e) => e.key === "Enter" && inject()}
           />
         </label>
+        {noAudio && <button className="reset warnbtn" onClick={micAgain} title="No microphone audio is reaching Heard">Turn microphone on</button>}
         <button className={`reset ${armed ? "armed" : ""}`} onClick={resetAll} title="Clear the board and start over">{armed ? "Click again to start over" : "Start over"}</button>
         <span className={`status ${status.tone}`} title={state.health.frontdesk_error ?? ""}>
           <i className="ear" style={{ opacity: 0.35 + micLevel * 0.65 }} />
@@ -463,9 +482,12 @@ function NotesView({ notes, version }: { notes: string; version: number }) {
   );
 }
 
-function statusLine(link: LinkState, state: StatePayload, micNote: string | null): { text: string; tone: string } {
+function statusLine(link: LinkState, state: StatePayload, micNote: string | null, micOn: boolean): { text: string; tone: string } {
   if (link !== "open") return { text: "Reconnecting", tone: "warn" };
   if (micNote && micNote.includes("denied")) return { text: "Microphone off, typing only", tone: "warn" };
+  if (!micOn) return { text: "Microphone not started", tone: "warn" };
+  const age = state.health.audio_age;
+  if (age === null || age > 6) return { text: "No audio reaching Heard", tone: "warn" };
   const h = state.health;
   if (h.frontdesk !== "up") return { text: `Front desk ${h.frontdesk}`, tone: "warn" };
   const parts = ["Listening"];

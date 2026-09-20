@@ -81,6 +81,7 @@ export interface Health {
   frontdesk_error: string | null;
   wakes: number;
   research_running: number;
+  audio_age: number | null;
 }
 
 export interface StatePayload {
@@ -132,6 +133,7 @@ export const EMPTY_STATE: StatePayload = {
     frontdesk_error: null,
     wakes: 0,
     research_running: 0,
+    audio_age: null,
   },
 };
 
