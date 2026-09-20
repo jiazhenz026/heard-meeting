@@ -61,6 +61,10 @@ class Config:
 
     #: Words Scribe is biased towards: names the room will say that a general
     #: model would otherwise mishear. Comma-separated.
+    #: Seconds of silence before Scribe commits a line. Scribe's own default is
+    #: 1.5; 1.0 lands every line half a second sooner. Much lower and a pause
+    #: for breath splits one sentence into two.
+    stt_silence_s: float = field(default_factory=lambda: _f("HEARD_STT_SILENCE_S", 1.0))
     stt_keyterms: str = field(default_factory=lambda: _s(
         "HEARD_STT_KEYTERMS", "Heard,YesChef,Nemotron,ElevenLabs,Devpost,SteelHacks,Claude,NIM"))
     #: STT: "auto" tries Scribe and falls back to the board's own recogniser.
