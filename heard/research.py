@@ -101,11 +101,14 @@ class Researcher:
             self.store.finish_task(task.id, summary="research returned nothing", sources=[], failed=True)
             return
         page = _render_page(title, task.brief, body, sources, now() - started)
-        self.store.set_card_page(task.card_id, page, summary)
-        self.store.finish_task(task.id, summary=summary, sources=sources)
+        if task.card_id in self.store.cards:
+            self.store.set_card_page(task.card_id, page, summary)
+        done = self.store.finish_task(task.id, summary=summary, sources=sources)
         self.store.work_done(f"task:{task.id}")
         log.info("research %s done in %.0fs · %d sources", task.id, now() - started, len(sources))
-        r = self.on_done(self.store.tasks[task.id])
+        if done is None:
+            return  # the card was deleted while this ran; nothing to wake for
+        r = self.on_done(done)
         if asyncio.iscoroutine(r):
             await r
 

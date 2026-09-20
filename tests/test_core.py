@@ -192,3 +192,15 @@ def test_two_questions_answered_in_order_by_id(store: Store) -> None:
         assert voice.lines == ["Restaurants would.", "Six times on Devpost."]
 
     asyncio.run(run())
+
+
+def test_working_item_cannot_outlive_its_task(store: Store) -> None:
+    c = store.create_card("YesChef")
+    t = store.create_task(c.id, "done before?", unprompted=True)
+    store.work_start(f"task:{t.id}", "Looking into YesChef")
+    assert [w["done"] for w in store.snapshot()["working"]] == [False]
+    # the card is deleted while the research is still running
+    store.delete_card(c.id)
+    assert all(w["done"] for w in store.snapshot()["working"])
+    # finishing the orphaned task later must not raise, and ticks the item
+    assert store.finish_task(t.id, summary="x", sources=[]) is None

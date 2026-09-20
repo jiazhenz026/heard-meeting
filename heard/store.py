@@ -239,6 +239,7 @@ class Store:
             return False
         for tid in [t.id for t in self.tasks.values() if t.card_id == card_id]:
             self.tasks.pop(tid, None)
+            self.work_done(f"task:{tid}")
         try:
             self.card_page_path(card_id).unlink(missing_ok=True)
         except OSError:
@@ -286,8 +287,24 @@ class Store:
         self.touch()
 
     def _prune_working(self) -> None:
-        cutoff = now() - 8.0
+        t = now()
+        for w in self.working:
+            if w["done"]:
+                continue
+            key = w["key"]
+            if key.startswith("task:"):
+                task = self.tasks.get(key[5:])
+                if task is None or task.status != "RUNNING":
+                    w["done"], w["done_at"] = True, t
+            elif t - w["at"] > 120.0:
+                # a desk or floor item older than two minutes is a leftover, not work
+                w["done"], w["done_at"] = True, t
+        cutoff = t - 8.0
         self.working = [w for w in self.working if not (w["done"] and (w["done_at"] or 0) < cutoff)]
+
+    def clear_working(self) -> None:
+        self.working.clear()
+        self.touch()
 
     def set_focus(self, card_id: str | None) -> None:
         self.focus = card_id
@@ -315,8 +332,11 @@ class Store:
     def running_tasks(self) -> list[Task]:
         return [t for t in self.tasks.values() if t.status == "RUNNING"]
 
-    def finish_task(self, task_id: str, *, summary: str, sources: list[str], failed: bool = False) -> Task:
-        t = self.tasks[task_id]
+    def finish_task(self, task_id: str, *, summary: str, sources: list[str], failed: bool = False) -> Task | None:
+        t = self.tasks.get(task_id)
+        if t is None:
+            self.work_done(f"task:{task_id}")
+            return None
         t.status = "FAILED" if failed else "DONE"
         t.finished_at = now()
         t.summary = summary
