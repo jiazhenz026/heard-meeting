@@ -55,6 +55,14 @@ export interface Said {
   delivered: boolean;
 }
 
+export interface WorkItem {
+  key: string;
+  text: string;
+  done: boolean;
+  at: number;
+  done_at: number | null;
+}
+
 export interface LogEntry {
   at: number;
   kind: string;
@@ -91,6 +99,7 @@ export interface StatePayload {
   expanded: string | null;
   focus: string | null;
   focus_at: number;
+  working: WorkItem[];
   health: Health;
 }
 
@@ -110,6 +119,7 @@ export const EMPTY_STATE: StatePayload = {
   expanded: null,
   focus: null,
   focus_at: 0,
+  working: [],
   health: {
     stt: null,
     tts: null,

@@ -68,6 +68,8 @@ class Researcher:
         if self.pool_full:
             return None
         task = self.store.create_task(card_id, brief, unprompted=unprompted)
+        card = self.store.cards.get(card_id)
+        self.store.work_start(f"task:{task.id}", f"Looking into {card.title if card else card_id}")
         t = asyncio.create_task(self._run(task), name=f"research-{task.id}")
         self._running[task.id] = t
         t.add_done_callback(lambda _t, tid=task.id: self._running.pop(tid, None))
@@ -92,6 +94,7 @@ class Researcher:
         except Exception as exc:
             log.warning("research %s failed: %s: %s", task.id, type(exc).__name__, exc)
             self.store.finish_task(task.id, summary=f"research failed: {type(exc).__name__}", sources=[], failed=True)
+            self.store.work_done(f"task:{task.id}")
             return
         summary, body, sources = _split(report)
         if not body.strip():
@@ -100,6 +103,7 @@ class Researcher:
         page = _render_page(title, task.brief, body, sources, now() - started)
         self.store.set_card_page(task.card_id, page, summary)
         self.store.finish_task(task.id, summary=summary, sources=sources)
+        self.store.work_done(f"task:{task.id}")
         log.info("research %s done in %.0fs · %d sources", task.id, now() - started, len(sources))
         r = self.on_done(self.store.tasks[task.id])
         if asyncio.iscoroutine(r):

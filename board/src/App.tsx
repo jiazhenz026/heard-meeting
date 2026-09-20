@@ -37,12 +37,18 @@ export default function App() {
     setThinking(level);
     try { localStorage.setItem("heard.thinking", level); } catch { /* fine */ }
   };
+  const [ripping, setRipping] = useState<Set<string>>(new Set());
   const removeCard = useCallback((id: string) => {
     if (openRef.current === id) {
       openRef.current = null;
       setOpen(null);
     }
-    fetch(`/cards/${id}`, { method: "DELETE" }).catch(() => {});
+    // Tear the note in half first; the delete goes out when the halves have fallen.
+    setRipping((r) => new Set(r).add(id));
+    window.setTimeout(() => {
+      fetch(`/cards/${id}`, { method: "DELETE" }).catch(() => {});
+      window.setTimeout(() => setRipping((r) => { const n = new Set(r); n.delete(id); return n; }), 1500);
+    }, 720);
   }, []);
 
   const audio = useRef(new AudioOut());
@@ -262,6 +268,7 @@ export default function App() {
                     tasks={state.tasks.filter((t) => t.card_id === c.id)}
                     now={now}
                     focused={state.focus === c.id && now - state.focus_at < 75}
+                    ripping={ripping.has(c.id)}
                     onOpen={() => openCard(c.id)}
                     onRemove={() => removeCard(c.id)}
                     register={(el) => { if (el) cardEls.current.set(c.id, el); else cardEls.current.delete(c.id); }}
@@ -276,7 +283,20 @@ export default function App() {
           )}
         </section>
         <aside className="rail">
-          <h2>Investigations</h2>
+          <h2>Currently working on</h2>
+          {state.working.length === 0 ? (
+            <p className="rail-empty">Nothing right now. Listening.</p>
+          ) : (
+            <ul className="working-list">
+              {state.working.map((w) => (
+                <li key={w.key + w.at} className={w.done ? "done" : ""}>
+                  <i className="tick" aria-hidden="true">{w.done ? "✓" : ""}</i>
+                  <span>{w.text}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          <h2 className="rail-h2">Investigations</h2>
           {state.tasks.length === 0 && <p className="rail-empty">Nothing sent out yet.</p>}
           {state.tasks.map((t) => <TaskView key={t.id} task={t} card={state.cards.find((c) => c.id === t.card_id)} now={now} />)}
         </aside>
@@ -305,21 +325,29 @@ export default function App() {
   );
 }
 
-function CardView({ card, tasks, now, onOpen, onRemove, register, focused }: { card: Card; tasks: Task[]; now: number; onOpen: () => void; onRemove: () => void; register: (el: HTMLElement | null) => void; focused: boolean }) {
+function CardView({ card, tasks, now, onOpen, onRemove, register, focused, ripping }: { card: Card; tasks: Task[]; now: number; onOpen: () => void; onRemove: () => void; register: (el: HTMLElement | null) => void; focused: boolean; ripping: boolean }) {
   const running = tasks.some((t) => t.status === "RUNNING");
   const age = now - card.created_at;
   const tagline = card.seeded ? card.one_liner : shorten(card.summary) || card.one_liner || "";
   return (
     <article
       ref={register}
-      className={`card tone-${tone(card)} tilt-${tilt(card)} ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${focused ? "focus" : ""} ${age < 1.2 ? "landed" : ""}`}
+      className={`card tone-${tone(card)} tilt-${tilt(card)} ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${focused ? "focus" : ""} ${age < 1.2 ? "landed" : ""} ${ripping ? "ripping" : ""}`}
       onClick={onOpen}
       title={card.named_by === "heard" ? "Heard named this one" : undefined}
     >
-      <button className="remove" aria-label={`Delete ${card.title}`} title="Delete this note" onClick={(e) => { e.stopPropagation(); onRemove(); }}>×</button>
-      <h3>{card.title}</h3>
-      {tagline ? <p>{tagline}</p> : <p className="ghost">Named, not yet understood.</p>}
-      {running && <span className="working" aria-label="investigating" />}
+      {!ripping && <button className="remove" aria-label={`Delete ${card.title}`} title="Delete this note" onClick={(e) => { e.stopPropagation(); onRemove(); }}>×</button>}
+      <div className="face">
+        <h3>{card.title}</h3>
+        {tagline ? <p>{tagline}</p> : <p className="ghost">Named, not yet understood.</p>}
+      </div>
+      {ripping && (
+        <>
+          <div className="half left"><div className="face"><h3>{card.title}</h3><p>{tagline}</p></div></div>
+          <div className="half right"><div className="face"><h3>{card.title}</h3><p>{tagline}</p></div></div>
+        </>
+      )}
+      {running && !ripping && <span className="working" aria-label="investigating" />}
     </article>
   );
 }

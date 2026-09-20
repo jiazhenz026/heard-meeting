@@ -108,6 +108,7 @@ class Harness:
             t = self.store.tasks.get(ref)
             if t is not None:
                 evidence.extend(t.sources[:4])
+        self.store.work_start("floor", "Waiting for a gap to speak")
         asyncio.create_task(self._floor(v.text, reason, refs, evidence))
         return v
 
@@ -119,11 +120,13 @@ class Harness:
                 if quiet >= self.config.floor_gap_s:
                     break
                 if now() - started > self.config.floor_timeout_s:
+                    self.store.work_done("floor")
                     self.store.record_said(text, reason, refs, evidence, delivered=False)
                     self._highlight(refs, text)
                     log.info("floor never opened; dropped to the card: %s", text)
                     return
                 await asyncio.sleep(0.15)
+            self.store.work_done("floor")
             self.store.record_said(text, reason, refs, evidence, delivered=True)
             if self.voice is not None:
                 await self.voice.speak(text, "line")

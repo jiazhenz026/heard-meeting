@@ -143,7 +143,7 @@ class FrontDesk:
         opts: dict[str, Any] = dict(
             system_prompt=SYSTEM,
             mcp_servers={"heard": server},
-            allowed_tools=["mcp__heard__say", "mcp__heard__investigate", "mcp__heard__recall", "mcp__heard__note"],
+            allowed_tools=["mcp__heard__say", "mcp__heard__investigate", "mcp__heard__recall", "mcp__heard__note", "mcp__heard__working"],
             tools=[],  # no built-ins: it cannot read files, run commands or search on its own
             permission_mode="bypassPermissions",
             setting_sources=[],
@@ -167,6 +167,7 @@ class FrontDesk:
         prompt = self._compose(items)
         why = ", ".join(_why(i) for i in items)
         self.store.log_event("wake", why)
+        self.store.work_start("desk", _working_line(items))
         calls: list[str] = []
         final = ""
         try:
@@ -183,6 +184,7 @@ class FrontDesk:
                         log.warning("front desk turn ended: %s", message.subtype)
         finally:
             self._busy = False
+        self.store.work_done("desk")
         ms = (time.perf_counter() - started) * 1000
         outcome = ", ".join(calls) if calls else (final[:40] or "silent")
         self.store.log_event("desk", f"{outcome} · {ms:.0f} ms")
@@ -285,6 +287,15 @@ class FrontDesk:
             text = store.render(lines[-200:]) or "(nothing)"
             return {"content": [{"type": "text", "text": text}]}
 
+        @tool("working", "Tell the board what you are doing right now, in five words or fewer "
+              "(e.g. 'Checking Devpost for prior art'). Shown under Currently working on. Optional.",
+              {"text": str})
+        async def working(args: dict[str, Any]) -> dict[str, Any]:
+            text = str(args.get("text") or "").strip()
+            if text:
+                store.work_start("desk", text[:48])
+            return {"content": [{"type": "text", "text": "shown"}]}
+
         @tool("note", "Pin a short line on a card (a fact, a conflict you adjudicated). Not spoken.",
               {"card": str, "text": str})
         async def note(args: dict[str, Any]) -> dict[str, Any]:
@@ -296,7 +307,19 @@ class FrontDesk:
             store.touch()
             return {"content": [{"type": "text", "text": "noted"}]}
 
-        return create_sdk_mcp_server(name="heard", version="1.0.0", tools=[say, investigate, recall, note])
+        return create_sdk_mcp_server(name="heard", version="1.0.0", tools=[say, investigate, recall, note, working])
+
+
+def _working_line(items: list[dict[str, Any]]) -> str:
+    for it in items:
+        if it["kind"] == "finding":
+            return "Weighing a finding"
+        sig = it["signal"]
+        if sig.get("addressed"):
+            return "Answering the room"
+        if sig.get("new_subject"):
+            return f"Sizing up {sig['new_subject']['title']}"
+    return "Reading the room"
 
 
 def _why(item: dict[str, Any]) -> str:

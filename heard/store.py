@@ -107,6 +107,8 @@ class Store:
         #: The card the room is talking about right now, per the classifier.
         self.focus: str | None = None
         self.focus_at: float = 0.0
+        #: "Currently working on": short items, ticked when done.
+        self.working: list[dict[str, Any]] = []
         self.started_at = now()
         #: Last moment the room was audibly speaking: a partial or a commit.
         self.last_speech_at: float = 0.0
@@ -260,6 +262,32 @@ class Store:
         card.updated_at = now()
         self.touch()
 
+    # -- currently working on --------------------------------------------
+
+    def work_start(self, key: str, text: str) -> None:
+        """Add or refresh a short item. `key` lets the same job be ticked later."""
+        text = " ".join(text.split())[:48]
+        for w in self.working:
+            if w["key"] == key and not w["done"]:
+                w["text"] = text
+                w["at"] = now()
+                self.touch()
+                return
+        self.working.append({"key": key, "text": text, "done": False, "at": now(), "done_at": None})
+        self.working = self.working[-8:]
+        self.touch()
+
+    def work_done(self, key: str) -> None:
+        for w in self.working:
+            if w["key"] == key and not w["done"]:
+                w["done"] = True
+                w["done_at"] = now()
+        self.touch()
+
+    def _prune_working(self) -> None:
+        cutoff = now() - 25.0
+        self.working = [w for w in self.working if not (w["done"] and (w["done_at"] or 0) < cutoff)]
+
     def set_focus(self, card_id: str | None) -> None:
         self.focus = card_id
         self.focus_at = now()
@@ -340,7 +368,12 @@ class Store:
             "expanded": self.expanded,
             "focus": self.focus,
             "focus_at": self.focus_at,
+            "working": self._working_view(),
         }
+
+    def _working_view(self) -> list[dict[str, Any]]:
+        self._prune_working()
+        return [dict(w) for w in self.working]
 
 
 def _slug(text: str) -> str:
