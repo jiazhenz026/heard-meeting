@@ -435,7 +435,7 @@ function who(speaker: string): string {
 
 /** First sentence or two, capped so it fits three lines on a card. */
 function shorten(text: string): string {
-  const t = (text || "").trim();
+  const t = (text || "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/(\*\*|__|`|\*)/g, "").trim();
   if (!t) return "";
   const m = t.match(/^(.{20,320}?[.!?])(\s|$)/);
   const s = m ? m[1] : t;

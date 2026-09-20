@@ -156,16 +156,25 @@ _SUMMARY = re.compile(r"^\s*SUMMARY:\s*(.+?)\s*$", re.MULTILINE)
 _URL = re.compile(r"https?://[^\s)\]>*]+")
 
 
+_MD = re.compile(r"(\*\*|__|`|\*|_(?=\w)|(?<=\w)_)")
+_MD_LINK = re.compile(r"\[([^\]]+)\]\([^)]*\)")
+
+
+def plain(text: str) -> str:
+    """A summary is spoken and shown on a note: no markdown in it."""
+    return _MD.sub("", _MD_LINK.sub(r"\1", text)).strip()
+
+
 def _split(report: str) -> tuple[str, str, list[str]]:
     m = _SUMMARY.search(report)
-    summary = m.group(1).strip() if m else ""
+    summary = plain(m.group(1)) if m else ""
     body = _SUMMARY.sub("", report, count=1).strip() if m else report.strip()
     if not summary:
         # First non-heading line, capped.
         for line in body.splitlines():
             s = line.strip().lstrip("#-* ").strip()
             if len(s) > 20:
-                summary = s[:220]
+                summary = plain(s)[:220]
                 break
     seen: list[str] = []
     for u in _URL.findall(report):
