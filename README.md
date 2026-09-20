@@ -1,12 +1,23 @@
-# Heard! — A meeting board that joins the conversation and conducts research in real time
+<div align="center">
 
-Heard! is an ambient agent that sits in a working meeting. It keeps live
-meeting notes, gives every project or idea you discuss a card on a dashboard,
-sends sub-agents to investigate the open questions, and answers when asked.
-Otherwise it keeps quiet.
+<img src="docs/assets/heard-icon.png" alt="Heard!" width="120" />
 
-Built at **SteelHacks XIII** (24-hour hackathon, Sept 19 2026).
-Tracks: **Out Loud!** (ElevenLabs) · **Beyond the Chatbot** (NVIDIA) · Seed Round.
+# Heard!
+
+**A meeting board that joins the conversation.**
+
+</div>
+
+---
+
+## What it does
+
+Heard! is an ambient agent that sits in a working meeting.
+
+- **Keeps live meeting notes** as people talk.
+- **Gives every project or idea a card** on a shared board, within seconds of it being named.
+- **Sends sub-agents to research** the open questions, unprompted.
+- **Answers when asked**, and speaks up on its own only when it has found something worth saying. Otherwise it keeps quiet.
 
 ```
 J   "I've been working on a product called YesChef — it listens to a kitchen
@@ -22,6 +33,29 @@ S   "Okay, agreed. Let's go with the vision assistant then."
 HEARD!  "Heads up — Devpost has at least six hackathon projects
          doing exactly this…"                                        [finding]
 ```
+
+## SteelHacks XIII
+
+Built in 24 hours at **SteelHacks XIII** (University of Pittsburgh, Sept 19–20, 2026).
+
+**Tracks:** Out Loud! (ElevenLabs) · Beyond the Chatbot (NVIDIA) · Seed Round (Pear VC & Afore Capital) · Xtract (LANXESS)
+
+**Team**
+
+| Name | Email |
+|---|---|
+| Jiazhen Zhang | jiazhenz026@gmail.com |
+| Sam Gombiner | Sam.gombiner@gmail.com |
+| Gavin Zheng | gzheng227@gmail.com |
+
+**Links:** Devpost (coming soon) · Demo video / slides (coming soon)
+
+**Tools and AI disclosure**
+
+- Speech: ElevenLabs Scribe v2 (STT) and ElevenLabs TTS
+- Models: Nemotron via NVIDIA NIM (classifier, notes agent); Claude via the Claude Agent SDK (front desk, research sub-agents)
+- Stack: Python, FastAPI, React + Vite
+- The code was written with Claude Code (Claude Fable 5.1). See [What carried over](#what-carried-over-from-the-kitchen-build) for the parts that predate the event.
 
 ## Architecture
 
