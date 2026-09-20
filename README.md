@@ -43,7 +43,7 @@ Built in 24 hours at **SteelHacks XIII** (University of Pittsburgh, Sept 19–20
 | Sam Gombiner | Sam.gombiner@gmail.com | slg171@pitt.edu |
 | Gavin Zheng | gzheng227@gmail.com | |
 
-**Links:** [Devpost](https://devpost.com/software/heard-puhs0f) · Demo video / slides (coming soon)
+**Links:** [Devpost](https://devpost.com/software/heard-puhs0f) · [Demo video](https://youtu.be/zO_o6bVvkhw)
 
 **Tools and AI disclosure**
 
