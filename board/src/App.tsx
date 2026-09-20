@@ -233,7 +233,7 @@ export default function App() {
             cards.length === 0 ? (
               <p className="empty">Listening. The first idea someone pitches gets a card here.</p>
             ) : (
-              <div className="grid">
+              <div className={`grid n${Math.min(cards.length, 10)}`}>
                 {cards.map((c) => (
                   <CardView
                     key={c.id}
@@ -437,9 +437,9 @@ function who(speaker: string): string {
 function shorten(text: string): string {
   const t = (text || "").trim();
   if (!t) return "";
-  const m = t.match(/^(.{20,190}?[.!?])(\s|$)/);
+  const m = t.match(/^(.{20,320}?[.!?])(\s|$)/);
   const s = m ? m[1] : t;
-  return s.length > 190 ? s.slice(0, 187).replace(/\s+\S*$/, "") + "…" : s;
+  return s.length > 320 ? s.slice(0, 317).replace(/\s+\S*$/, "") + "…" : s;
 }
 
 function label(kind: string): string {

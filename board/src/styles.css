@@ -82,9 +82,30 @@ h2, h3, p { margin: 0; }
 
 /* body */
 .body { display: grid; grid-template-columns: minmax(0, 1fr) var(--rail-w); min-height: 0; }
-.canvas { position: relative; overflow: auto; padding: 26px 26px 40px; }
+.canvas { position: relative; overflow: auto; padding: 26px; display: flex; flex-direction: column; }
+.canvas > .grid { flex: 1; }
 .empty { color: var(--faint); font-size: 16px; padding: 40px 0; max-width: 40ch; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; align-content: start; }
+.grid { display: grid; gap: 22px; align-content: start; }
+/* The board fills the room: one note takes the whole canvas, two or three
+   share it side by side, four make a 2x2, then 3x2 and 3x3. Past nine the
+   grid flows. */
+.grid.n1, .grid.n2, .grid.n3, .grid.n4, .grid.n5, .grid.n6, .grid.n7, .grid.n8, .grid.n9 { height: 100%; min-height: 0; }
+.grid.n1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+.grid.n2 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+.grid.n3 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; }
+.grid.n4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.grid.n5, .grid.n6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
+.grid.n7, .grid.n8, .grid.n9 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); }
+.grid.n10 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.grid.n1 .card h3 { font-size: 44px; }
+.grid.n1 .card p { font-size: 22px; -webkit-line-clamp: 6; }
+.grid.n2 .card h3, .grid.n3 .card h3 { font-size: 32px; }
+.grid.n2 .card p, .grid.n3 .card p { font-size: 18px; -webkit-line-clamp: 5; }
+.grid.n4 .card h3 { font-size: 28px; }
+.grid.n4 .card p { font-size: 17px; -webkit-line-clamp: 4; }
+.grid.n1 .card, .grid.n2 .card { --tilt: 0.35deg; }
+.grid.n1 .card.tilt-0, .grid.n2 .card.tilt-0 { --tilt: -0.35deg; }
+.grid.n1 .card, .grid.n2 .card, .grid.n3 .card, .grid.n4 .card { padding: 30px 34px; gap: 12px; }
 
 /* cards: pastel sticky notes. A title and one tagline, at most three lines. */
 .grid { gap: 24px; padding: 6px; }
@@ -130,7 +151,7 @@ h2, h3, p { margin: 0; }
 .card:hover { transform: rotate(0deg) translateY(-2px); box-shadow: 0 2px 2px rgba(27, 31, 36, .06), 0 14px 26px -8px rgba(27, 31, 36, .28); }
 .card.placeholder h3 { color: rgba(42, 36, 23, .65); }
 .card.spoken { box-shadow: 0 0 0 3px rgba(245, 197, 24, .55), 0 6px 14px -4px rgba(27, 31, 36, .18); }
-.card.focus { transform: rotate(0deg) scale(1.05) translateY(-4px); box-shadow: 0 2px 2px rgba(27, 31, 36, .06), 0 22px 34px -10px rgba(27, 31, 36, .35); z-index: 1; }
+.card.focus { transform: rotate(0deg) scale(1.025) translateY(-3px); box-shadow: 0 2px 2px rgba(27, 31, 36, .06), 0 22px 34px -10px rgba(27, 31, 36, .35); z-index: 1; }
 .card.landed { animation: land .5s ease-out; }
 @keyframes land { from { transform: rotate(var(--tilt, 0deg)) translateY(10px); opacity: 0; } to { transform: rotate(var(--tilt, 0deg)); opacity: 1; } }
 .card h3 { font-size: 22px; font-weight: 700; letter-spacing: -.015em; line-height: 1.2; }
