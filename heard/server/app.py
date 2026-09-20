@@ -334,6 +334,13 @@ def create_app(settings: Settings | None = None, config: Config = CONFIG) -> Fas
         await heard.hub.endpoint(websocket)
 
     if BOARD_DIST.is_dir():
+        @app.get("/", response_class=HTMLResponse)
+        async def index() -> HTMLResponse:
+            # Every build renames the bundle; a cached index would point at a
+            # file that no longer exists and the board would open blank.
+            return HTMLResponse((BOARD_DIST / "index.html").read_text(encoding="utf-8"),
+                                headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
+
         app.mount("/", StaticFiles(directory=BOARD_DIST, html=True), name="board")
     else:
         @app.get("/", response_class=HTMLResponse)
