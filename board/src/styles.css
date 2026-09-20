@@ -75,6 +75,8 @@ h2, h3, p { margin: 0; }
 .typein select { padding: 0 8px; height: 100%; border-right: 1px solid var(--rule); color: var(--muted); appearance: none; font-weight: 500; }
 .typein input { width: 300px; height: 100%; padding: 0 10px; }
 .typein input::placeholder { color: var(--faint); }
+.reset { padding: 6px 12px; border: 1px solid var(--rule-2); border-radius: 4px; color: var(--muted); font-size: 13px; font-weight: 500; }
+.reset:hover { color: var(--held); border-color: var(--held); }
 .status { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; white-space: nowrap; }
 .status.warn { color: var(--held); }
 .ear { width: 10px; height: 10px; border-radius: 50%; background: var(--ready); }

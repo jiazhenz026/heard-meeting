@@ -38,6 +38,14 @@ export default function App() {
     try { localStorage.setItem("heard.thinking", level); } catch { /* fine */ }
   };
   const [ripping, setRipping] = useState<Set<string>>(new Set());
+  const resetAll = useCallback(() => {
+    if (!window.confirm("Start the meeting over? This clears every note, investigation, the notes and the transcript.")) return;
+    openRef.current = null;
+    setOpen(null);
+    setBanner(null);
+    try { localStorage.removeItem("heard.tones"); } catch { /* fine */ }
+    fetch("/reset", { method: "POST" }).catch(() => {});
+  }, []);
   const removeCard = useCallback((id: string) => {
     if (openRef.current === id) {
       openRef.current = null;
@@ -229,6 +237,7 @@ export default function App() {
             onKeyDown={(e) => e.key === "Enter" && inject()}
           />
         </label>
+        <button className="reset" onClick={resetAll} title="Clear the board and start over">Start over</button>
         <span className={`status ${status.tone}`} title={state.health.frontdesk_error ?? ""}>
           <i className="ear" style={{ opacity: 0.35 + micLevel * 0.65 }} />
           {status.text}
