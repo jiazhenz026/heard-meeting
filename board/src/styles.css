@@ -140,7 +140,7 @@ h2, h3, p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   .flock .sheep { animation-play-state: paused, paused; }
 }
-.gate-inner { width: min(560px, 92vw); padding: 40px; text-align: left; }
+.gate-inner { max-width: min(560px, 92vw); padding: 40px; text-align: left; }
 .gate-kicker { color: var(--muted); font-size: 20px; margin: 0 0 4px 2px; }
 .gate .wordmark { font-size: 56px; line-height: 1; }
 .gate-lede { color: var(--muted); font-size: 18px; margin: 18px 0 32px; max-width: 34ch; }
