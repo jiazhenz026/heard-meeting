@@ -69,6 +69,8 @@ class NotesAgent:
             self._kick.clear()
             if self._closing.is_set():
                 return
+            if nim.cooling() > 0:
+                continue  # the classifier gets the quota first
             try:
                 await self.pass_once()
             except Exception as exc:

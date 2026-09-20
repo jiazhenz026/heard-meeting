@@ -86,12 +86,16 @@ class Config:
     classify_floor_s: float = field(default_factory=lambda: _f("HEARD_CLASSIFY_FLOOR_S", 2.0))
     classify_ceiling_s: float = field(default_factory=lambda: _f("HEARD_CLASSIFY_CEILING_S", 5.0))
     #: Notes agent: rewrites notes.md this often, when there is new speech.
-    notes_every_s: float = field(default_factory=lambda: _f("HEARD_NOTES_EVERY_S", 20.0))
+    notes_every_s: float = field(default_factory=lambda: _f("HEARD_NOTES_EVERY_S", 30.0))
     #: NIM call ceiling. The classifier is on the 5-second path.
     nim_timeout_s: float = field(default_factory=lambda: _f("HEARD_NIM_TIMEOUT_S", 8.0))
     nim_max_tokens: int = field(default_factory=lambda: _i("HEARD_NIM_MAX_TOKENS", 600))
     nim_disable_thinking: bool = field(default_factory=lambda: _b("HEARD_DISABLE_THINKING", True))
-    max_rpm: int = field(default_factory=lambda: _i("HEARD_MAX_RPM", 30))
+    max_rpm: int = field(default_factory=lambda: _i("HEARD_MAX_RPM", 24))
+    #: After a 429 from NIM, send nothing for this long.
+    nim_cooldown_s: float = field(default_factory=lambda: _f("HEARD_NIM_COOLDOWN_S", 6.0))
+    #: The classifier never fires more often than this, however short the lines.
+    classify_min_gap_s: float = field(default_factory=lambda: _f("HEARD_CLASSIFY_MIN_GAP_S", 3.0))
 
     # -- the harness -------------------------------------------------------
     #: `asked` holds this long after the classifier flagged a direct address.

@@ -67,6 +67,8 @@ _ADDRESS = re.compile(
     r"\b(?:hey|hi|ok|okay|yo)[ ,]+(?:heard|herd|hurd|hird|hurt)\b"
     r"|^(?:heard|herd)[ ,:!?]"
     r"|\bwhat (?:does|do you think|would) (?:heard|herd)\b"
+    r"|\bwhat (?:heard|herd) (?:thinks|says|makes of)\b"
+    r"|\b(?:ask|asking) (?:heard|herd)\b"
     r"|\b(?:heard|herd),\s*(?:what|can|could|do|is|are|how|look|check|tell|search|find|please)\b",
     re.IGNORECASE,
 )

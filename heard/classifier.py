@@ -41,7 +41,7 @@ Rules:
 - A "subject" is a distinct project, product idea, experiment, or proposal that someone is PITCHING in the new lines — they describe what it is or does in at least a sentence. At most ONE new subject per pass, and only if it does not match an existing card title (listed below; treat near-spellings and paraphrases as matches). NOT subjects, ever: reactions to an existing card ("I like that", "who is it for", "let's go with it"), small talk, logistics, talk about the meeting itself, and talk about Heard (the assistant). If the new lines only discuss an existing card, new_subject MUST be null. When in doubt, null: a missed subject costs nothing, a spurious card costs the board its credibility.
 - If the speaker gave the idea a name, copy it EXACTLY as it appears in the transcript (do not respell it) and set named_by "speaker". If they described it without a name, invent a short, memorable product-style name (2 words max, no emoji) and set named_by "heard".
 - "anchor" is the [uXXXX] id of the line where the subject was introduced.
-- "questions" are things said out loud that could be checked or looked up: has it been done, who does this, is X true, how would we build Y. Mark worth_investigating true only for questions a web search could actually answer. An idea being pitched always implies at least "has this been done before?" and "who is it for?" — list those as questions on the new subject.
+- "questions": at most three, each under fifteen words. They are things said out loud that could be checked or looked up: has it been done, who does this, is X true, how would we build Y. Mark worth_investigating true only for questions a web search could actually answer. An idea being pitched always implies at least "has this been done before?" and "who is it for?" — list those as questions on the new subject.
 - "addressed" is true ONLY when someone speaks to Heard by name ("Heard", "hey Heard", "let's see what Heard thinks", "Heard, look up...") with a question or request. Precision over recall: if unsure, false. intent: "opinion" = what does Heard think of the current subject; "how_built" = how was Heard itself built / what is the tech stack; "lookup" = look something up; else "other".
 - "discussing" is which card the room is talking about RIGHT NOW in the new lines: an existing card title (exactly as listed), the new subject's title, or null if the lines are not about any card.
 - "salience" 2 = the room is converging on a decision or making a strong claim ("nobody does this", "let's go with it", "agreed"); 1 = substantive discussion; 0 = filler.
@@ -89,11 +89,20 @@ class Classifier:
                     self._wake.clear()
                 except asyncio.TimeoutError:
                     break
+            # Never faster than the minimum gap, and never into a cooldown.
+            since = now() - (self.last_fire_at or 0.0)
+            wait = max(self.config.classify_min_gap_s - since, nim.cooling())
+            if wait > 0:
+                await asyncio.sleep(wait)
             try:
                 await self.fire()
-            except Exception as exc:  # a bad pass costs nothing but this pass
+                self.last_error = None
+            except Exception as exc:
+                # The lines are kept: `_last_seen` only moves on success, so the
+                # next pass classifies them together with whatever came after.
                 self.last_error = f"{type(exc).__name__}: {exc}"
-                log.warning("classifier pass failed: %s", self.last_error)
+                log.warning("classifier pass failed, lines kept: %s", self.last_error)
+                self._wake.set()
 
     async def close(self) -> None:
         self._closing.set()
@@ -103,14 +112,15 @@ class Classifier:
         new = self.store.since(self._last_seen)
         if not new:
             return None
-        self._last_seen = new[-1].id
+        new = new[-12:]  # a backlog after an outage is classified as one span, capped
         context = self.store.tail(45.0)
         # Context first (older), then the fresh span marked as such.
         older = [u for u in context if u.at < new[0].at][-12:]
         user = _prompt(older, new, self.store)
         self.fires += 1
         self.last_fire_at = now()
-        result = await nim.chat_json(SYSTEM, user, max_tokens=500)
+        result = await nim.chat_json(SYSTEM, user, max_tokens=700)
+        self._last_seen = new[-1].id  # only now: a failed call keeps its lines
         if not result:
             return None
         signal = _normalise(result, new)

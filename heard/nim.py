@@ -22,6 +22,14 @@ log = logging.getLogger("heard.nim")
 
 _client: Any = None
 _CALLS: deque[float] = deque()
+#: After a 429 nothing is sent until this moment: retrying into a throttled
+#: key only digs the hole deeper.
+_cool_until: float = 0.0
+
+
+def cooling() -> float:
+    """Seconds left in the post-429 cooldown, 0 when clear."""
+    return max(0.0, _cool_until - time.monotonic())
 
 
 class RateLimited(RuntimeError):
@@ -29,6 +37,7 @@ class RateLimited(RuntimeError):
 
 
 def _get_client() -> Any:
+    """One AsyncOpenAI, built lazily and reused."""
     global _client
     if _client is None:
         from openai import AsyncOpenAI
@@ -44,6 +53,8 @@ def _get_client() -> Any:
 
 def _pace() -> None:
     t = time.monotonic()
+    if t < _cool_until:
+        raise RateLimited(f"cooling down after a 429; {(_cool_until - t):.0f}s left")
     while _CALLS and t - _CALLS[0] > 60.0:
         _CALLS.popleft()
     if len(_CALLS) >= CONFIG.max_rpm:
@@ -70,14 +81,25 @@ async def chat(system: str, user: str, *, max_tokens: int | None = None, timeout
     try:
         resp = await asyncio.wait_for(client.chat.completions.create(**request), timeout=budget + 1.0)
     except Exception as exc:
-        # A 429 or 503 is the provider's window, not the model's decision. One
-        # short backoff and one more try; after that the pass is lost, not the
-        # meeting.
-        if getattr(exc, "status_code", None) not in (429, 503):
+        code = getattr(exc, "status_code", None)
+        if code == 429:
+            # The provider's window is full. Stop sending for a few seconds;
+            # the caller keeps its lines and tries again after the cooldown.
+            global _cool_until
+            _cool_until = time.monotonic() + CONFIG.nim_cooldown_s
+            log.warning("nim 429; cooling down %.0fs", CONFIG.nim_cooldown_s)
             raise
-        log.warning("nim %s; retrying once after 2 s", exc.status_code)
-        await asyncio.sleep(2.0)
+        if code != 503:
+            raise
+        # A 503 is a busy replica, not our quota: one short retry is worth it.
+        log.warning("nim 503; retrying once after 1.5 s")
+        await asyncio.sleep(1.5)
+        _CALLS.append(time.monotonic())
         resp = await asyncio.wait_for(client.chat.completions.create(**request), timeout=budget + 1.0)
+    return _text_of(resp, started)
+
+
+def _text_of(resp: Any, started: float) -> str:
     text = ""
     choices = getattr(resp, "choices", None) or []
     if choices:
