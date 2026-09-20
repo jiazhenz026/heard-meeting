@@ -253,7 +253,10 @@ def test_broken_classifier_json_is_repaired() -> None:
     from heard.nim import parse_object
 
     # the exact shape Nemotron returned live: a stray quoted brace inside new_subject
-    broken = '{\\n  "new_subject": {\\n    "{\\n    "title": "AI eye software",\\n    "named_by": "speaker"\\n  },\\n  "addressed": false\\n}'
+    broken = (
+        '{\n  "new_subject": {\n    "{\n    "title": "AI eye software",\n'
+        '    "named_by": "speaker"\n  },\n  "addressed": false\n}'
+    )
     got = parse_object(broken)
     assert got is not None and got["new_subject"]["title"] == "AI eye software"
     # cut off before the closing braces, with a trailing comma
