@@ -44,7 +44,7 @@ What you hold to:
 What you do on a wake:
 1. If the signal introduces a new subject (a card was just created), call `investigate` on it, unprompted, with a brief that asks the two questions that matter for a hackathon idea: has this been done (check Devpost and past hackathons by name), and who is it for / who would pay. Add any specific question the room raised. Say nothing.
 2. If the signal lists a question worth investigating about an existing card, `investigate` it. Say nothing.
-3. If someone addressed you (addressed=true), answer with `say(reason="asked")`. A short acknowledgement ("On it.") has ALREADY been spoken by the runtime the moment they said your name, so never open with one; go straight to the answer, and answer fast — do not call `recall` unless the notes and the transcript tail are genuinely not enough. Answer from the notes, the card summaries and the transcript — call `recall` first if you need more. Two short sentences, under 35 words total, facts first; anything longer is cut off mid-sentence by the runtime. intent "opinion" = give your read of the subject being discussed, grounded in any finding you have; intent "how_built" = describe how Heard! itself is built from the seeded "Heard!" card (call `recall` with query "Heard! card" if you need it); intent "lookup" = `investigate`, then say one sentence that you will report back is NOT allowed — say nothing, the task rail shows it.
+3. If someone addressed you (addressed=true), answer with `say(reason="asked", answering=<the question's utterance id>)`. If several questions are open, answer them oldest first, one `say` each, in the order they were asked. Lines are spoken in the order you call `say`. A short acknowledgement ("On it.") has ALREADY been spoken by the runtime the moment they said your name, so never open with one; go straight to the answer, and answer fast — do not call `recall` unless the notes and the transcript tail are genuinely not enough. Answer from the notes, the card summaries and the transcript — call `recall` first if you need more. Two short sentences, under 35 words total, facts first; anything longer is cut off mid-sentence by the runtime. intent "opinion" = give your read of the subject being discussed, grounded in any finding you have; intent "how_built" = describe how Heard! itself is built from the seeded "Heard!" card (call `recall` with query "Heard! card" if you need it); intent "lookup" = `investigate`, then say one sentence that you will report back is NOT allowed — say nothing, the task rail shows it.
 4. If a sub-agent returned (the wake says so), decide: does the finding contradict something the room said or is about to act on? The clearest case: the room is agreeing to build something and the finding says it has been built before — say so, with names and a count, `say(reason="finding", refs=[task_id])`, under 35 words. If it merely adds colour, use `note` on the card or do nothing.
 5. Otherwise do nothing.
 
@@ -216,9 +216,10 @@ class FrontDesk:
         running = [f"- {t.id} on {t.card_id}: {t.brief} ({t.status_line})" for t in self.store.running_tasks()]
         if running:
             parts.append("RUNNING TASKS:\n" + "\n".join(running))
-        if self.store.asked and not self.store.asked.replied and now() - self.store.asked.at < self.config.asked_window_s:
-            a = self.store.asked
-            parts.append(f"OPEN DIRECT ADDRESS ({a.intent}): {a.text}")
+        opens = self.store.open_asks(self.config.asked_window_s)
+        if opens:
+            parts.append("OPEN DIRECT ADDRESSES (oldest first; answer each with say(answering=<id>)):\n" +
+                         "\n".join(f"- {a.utterance_id} ({a.intent}): {a.text}" for a in opens))
         rej = [r for r in self.harness.rejections if now() - r["at"] < 300][-3:]
         if rej:
             parts.append("YOUR RECENT REJECTED LINES:\n" + "\n".join(f"- {r['text']} — {r['why']}" for r in rej))
@@ -240,12 +241,15 @@ class FrontDesk:
             {"type": "object",
              "properties": {"text": {"type": "string"},
                             "reason": {"type": "string", "enum": ["asked", "finding"]},
-                            "refs": {"type": "array", "items": {"type": "string"}}},
+                            "refs": {"type": "array", "items": {"type": "string"}},
+                            "answering": {"type": "string",
+                                          "description": "for reason=asked: the utterance id (uXXXX) of the question this line answers"}},
              "required": ["text", "reason"]},
         )
         async def say(args: dict[str, Any]) -> dict[str, Any]:
             v = await harness.say(str(args.get("text") or ""), str(args.get("reason") or ""),
-                                  [str(r) for r in (args.get("refs") or [])])
+                                  [str(r) for r in (args.get("refs") or [])],
+                                  answering=(str(args["answering"]) if args.get("answering") else None))
             if v.accepted:
                 return {"content": [{"type": "text", "text": f"accepted ({v.why}); will speak at the next gap: {v.text}"}]}
             return {"content": [{"type": "text", "text": f"REFUSED: {v.why}"}], "is_error": True}
@@ -262,7 +266,7 @@ class FrontDesk:
                 return {"content": [{"type": "text", "text": f"no such card: {args.get('card')!r}. Cards: "
                                      + ", ".join(f"{c.id} ({c.title})" for c in store.cards.values())}],
                         "is_error": True}
-            unprompted = not (store.asked and not store.asked.replied and now() - store.asked.at < 30)
+            unprompted = not store.open_asks(30)
             t = researcher.dispatch(card.id, str(args.get("brief") or "")[:400], unprompted=unprompted)
             if t is None:
                 return {"content": [{"type": "text", "text": "pool full: three investigations already running"}],

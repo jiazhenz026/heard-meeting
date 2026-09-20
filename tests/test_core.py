@@ -166,3 +166,41 @@ def test_normalise_tolerates_junk() -> None:
     assert s["addressed"] is True and s["salience"] == 2
     s = _normalise({"new_subject": None, "questions": None}, new)
     assert s["new_subject"] is None and s["questions"] == [] and s["addressed"] is False
+
+
+def test_two_questions_answered_in_order_by_id(store: Store) -> None:
+    voice = _Voice()
+    h = Harness(store, voice, config=_cfg(floor_gap_s=0.05, floor_timeout_s=2))
+
+    async def run() -> None:
+        q1 = store.commit("Hey Heard, has this been done?", "J")
+        a1 = store.mark_asked(q1.id, q1.text, "other")
+        q2 = store.commit("Heard, who would pay for it?", "S")
+        a2 = store.mark_asked(q2.id, q2.text, "other")
+        assert [a.utterance_id for a in store.open_asks(60)] == [q1.id, q2.id]
+        # naming the second question ticks only the second
+        v = await h.say("Restaurants would.", "asked", [], answering=q2.id)
+        assert v.accepted and a2.replied and not a1.replied
+        # a wrong id is refused and lists what is open
+        v = await h.say("Nope.", "asked", [], answering="u9999")
+        assert not v.accepted and q1.id in v.why
+        # no id falls back to the oldest open one
+        v = await h.say("Six times on Devpost.", "asked", [])
+        assert v.accepted and a1.replied
+        await asyncio.sleep(0.6)
+        # spoken in the order accepted: FIFO
+        assert voice.lines == ["Restaurants would.", "Six times on Devpost."]
+
+    asyncio.run(run())
+
+
+def test_working_item_cannot_outlive_its_task(store: Store) -> None:
+    c = store.create_card("YesChef")
+    t = store.create_task(c.id, "done before?", unprompted=True)
+    store.work_start(f"task:{t.id}", "Looking into YesChef")
+    assert [w["done"] for w in store.snapshot()["working"]] == [False]
+    # the card is deleted while the research is still running
+    store.delete_card(c.id)
+    assert all(w["done"] for w in store.snapshot()["working"])
+    # finishing the orphaned task later must not raise, and ticks the item
+    assert store.finish_task(t.id, summary="x", sources=[]) is None

@@ -53,8 +53,62 @@ h2, h3, p { margin: 0; }
 .t, .clock, .task-time { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
 
 /* gate */
-.gate { height: 100%; display: grid; place-items: center; background: var(--paper); }
-.gate-inner { max-width: 460px; padding: 40px; text-align: left; }
+.gate { position: relative; height: 100%; display: grid; place-items: center; background: var(--paper); overflow: hidden; }
+/* the flock, centred over the wordmark; its bottom edge is the ground line */
+/* one small stop-motion sheep, in flow above the wordmark */
+.gate-sheep { width: 220px; max-width: 60%; margin: 0 0 6px -8px; pointer-events: none; }
+/* Stop-motion jumping sheep.
+ * One sprite sheet (5 poses) + one keyframe list. steps(1) makes every pose
+ * snap into place with no tweening, which is what gives the stop-motion feel.
+ * The sheep jumps right with poses 1-5, turns around, and jumps back mirrored.
+ */
+
+.sheep-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1832 / 859;     /* same shape as the original frames */
+  /* transparent: the sheep is cut out, so any page background shows through */
+  overflow: hidden;
+}
+
+.sheep {
+  position: absolute;
+  width: 24.017%;               /* one sprite cell, as a share of the stage */
+  height: 34.924%;
+  background: url("/sheep-sprite.webp") 0 0 / 500% 100% no-repeat;
+  animation: sheep-hop 2.4s steps(1, end) infinite;
+}
+
+/* left/top = where each pose sat in your frames; background-position = which pose */
+@keyframes sheep-hop {
+  /* jump right */
+  0%   { left: 0.055%;  top: 55.53%;  background-position:   0% 0; transform: scaleX(1); }
+  8%   { left: 14.465%; top: 15.832%; background-position:  25% 0; transform: scaleX(1); }
+  16%  { left: 37.445%; top: 9.546%;  background-position:  50% 0; transform: scaleX(1); }
+  24%  { left: 60.044%; top: 19.325%; background-position:  75% 0; transform: scaleX(1); }
+  32%  { left: 74.782%; top: 54.948%; background-position: 100% 0; transform: scaleX(1); }
+  /* landed: hold, then turn around */
+  44%  { left: 74.782%; top: 54.948%; background-position: 100% 0; transform: scaleX(-1); }
+  /* jump back left, mirrored */
+  52%  { left: 60.044%; top: 19.325%; background-position:  75% 0; transform: scaleX(-1); }
+  60%  { left: 37.445%; top: 9.546%;  background-position:  50% 0; transform: scaleX(-1); }
+  68%  { left: 14.465%; top: 15.832%; background-position:  25% 0; transform: scaleX(-1); }
+  76%  { left: 0.055%;  top: 55.53%;  background-position:   0% 0; transform: scaleX(-1); }
+  /* landed: hold, then turn back */
+  88%  { left: 0.055%;  top: 55.53%;  background-position:   0% 0; transform: scaleX(1); }
+  100% { left: 0.055%;  top: 55.53%;  background-position:   0% 0; transform: scaleX(1); }
+}
+
+/* Visitors who ask for less motion get the sheep sitting still at the top of its jump */
+@media (prefers-reduced-motion: reduce) {
+  .sheep {
+    animation: none;
+    left: 37.445%;
+    top: 9.546%;
+    background-position: 50% 0;
+  }
+}
+.gate-inner { max-width: min(560px, 92vw); padding: 40px; text-align: left; }
 .gate-kicker { color: var(--muted); font-size: 20px; margin: 0 0 4px 2px; }
 .gate .wordmark { font-size: 56px; line-height: 1; }
 .gate-lede { color: var(--muted); font-size: 18px; margin: 18px 0 32px; max-width: 34ch; }
@@ -79,6 +133,7 @@ h2, h3, p { margin: 0; }
 .reset { padding: 6px 12px; border: 1px solid var(--rule-2); border-radius: 4px; color: var(--muted); font-size: 13px; font-weight: 500; white-space: nowrap; }
 .reset:hover, .reset.armed { color: var(--held); border-color: var(--held); }
 .reset.armed { background: #fdf2f2; }
+.reset.warnbtn { color: var(--held); border-color: var(--held); background: #fdf2f2; }
 .status { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; white-space: nowrap; }
 .status.warn { color: var(--held); }
 .ear { width: 10px; height: 10px; border-radius: 50%; background: var(--ready); }

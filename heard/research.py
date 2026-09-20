@@ -24,7 +24,7 @@ log = logging.getLogger("heard.research")
 
 RESEARCHER_PROMPT = """You are a researcher working for Heard!, an assistant sitting in a live meeting. You get one brief about a project, product idea or claim the room is discussing. Go and find out, fast, using web search. Prefer primary sources: Devpost and hackathon project pages for "has this been done", company sites and app stores for products, docs for technical claims.
 
-Budget: at most 4 searches and 2 page fetches, then write. Speed matters more than completeness: the room decides in about a minute. Do not narrate what you are doing.
+Budget: TWO web searches, no page fetches, then write. You have about twenty seconds total; the room decides in under a minute. Search once for prior art (site:devpost.com plus the idea), once for shipped products, then write from the snippets. Never fetch a page. Do not narrate.
 
 Return ONLY a markdown report in exactly this shape:
 
@@ -44,6 +44,8 @@ SUMMARY: <one or two sentences, the single most useful thing the room does not k
 ## Sources
 - <url>
 - <url>
+
+Keep the whole report under 180 words.
 """
 
 
@@ -87,8 +89,7 @@ class Researcher:
         prompt = _brief(title, card.one_liner if card else "", task.brief)
         started = now()
         try:
-            report = await asyncio.wait_for(_agent_report(task, prompt, self.store, self.config),
-                                            timeout=self.config.research_timeout_s)
+            report = await _agent_report(task, prompt, self.store, self.config)
         except asyncio.CancelledError:
             raise
         except Exception as exc:
@@ -101,11 +102,14 @@ class Researcher:
             self.store.finish_task(task.id, summary="research returned nothing", sources=[], failed=True)
             return
         page = _render_page(title, task.brief, body, sources, now() - started)
-        self.store.set_card_page(task.card_id, page, summary)
-        self.store.finish_task(task.id, summary=summary, sources=sources)
+        if task.card_id in self.store.cards:
+            self.store.set_card_page(task.card_id, page, summary)
+        done = self.store.finish_task(task.id, summary=summary, sources=sources)
         self.store.work_done(f"task:{task.id}")
         log.info("research %s done in %.0fs · %d sources", task.id, now() - started, len(sources))
-        r = self.on_done(self.store.tasks[task.id])
+        if done is None:
+            return  # the card was deleted while this ran; nothing to wake for
+        r = self.on_done(done)
         if asyncio.iscoroutine(r):
             await r
 
@@ -124,12 +128,12 @@ async def _agent_report(task: Task, prompt: str, store: Store, config: Config) -
 
     opts: dict[str, Any] = dict(
         system_prompt=RESEARCHER_PROMPT,
-        tools=["WebSearch", "WebFetch"],
-        allowed_tools=["WebSearch", "WebFetch"],
+        tools=["WebSearch"],
+        allowed_tools=["WebSearch"],
         permission_mode="bypassPermissions",
         setting_sources=[],
         cwd=str(store.data_dir),
-        max_turns=10,
+        max_turns=5,
         effort=config.research_effort or None,
     )
     if config.research_model:

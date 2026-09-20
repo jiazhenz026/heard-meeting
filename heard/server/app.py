@@ -96,6 +96,8 @@ class Heard:
         self.classifier = Classifier(self.store, on_signal=self.frontdesk.on_signal, config=config)
         self.notes = NotesAgent(self.store, config=config)
         self.tasks: list[asyncio.Task[None]] = []
+        #: When mic audio (or a browser transcript) last reached this process.
+        self.audio_at: float = 0.0
 
     # -- assembly ----------------------------------------------------------
 
@@ -132,6 +134,14 @@ class Heard:
         self._spawn("classifier", self.classifier.run())
         self._spawn("notes", self.notes.run())
         self._spawn("frontdesk", self.frontdesk.run())
+        self._spawn("heartbeat", self._heartbeat())
+
+    async def _heartbeat(self) -> None:
+        """A snapshot every few seconds even when nothing changed, so ages and
+        timers on the board never go stale."""
+        while True:
+            await asyncio.sleep(5.0)
+            await self.push_board()
 
     def _spawn(self, name: str, coro: Any) -> None:
         self.tasks.append(asyncio.create_task(_supervise(name, coro), name=name))
@@ -170,6 +180,7 @@ class Heard:
             "frontdesk_error": self.frontdesk.last_error,
             "wakes": self.frontdesk.wakes,
             "research_running": len(self.store.running_tasks()),
+            "audio_age": (now() - self.audio_at) if self.audio_at else None,
         }
 
     async def push_board(self) -> None:
@@ -215,10 +226,12 @@ class Heard:
         await self.on_signal(Signal(kind="utterance", payload={"text": text, "speaker": speaker}))
 
     async def on_audio_chunk(self, pcm: bytes) -> None:
+        self.audio_at = now()
         if self.stt is not None:
             await self.stt.feed(pcm)
 
     async def on_transcript(self, text: str, final: bool) -> None:
+        self.audio_at = now()
         if self.stt is not None:
             await self.stt.on_transcript(text, final)
 
@@ -229,7 +242,8 @@ class Heard:
         self.store.tasks.clear()
         self.store.said.clear()
         self.store.log.clear()
-        self.store.asked = None
+        self.store.asks.clear()
+        self.store.working.clear()
         self.store.expanded = None
         self.store.focus = None
         self.store.notes = ""
@@ -329,6 +343,13 @@ def create_app(settings: Settings | None = None, config: Config = CONFIG) -> Fas
         await heard.hub.endpoint(websocket)
 
     if BOARD_DIST.is_dir():
+        @app.get("/", response_class=HTMLResponse)
+        async def index() -> HTMLResponse:
+            # Every build renames the bundle; a cached index would point at a
+            # file that no longer exists and the board would open blank.
+            return HTMLResponse((BOARD_DIST / "index.html").read_text(encoding="utf-8"),
+                                headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
+
         app.mount("/", StaticFiles(directory=BOARD_DIST, html=True), name="board")
     else:
         @app.get("/", response_class=HTMLResponse)

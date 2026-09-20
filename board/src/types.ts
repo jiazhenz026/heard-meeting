@@ -55,6 +55,14 @@ export interface Said {
   delivered: boolean;
 }
 
+export interface Ask {
+  at: number;
+  utterance_id: string;
+  text: string;
+  intent: string;
+  replied: boolean;
+}
+
 export interface WorkItem {
   key: string;
   text: string;
@@ -81,6 +89,7 @@ export interface Health {
   frontdesk_error: string | null;
   wakes: number;
   research_running: number;
+  audio_age: number | null;
 }
 
 export interface StatePayload {
@@ -95,7 +104,8 @@ export interface StatePayload {
   tasks: Task[];
   said: Said[];
   log: LogEntry[];
-  asked: { at: number; utterance_id: string; text: string; intent: string; replied: boolean } | null;
+  asked: Ask | null;
+  asks: Ask[];
   expanded: string | null;
   focus: string | null;
   focus_at: number;
@@ -116,6 +126,7 @@ export const EMPTY_STATE: StatePayload = {
   said: [],
   log: [],
   asked: null,
+  asks: [],
   expanded: null,
   focus: null,
   focus_at: 0,
@@ -132,6 +143,7 @@ export const EMPTY_STATE: StatePayload = {
     frontdesk_error: null,
     wakes: 0,
     research_running: 0,
+    audio_age: null,
   },
 };
 
