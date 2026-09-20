@@ -4,7 +4,7 @@
 
 # Heard!
 
-**A meeting board that joins the conversation.**
+**A meeting dashboard that joins the conversation.**
 
 </div>
 
