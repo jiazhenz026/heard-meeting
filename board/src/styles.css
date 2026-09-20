@@ -90,22 +90,22 @@ h2, h3, p { margin: 0; }
    share it side by side, four make a 2x2, then 3x2 and 3x3. Past nine the
    grid flows. */
 .grid.n1, .grid.n2, .grid.n3, .grid.n4, .grid.n5, .grid.n6, .grid.n7, .grid.n8, .grid.n9 { height: 100%; min-height: 0; }
-.grid.n1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
-.grid.n2 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
-.grid.n3 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; }
+.grid.n1 { grid-template-columns: minmax(0, 440px); grid-template-rows: 1fr; justify-content: center; }
+.grid.n2 { grid-template-columns: repeat(2, minmax(0, 400px)); grid-template-rows: 1fr; justify-content: center; }
+.grid.n3 { grid-template-columns: repeat(3, minmax(0, 380px)); grid-template-rows: 1fr; justify-content: center; }
 .grid.n4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
 .grid.n5, .grid.n6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
 .grid.n7, .grid.n8, .grid.n9 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); }
 .grid.n10 { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); align-content: start; }
-.grid.n1 .card h3 { font-size: 44px; }
-.grid.n1 .card p { font-size: 22px; -webkit-line-clamp: 6; }
-.grid.n2 .card h3, .grid.n3 .card h3 { font-size: 32px; }
-.grid.n2 .card p, .grid.n3 .card p { font-size: 18px; -webkit-line-clamp: 5; }
+.grid.n1 .card h3 { font-size: 30px; }
+.grid.n1 .card p { font-size: 18px; -webkit-line-clamp: 6; }
+.grid.n2 .card h3, .grid.n3 .card h3 { font-size: 27px; }
+.grid.n2 .card p, .grid.n3 .card p { font-size: 17px; -webkit-line-clamp: 5; }
 .grid.n4 .card h3 { font-size: 28px; }
 .grid.n4 .card p { font-size: 17px; -webkit-line-clamp: 4; }
 .grid.n1 .card, .grid.n2 .card { --tilt: 0.35deg; }
 .grid.n1 .card.tilt-0, .grid.n2 .card.tilt-0 { --tilt: -0.35deg; }
-.grid.n1 .card, .grid.n2 .card, .grid.n3 .card, .grid.n4 .card { padding: 32px 36px; gap: 14px; }
+.grid.n1 .card, .grid.n2 .card, .grid.n3 .card, .grid.n4 .card { padding: 28px 30px; gap: 12px; }
 
 /* cards: pastel sticky notes. A title and one tagline, at most three lines. */
 .grid { gap: 24px; padding: 6px; }
