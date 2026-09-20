@@ -231,8 +231,8 @@ export default function App() {
   if (!started) {
     return (
       <div className="gate">
-        <Flock />
         <div className="gate-inner">
+          <Flock />
           <p className="gate-kicker">Don't follow the</p>
           <div className="wordmark">Heard<span>!</span></div>
           <p className="gate-lede">A meeting board that joins the conversation and conducts research in real time.</p>
@@ -371,22 +371,12 @@ export default function App() {
   );
 }
 
-/** Sheep on the rim of a slowly turning wheel; only its top half shows. Don't follow them. */
+/** Five stop-motion sheep hopping over an arc above the wordmark. Don't follow them. */
 function Flock() {
-  const count = 8;
   return (
-    <div className="wheel" aria-hidden="true">
-      <div className="rim">
-        {Array.from({ length: count }, (_, i) => (
-          <img
-            key={i}
-            className="sheep"
-            src="/sheep.png"
-            alt=""
-            style={{ ["--angle" as string]: `${(360 / count) * i}deg` }}
-            onError={(e) => { const el = e.currentTarget; if (!el.src.endsWith("sheep-fallback.svg")) el.src = "/sheep-fallback.svg"; }}
-          />
-        ))}
+    <div className="gate-flock" aria-hidden="true">
+      <div className="flock">
+        <div className="sheep" /><div className="sheep" /><div className="sheep" /><div className="sheep" /><div className="sheep" />
       </div>
     </div>
   );

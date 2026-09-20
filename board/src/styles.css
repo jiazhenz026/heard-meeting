@@ -54,13 +54,89 @@ h2, h3, p { margin: 0; }
 
 /* gate */
 .gate { position: relative; height: 100%; display: grid; place-items: center; background: var(--paper); overflow: hidden; }
-/* the wheel: a circle of sheep turning below the title, top half visible */
-.wheel { --r: 340px; position: absolute; left: 50%; top: 50%; width: calc(var(--r) * 2 + 140px); height: calc(var(--r) + 90px); transform: translate(-50%, calc(-1 * var(--r) - 190px)); overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%); mask-image: linear-gradient(to bottom, #000 72%, transparent 100%); }
-.rim { position: absolute; left: 50%; top: calc(100% - 20px); width: 0; height: 0; animation: turn 28s linear infinite; }
-.sheep { position: absolute; left: -56px; top: -40px; width: 112px; height: auto; transform: rotate(var(--angle)) translateY(calc(-1 * var(--r))); transform-origin: 56px 40px; filter: drop-shadow(0 8px 10px rgba(27, 31, 36, .18)); }
-@keyframes turn { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-@media (max-width: 720px) { .wheel { --r: 220px; } .sheep { width: 72px; left: -36px; top: -26px; transform-origin: 36px 26px; } }
-.gate-inner { max-width: 460px; padding: 40px; text-align: left; }
+/* the flock, centred over the wordmark; its bottom edge is the ground line */
+.gate-flock { width: 100%; margin: 0 0 10px; pointer-events: none; }
+.gate-flock .flock { --dur: 9s; }
+/* Five stop-motion sheep hopping over the top half of a circle.
+ * Each sheep rides the upper 180 degrees from the left horizon to the right,
+ * then drops below the ground (hidden) and comes back up on the left, so the
+ * loop is a full 360 with only the top half visible. Poses follow the arc:
+ * take-off on the left, rising, top, falling, landing on the right.
+ * steps(1) makes every position snap: stop-motion, no tweening.
+ */
+.flock {
+  container-type: inline-size;   /* sizes below use cqw = 1% of the flock's width */
+  position: relative;
+  width: 100%;
+  aspect-ratio: 100 / 50;
+  overflow: hidden;              /* the bottom edge is the ground: sheep vanish below it */
+  --r: 38cqw;                    /* radius of the arc */
+  --dur: 8s;                 /* one sheep's trip over the arc (bigger = slower) */
+}
+.flock .sheep {
+  position: absolute;
+  left: 50%;
+  top: 100%;                     /* circle centre sits on the ground line */
+  width: 16cqw;
+  height: 10.9cqw;               /* keeps the 440:300 sprite shape */
+  margin: -5.45cqw 0 0 -8cqw;    /* centre the sheep on its point on the arc */
+  background: url("/sheep-sprite.webp") 0 0 / 500% 100% no-repeat;
+  animation: flock-hop var(--dur) steps(1, end) infinite,
+             flock-bounce 2.4s steps(1, end) infinite;   /* little random hops */
+}
+/* evenly spaced along the arc (first value), and each one bounces on its own
+   rhythm (second value) so the hops look random and never line up */
+.flock .sheep:nth-child(1) { animation-delay: calc(var(--dur) * 0), -0.4s; animation-duration: var(--dur), 2.1s; }
+.flock .sheep:nth-child(2) { animation-delay: calc(var(--dur) * -0.2), -1.1s; animation-duration: var(--dur), 2.7s; }
+.flock .sheep:nth-child(3) { animation-delay: calc(var(--dur) * -0.4), -0.2s; animation-duration: var(--dur), 1.8s; }
+.flock .sheep:nth-child(4) { animation-delay: calc(var(--dur) * -0.6), -0.9s; animation-duration: var(--dur), 3s; }
+.flock .sheep:nth-child(5) { animation-delay: calc(var(--dur) * -0.8), -0.6s; animation-duration: var(--dur), 2.3s; }
+
+@keyframes flock-hop {
+  0.00% { transform: rotate(-180.00deg) translateX(var(--r)) rotate(180.00deg); background-position: 0% 0; }
+  5.00% { transform: rotate(-170.53deg) translateX(var(--r)) rotate(170.53deg); background-position: 0% 0; }
+  10.00% { transform: rotate(-161.05deg) translateX(var(--r)) rotate(161.05deg); background-position: 0% 0; }
+  15.00% { transform: rotate(-151.58deg) translateX(var(--r)) rotate(151.58deg); background-position: 0% 0; }
+  20.00% { transform: rotate(-142.11deg) translateX(var(--r)) rotate(142.11deg); background-position: 25% 0; }
+  25.00% { transform: rotate(-132.63deg) translateX(var(--r)) rotate(132.63deg); background-position: 25% 0; }
+  30.00% { transform: rotate(-123.16deg) translateX(var(--r)) rotate(123.16deg); background-position: 25% 0; }
+  35.00% { transform: rotate(-113.68deg) translateX(var(--r)) rotate(113.68deg); background-position: 25% 0; }
+  40.00% { transform: rotate(-104.21deg) translateX(var(--r)) rotate(104.21deg); background-position: 50% 0; }
+  45.00% { transform: rotate(-94.74deg) translateX(var(--r)) rotate(94.74deg); background-position: 50% 0; }
+  50.00% { transform: rotate(-85.26deg) translateX(var(--r)) rotate(85.26deg); background-position: 50% 0; }
+  55.00% { transform: rotate(-75.79deg) translateX(var(--r)) rotate(75.79deg); background-position: 50% 0; }
+  60.00% { transform: rotate(-66.32deg) translateX(var(--r)) rotate(66.32deg); background-position: 75% 0; }
+  65.00% { transform: rotate(-56.84deg) translateX(var(--r)) rotate(56.84deg); background-position: 75% 0; }
+  70.00% { transform: rotate(-47.37deg) translateX(var(--r)) rotate(47.37deg); background-position: 75% 0; }
+  75.00% { transform: rotate(-37.89deg) translateX(var(--r)) rotate(37.89deg); background-position: 75% 0; }
+  80.00% { transform: rotate(-28.42deg) translateX(var(--r)) rotate(28.42deg); background-position: 100% 0; }
+  85.00% { transform: rotate(-18.95deg) translateX(var(--r)) rotate(18.95deg); background-position: 100% 0; }
+  90.00% { transform: rotate(-9.47deg) translateX(var(--r)) rotate(9.47deg); background-position: 100% 0; }
+  95.00% { transform: rotate(0.00deg) translateX(var(--r)) rotate(-0.00deg); background-position: 100% 0; }
+  100% { transform: rotate(-180deg) translateX(var(--r)) rotate(180deg); background-position: 0% 0; }
+}
+
+/* the random-looking hop: 'translate' stacks on top of the orbit transform,
+   so it always moves the sheep straight up on screen */
+@keyframes flock-bounce {
+  0% { translate: 0 0cqw; }
+  10% { translate: 0 -2.2cqw; }
+  20% { translate: 0 -0.6cqw; }
+  30% { translate: 0 0cqw; }
+  40% { translate: 0 -1.4cqw; }
+  50% { translate: 0 -2.8cqw; }
+  60% { translate: 0 -0.9cqw; }
+  70% { translate: 0 0cqw; }
+  80% { translate: 0 -1.8cqw; }
+  90% { translate: 0 -0.3cqw; }
+  100% { translate: 0 0; }
+}
+
+/* less motion requested: the flock stays still, spread over the arc */
+@media (prefers-reduced-motion: reduce) {
+  .flock .sheep { animation-play-state: paused, paused; }
+}
+.gate-inner { width: min(560px, 92vw); padding: 40px; text-align: left; }
 .gate-kicker { color: var(--muted); font-size: 20px; margin: 0 0 4px 2px; }
 .gate .wordmark { font-size: 56px; line-height: 1; }
 .gate-lede { color: var(--muted); font-size: 18px; margin: 18px 0 32px; max-width: 34ch; }
