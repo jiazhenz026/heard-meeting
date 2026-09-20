@@ -55,8 +55,12 @@ h2, h3, p { margin: 0; }
 /* gate */
 .gate { position: relative; height: 100%; display: grid; place-items: center; background: var(--paper); overflow: hidden; }
 /* the flock, centred over the wordmark; its bottom edge is the ground line */
-.gate-flock { width: 100%; margin: 0 0 10px; pointer-events: none; }
-.gate-flock .flock { --dur: 9s; }
+/* the arc spans the screen: its ground line sits under the tagline, so the
+   sheep leap over the whole wordmark block, not a strip above it. Width is
+   capped by the viewport height so the top of the arc never clips. */
+.gate-flock { position: absolute; left: 50%; bottom: calc(50% - 175px); width: min(1180px, 94vw, calc(100vh + 240px)); transform: translateX(-50%); pointer-events: none; z-index: 1; }
+.gate-flock .flock { --dur: 10s; --r: 40cqw; }
+.gate-inner { position: relative; z-index: 0; }
 /* Five stop-motion sheep hopping over the top half of a circle.
  * Each sheep rides the upper 180 degrees from the left horizon to the right,
  * then drops below the ground (hidden) and comes back up on the left, so the

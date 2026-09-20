@@ -231,8 +231,8 @@ export default function App() {
   if (!started) {
     return (
       <div className="gate">
+        <Flock />
         <div className="gate-inner">
-          <Flock />
           <p className="gate-kicker">Don't follow the</p>
           <div className="wordmark">Heard<span>!</span></div>
           <p className="gate-lede">A meeting board that joins the conversation and conducts research in real time.</p>
