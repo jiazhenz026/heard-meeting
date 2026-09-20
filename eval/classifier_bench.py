@@ -83,6 +83,7 @@ async def call(client: Any, model: str, thinking: bool, user: str, timeout: floa
             code = getattr(exc, "status_code", None)
             if attempt < 4 and (code in (429, 503) or isinstance(exc, asyncio.TimeoutError)):
                 # The provider's window, not the model: wait it out and re-time.
+                print(f"      retry {attempt + 1}: {type(exc).__name__} {code or ''}", flush=True)
                 await asyncio.sleep(4.0 * (attempt + 1))
                 started = time.perf_counter()
                 continue
@@ -238,7 +239,7 @@ async def main() -> int:
     ap.add_argument("--thinking", choices=["off", "on", "both"], default="both")
     ap.add_argument("--repeats", type=int, default=1)
     ap.add_argument("--concurrency", type=int, default=1)
-    ap.add_argument("--timeout", type=float, default=40.0)
+    ap.add_argument("--timeout", type=float, default=25.0)
     ap.add_argument("--out", default=str(Path(__file__).resolve().parent / "results"))
     args = ap.parse_args()
     if not CONFIG.has_nvidia:
