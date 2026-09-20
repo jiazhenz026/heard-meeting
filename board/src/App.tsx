@@ -1,7 +1,8 @@
 /**
- * The shell. Start gate, topbar, canvas of cards, task rail, transcript strip,
- * notes view, spoken banner, expanded card. Renders whatever arrives; the
- * state is REPLACED on every push, never merged.
+ * The shell. Start gate, top bar, canvas (cards / notes / transcript), the
+ * investigations rail, the strip of what it heard and did, the spoken banner,
+ * and a card's page opened in place. Renders whatever arrives; the state is
+ * REPLACED on every push, never merged.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -11,7 +12,7 @@ import { BoardSocket } from "./socket";
 import { elapsed, serverNow, stamp, useSecondTick } from "./clock";
 import { EMPTY_STATE, type Card, type LinkState, type Said, type StatePayload, type Task } from "./types";
 
-type View = "canvas" | "notes";
+type View = "canvas" | "notes" | "transcript";
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -47,7 +48,6 @@ export default function App() {
       onState: (next) => {
         setState(next);
         setPartial(next.partial || "");
-        // The newest said line rises as a banner for a while.
         const last = next.said[next.said.length - 1];
         if (last && last.id !== lastSaidId.current) {
           lastSaidId.current = last.id;
@@ -92,18 +92,22 @@ export default function App() {
   }, [typed, speaker]);
 
   const now = serverNow(offset);
-  const cards = useMemo(() => state.cards.filter((c) => !c.seeded).concat(state.cards.filter((c) => c.seeded)), [state.cards]);
+  const cards = useMemo(
+    () => state.cards.filter((c) => !c.seeded).concat(state.cards.filter((c) => c.seeded)),
+    [state.cards],
+  );
   const openCard = open ? state.cards.find((c) => c.id === open) ?? null : null;
   const minute = state.started_at ? elapsed(now - state.started_at) : "0:00";
+  const status = statusLine(link, state, micNote);
 
   if (!started) {
     return (
       <div className="gate">
-        <div className="gate-card">
-          <div className="brand">HEARD<b>!</b></div>
-          <p className="gate-tag">The meeting board that listens, goes and finds out, and speaks up.</p>
+        <div className="gate-inner">
+          <div className="wordmark">Heard<span>!</span></div>
+          <p className="gate-lede">The meeting board that listens, goes and finds out, and speaks up.</p>
           <button className="gate-btn" onClick={begin}>Start listening</button>
-          <p className="gate-note">Grants the microphone and unlocks audio. Link: {link}.</p>
+          <p className="gate-note">This turns the microphone on and lets the board play sound.</p>
         </div>
       </div>
     );
@@ -111,39 +115,37 @@ export default function App() {
 
   return (
     <div className={`shell ${banner && banner.reason === "finding" ? "dim" : ""}`}>
-      <header className="topbar">
-        <div className="brand">HEARD<b>!</b></div>
-        <span className="pill">{minute}</span>
-        <span className={`pill link-${link}`}>{link}</span>
-        <span className="pill level" title="mic level">
-          <i style={{ width: `${Math.round(micLevel * 100)}%` }} />
+      <header className="top">
+        <div className="wordmark">Heard<span>!</span></div>
+        <span className="clock">{minute}</span>
+        <nav className="views">
+          <button className={view === "canvas" ? "on" : ""} onClick={() => setView("canvas")}>Board</button>
+          <button className={view === "notes" ? "on" : ""} onClick={() => setView("notes")}>Notes</button>
+          <button className={view === "transcript" ? "on" : ""} onClick={() => setView("transcript")}>Transcript</button>
+        </nav>
+        <span className="grow" />
+        <label className="typein">
+          <select value={speaker} onChange={(e) => setSpeaker(e.target.value)} aria-label="speaker">
+            {["J", "S", "G", "Q"].map((s) => <option key={s}>{s}</option>)}
+          </select>
+          <input
+            placeholder="Type a line as if someone said it"
+            value={typed}
+            onChange={(e) => setTyped(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && inject()}
+          />
+        </label>
+        <span className={`status ${status.tone}`} title={state.health.frontdesk_error ?? ""}>
+          <i className="ear" style={{ opacity: 0.35 + micLevel * 0.65 }} />
+          {status.text}
         </span>
-        <span className="pill" title={state.health.frontdesk_error ?? ""}>
-          desk {state.health.frontdesk}{state.health.frontdesk_busy ? " · thinking" : ""}
-        </span>
-        <span className="pill">{state.health.research_running} researching</span>
-        {micNote && <span className="pill warn">{micNote}</span>}
-        <span className="spacer" />
-        <select className="pill" value={speaker} onChange={(e) => setSpeaker(e.target.value)}>
-          {["J", "S", "G", "Q"].map((s) => <option key={s}>{s}</option>)}
-        </select>
-        <input
-          className="inject"
-          placeholder="type a line as if spoken…"
-          value={typed}
-          onChange={(e) => setTyped(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && inject()}
-        />
-        <button className={`pill tab ${view === "canvas" ? "on" : ""}`} onClick={() => setView("canvas")}>Board</button>
-        <button className={`pill tab ${view === "notes" ? "on" : ""}`} onClick={() => setView("notes")}>Notes</button>
-        <a className="pill" href="/transcript.md" target="_blank" rel="noreferrer">transcript</a>
       </header>
 
       <main className="body">
         <section className="canvas">
           {view === "canvas" ? (
             cards.length === 0 ? (
-              <div className="empty">Listening. The first idea gets a card.</div>
+              <p className="empty">Listening. The first idea someone pitches gets a card here.</p>
             ) : (
               <div className="grid">
                 {cards.map((c) => (
@@ -151,13 +153,15 @@ export default function App() {
                 ))}
               </div>
             )
-          ) : (
+          ) : view === "notes" ? (
             <NotesView notes={state.notes} version={state.notes_version} />
+          ) : (
+            <TranscriptView state={state} partial={partial} />
           )}
         </section>
         <aside className="rail">
-          <div className="rail-h">Investigations</div>
-          {state.tasks.length === 0 && <div className="rail-empty">Nothing dispatched yet.</div>}
+          <h2>Investigations</h2>
+          {state.tasks.length === 0 && <p className="rail-empty">Nothing sent out yet.</p>}
           {state.tasks.map((t) => <TaskView key={t.id} task={t} card={state.cards.find((c) => c.id === t.card_id)} now={now} />)}
         </aside>
       </main>
@@ -167,34 +171,36 @@ export default function App() {
       </footer>
 
       {banner && (
-        <div className={`banner ${banner.reason} ${banner.delivered ? "" : "dropped"}`}>
-          <div className="banner-h">
-            <span className="badge">{banner.reason}</span>
-            <span className="badge dim">{banner.delivered ? (speaking ? "speaking" : "said") : "no gap · sent to card"}</span>
-            <button className="x" onClick={() => setBanner(null)}>×</button>
+        <div className={`banner ${banner.reason} ${banner.delivered ? "" : "dropped"}`} role="status">
+          <div className="banner-top">
+            <span className="banner-kind">{bannerKind(banner, speaking)}</span>
+            <button className="close" onClick={() => setBanner(null)} aria-label="dismiss">×</button>
           </div>
-          <div className="banner-line">{banner.text}</div>
+          <p className="banner-text">{banner.text}</p>
           {banner.evidence.length > 0 && (
-            <div className="chips">{banner.evidence.map((u) => <a key={u} href={u} target="_blank" rel="noreferrer" className="chip">{host(u)}</a>)}</div>
+            <div className="sources">
+              {banner.evidence.map((u) => <a key={u} href={u} target="_blank" rel="noreferrer">{host(u)}</a>)}
+            </div>
           )}
         </div>
       )}
 
       {openCard && (
-        <div className="modal" onClick={() => { setOpen(null); fetch("/expand/none", { method: "POST" }).catch(() => {}); }}>
-          <div className="modal-body" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-h">
-              <span className="modal-title">{openCard.title}</span>
-              <span className={`status ${openCard.status}`}>{openCard.status}</span>
-              <span className="spacer" />
-              <button className="x" onClick={() => setOpen(null)}>×</button>
+        <div className="sheet" onClick={() => { setOpen(null); fetch("/expand/none", { method: "POST" }).catch(() => {}); }}>
+          <div className="sheet-body" onClick={(e) => e.stopPropagation()}>
+            <div className="sheet-top">
+              <span className="sheet-title">{openCard.title}</span>
+              <span className="sheet-meta">{cardState(openCard)}</span>
+              <span className="grow" />
+              <button className="close" onClick={() => setOpen(null)} aria-label="close">×</button>
             </div>
             {openCard.page ? (
               <iframe title={openCard.title} src={`/cards/${openCard.id}`} sandbox="allow-same-origin allow-popups" />
             ) : (
-              <div className="modal-empty">
+              <div className="sheet-empty">
                 <p>{openCard.one_liner || "Named, not yet understood."}</p>
-                {openCard.notes.map((n, i) => <p key={i}>· {n}</p>)}
+                {openCard.notes.map((n, i) => <p key={i}>{n}</p>)}
+                <p className="muted">The page appears when the investigation comes back.</p>
               </div>
             )}
           </div>
@@ -205,27 +211,18 @@ export default function App() {
 }
 
 function CardView({ card, tasks, now, onOpen }: { card: Card; tasks: Task[]; now: number; onOpen: () => void }) {
-  const running = tasks.filter((t) => t.status === "RUNNING");
+  const running = tasks.some((t) => t.status === "RUNNING");
   const age = now - card.created_at;
+  const tagline = card.seeded ? card.one_liner : shorten(card.summary) || card.one_liner || "";
   return (
-    <article className={`card ${card.status} ${card.seeded ? "seeded" : ""} ${card.highlight ? "hl" : ""} ${age < 1.2 ? "landed" : ""}`} onClick={onOpen}>
-      <div className="card-h">
-        <span className="card-title">{card.title}</span>
-        {card.named_by === "heard" && <span className="tag">named by Heard</span>}
-        <span className={`status ${card.status}`}>{card.status === "PLACEHOLDER" ? "named" : card.status.toLowerCase()}</span>
-      </div>
-      {card.one_liner && <div className="card-sub">{card.one_liner}</div>}
-      {card.status === "PLACEHOLDER" && !card.summary && <div className="card-ghost">named, not yet understood</div>}
-      {card.summary && <div className="card-body">{card.summary}</div>}
-      {card.notes.length > 0 && !card.seeded && (
-        <ul className="card-notes">{card.notes.slice(-3).map((n, i) => <li key={i}>{n}</li>)}</ul>
-      )}
-      {card.highlight && <div className="card-hl">{card.highlight}</div>}
-      <div className="card-f">
-        {running.map((t) => <span key={t.id} className="mini run">● {t.status_line} · {elapsed(now - t.started_at)}</span>)}
-        {tasks.filter((t) => t.status === "DONE").length > 0 && <span className="mini">{tasks.filter((t) => t.status === "DONE").length} finding{tasks.filter((t) => t.status === "DONE").length > 1 ? "s" : ""}</span>}
-        {card.page && <span className="mini link">open page →</span>}
-      </div>
+    <article
+      className={`card ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${age < 1.2 ? "landed" : ""}`}
+      onClick={onOpen}
+      title={card.named_by === "heard" ? "Heard named this one" : undefined}
+    >
+      <h3>{card.title}</h3>
+      {tagline ? <p>{tagline}</p> : <p className="ghost">Named, not yet understood.</p>}
+      {running && <span className="working" aria-label="investigating" />}
     </article>
   );
 }
@@ -233,19 +230,13 @@ function CardView({ card, tasks, now, onOpen }: { card: Card; tasks: Task[]; now
 function TaskView({ task, card, now }: { task: Task; card: Card | undefined; now: number }) {
   const secs = (task.finished_at ?? now) - task.started_at;
   return (
-    <div className={`task ${task.status}`}>
-      <div className="task-h">
+    <div className={`task ${task.status.toLowerCase()}`}>
+      <div className="task-top">
         <span className="task-card">{card?.title ?? task.card_id}</span>
-        {task.unprompted && <span className="tag">unprompted</span>}
-        <span className={`num task-t ${task.status === "RUNNING" ? "run" : ""}`}>{elapsed(secs)}</span>
+        <span className="task-time">{elapsed(secs)}</span>
       </div>
-      <div className="task-brief">{task.brief}</div>
-      <div className="task-s">
-        {task.status === "RUNNING" && <i className="dot" />}
-        {task.status === "RUNNING" ? task.status_line : task.status === "DONE" ? task.summary : "failed"}
-      </div>
-      {task.status === "RUNNING" && <div className="track"><i /></div>}
-      {task.sources.length > 0 && <div className="chips">{task.sources.slice(0, 4).map((u) => <a key={u} href={u} target="_blank" rel="noreferrer" className="chip">{host(u)}</a>)}</div>}
+      <p className="task-brief">{task.brief}</p>
+      {task.status === "RUNNING" && <div className="bar"><i /></div>}
     </div>
   );
 }
@@ -254,9 +245,9 @@ function Strip({ state, partial }: { state: StatePayload; partial: string }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const lines = useMemo(() => {
     const out: { key: string; at: number; kind: string; who: string; text: string }[] = [];
-    for (const u of state.transcript) out.push({ key: u.id, at: u.at, kind: "heard", who: u.speaker, text: u.text });
+    for (const u of state.transcript) out.push({ key: u.id, at: u.at, kind: "heard", who: who(u.speaker), text: u.text });
     for (const e of state.log) {
-      if (e.kind === "card" || e.kind === "task" || e.kind === "said" || e.kind === "dropped" || e.kind === "rejected" || e.kind === "wake" || e.kind === "desk")
+      if (["card", "task", "said", "dropped", "rejected", "wake", "desk"].includes(e.kind))
         out.push({ key: `${e.kind}-${e.at}`, at: e.at, kind: e.kind, who: "", text: e.text });
     }
     out.sort((a, b) => a.at - b.at);
@@ -268,17 +259,45 @@ function Strip({ state, partial }: { state: StatePayload; partial: string }) {
   return (
     <div className="feed" ref={ref}>
       {lines.map((l) => (
-        <div key={l.key} className={`line ${l.kind}`}>
-          <span className="num t">{stamp(l.at)}</span>
+        <div key={l.key} className={`line k-${l.kind}`}>
+          <span className="t">{stamp(l.at)}</span>
           <span className="k">{label(l.kind)}</span>
           <span className="who">{l.who}</span>
           <span className="txt">{l.text}</span>
         </div>
       ))}
       {partial && (
-        <div className="line heard interim">
-          <span className="num t">--:--:--</span>
-          <span className="k">heard</span>
+        <div className="line k-heard interim">
+          <span className="t" />
+          <span className="k">hearing</span>
+          <span className="who" />
+          <span className="txt">{partial}…</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function TranscriptView({ state, partial }: { state: StatePayload; partial: string }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    ref.current?.scrollTo({ top: ref.current.scrollHeight });
+  }, [state.transcript.length, partial]);
+  return (
+    <div className="doc transcript" ref={ref}>
+      <h2>Transcript</h2>
+      <p className="doc-lede">Every line as it was said, written down by the scribe. {state.transcript.length} lines so far.</p>
+      {state.transcript.length === 0 && <p className="empty">Nothing heard yet.</p>}
+      {state.transcript.map((u) => (
+        <div key={u.id} className="tline">
+          <span className="t">{stamp(u.at)}</span>
+          <span className="who">{who(u.speaker)}</span>
+          <span className="txt">{u.text}</span>
+        </div>
+      ))}
+      {partial && (
+        <div className="tline interim">
+          <span className="t" />
           <span className="who" />
           <span className="txt">{partial}…</span>
         </div>
@@ -289,22 +308,61 @@ function Strip({ state, partial }: { state: StatePayload; partial: string }) {
 
 function NotesView({ notes, version }: { notes: string; version: number }) {
   return (
-    <div className="notes">
-      <div className="notes-h">Live meeting notes · v{version} · written by the notes agent every ~20 s</div>
-      {notes ? <pre className="notes-md">{notes}</pre> : <div className="empty">No notes yet. They arrive after the first stretch of talk.</div>}
+    <div className="doc">
+      <h2>Notes</h2>
+      <p className="doc-lede">Live meeting notes, rewritten by the notes agent every twenty seconds or so. Version {version}.</p>
+      {notes ? <pre className="notes-md">{notes}</pre> : <p className="empty">No notes yet. They arrive after the first stretch of talk.</p>}
     </div>
   );
+}
+
+function statusLine(link: LinkState, state: StatePayload, micNote: string | null): { text: string; tone: string } {
+  if (link !== "open") return { text: "Reconnecting", tone: "warn" };
+  if (micNote && micNote.includes("denied")) return { text: "Microphone off, typing only", tone: "warn" };
+  const h = state.health;
+  if (h.frontdesk !== "up") return { text: `Front desk ${h.frontdesk}`, tone: "warn" };
+  const parts = ["Listening"];
+  if (h.frontdesk_busy) parts.push("thinking");
+  if (h.research_running > 0) parts.push(`${h.research_running} out looking`);
+  return { text: parts.join(", "), tone: "" };
+}
+
+function bannerKind(b: Said, speaking: boolean): string {
+  if (!b.delivered) return "No gap to speak, so it went on the card";
+  if (b.reason === "asked") return speaking ? "Answering" : "Answered";
+  return speaking ? "Speaking up" : "Spoke up";
+}
+
+function cardState(c: Card): string {
+  if (c.seeded) return "How it is built";
+  if (c.status === "PLACEHOLDER") return "Named, not yet understood";
+  if (c.status === "INVESTIGATING") return "Being looked into";
+  return "Looked into";
+}
+
+/** Unknown speakers show as nothing, never as a question mark. */
+function who(speaker: string): string {
+  return speaker && speaker !== "?" ? speaker : "";
+}
+
+/** First sentence or two, capped so it fits three lines on a card. */
+function shorten(text: string): string {
+  const t = (text || "").trim();
+  if (!t) return "";
+  const m = t.match(/^(.{20,190}?[.!?])(\s|$)/);
+  const s = m ? m[1] : t;
+  return s.length > 190 ? s.slice(0, 187).replace(/\s+\S*$/, "") + "…" : s;
 }
 
 function label(kind: string): string {
   switch (kind) {
     case "heard": return "heard";
     case "card": return "card";
-    case "task": return "research";
+    case "task": return "sent out";
     case "said": return "said";
-    case "dropped": return "dropped";
-    case "rejected": return "refused";
-    case "wake": return "wake";
+    case "dropped": return "kept";
+    case "rejected": return "held";
+    case "wake": return "woke";
     case "desk": return "desk";
     default: return kind;
   }

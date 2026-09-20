@@ -303,12 +303,12 @@ def _heard_page() -> str:
     items = "".join(f"<li>{n}</li>" for n in HEARD_CARD_NOTES)
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Heard! — how it is built</title>
 <style>
-  :root {{ color-scheme: dark; }}
-  body {{ margin:0; background:#0b1016; color:#e8eef5; font:15px/1.55 Inter, ui-sans-serif, system-ui, sans-serif; }}
+  :root {{ color-scheme: light; }}
+  body {{ margin:0; background:#ffffff; color:#1b1f24; font:16px/1.55 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; }}
   main {{ max-width: 900px; margin: 0 auto; padding: 28px 32px 60px; }}
-  .kicker {{ color:#8fa2b5; font-size:12px; letter-spacing:.12em; text-transform:uppercase; }}
-  h1 {{ font-size:28px; margin:6px 0 10px; }} h2 {{ color:#ffc14d; font-size:14px; letter-spacing:.08em; text-transform:uppercase; margin:26px 0 8px; }}
-  li {{ margin:6px 0; }} pre {{ background:#131a22; padding:14px; border-radius:6px; overflow:auto; font-size:13px; }}
+  .kicker {{ color:#5b6b7c; font-size:14px; }}
+  h1 {{ font-size:28px; margin:6px 0 10px; }} h2 {{ color:#1b1f24; font-size:17px; margin:26px 0 8px; }}
+  li {{ margin:6px 0; }} pre {{ background:#eef1f4; padding:14px; border-radius:6px; overflow:auto; font-size:13px; }}
 </style></head><body><main>
 <div class="kicker">Heard! · how it is built</div>
 <h1>Five parts, two with no model in them</h1>

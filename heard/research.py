@@ -181,16 +181,16 @@ def _render_page(title: str, brief: str, body_md: str, sources: list[str], secs:
 <html lang="en"><head><meta charset="utf-8"><title>{html.escape(title)} — Heard!</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  :root {{ color-scheme: dark; }}
-  body {{ margin: 0; background: #0b1016; color: #e8eef5; font: 15px/1.55 Inter, ui-sans-serif, system-ui, sans-serif; }}
+  :root {{ color-scheme: light; }}
+  body {{ margin: 0; background: #ffffff; color: #1b1f24; font: 16px/1.55 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; }}
   main {{ max-width: 860px; margin: 0 auto; padding: 28px 32px 60px; }}
-  .kicker {{ color: #8fa2b5; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }}
+  .kicker {{ color: #5b6b7c; font-size: 14px; }}
   h1 {{ font-size: 26px; margin: 6px 0 4px; }}
-  h2 {{ font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: #ffc14d; margin: 26px 0 8px; border-bottom: 1px solid #1e2732; padding-bottom: 6px; }}
-  a {{ color: #22d3ee; text-decoration: none; }} a:hover {{ text-decoration: underline; }}
-  li {{ margin: 4px 0; }} code {{ background: #131a22; padding: 1px 5px; border-radius: 3px; }}
-  .brief {{ color: #8fa2b5; font-style: italic; margin: 0 0 10px; }}
-  .meta {{ color: #5b6c7e; font-size: 12px; margin-top: 30px; }}
+  h2 {{ font-size: 17px; color: #1b1f24; margin: 26px 0 8px; border-bottom: 1px solid #e2e7ec; padding-bottom: 6px; }}
+  a {{ color: #2f5fb3; text-decoration: none; }} a:hover {{ text-decoration: underline; }}
+  li {{ margin: 4px 0; }} code {{ background: #eef1f4; padding: 1px 5px; border-radius: 3px; }}
+  .brief {{ color: #5b6b7c; font-style: italic; margin: 0 0 10px; }}
+  .meta {{ color: #93a1af; font-size: 12px; margin-top: 30px; }}
 </style></head><body><main>
 <div class="kicker">Heard! · investigation</div>
 <h1>{html.escape(title)}</h1>
