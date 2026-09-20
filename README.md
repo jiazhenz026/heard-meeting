@@ -4,7 +4,7 @@
 
 # Heard!
 
-**A meeting dashboard that joins the conversation.**
+**A meeting board that joins the conversation.**
 
 </div>
 
@@ -60,11 +60,14 @@ Speech in, five components, speech out. The Scribe and the harness are plain cod
 |---|---|---|---|
 | **STT** | ElevenLabs Scribe v2, realtime | on the room microphone, continuously | committed lines of speech |
 | **Scribe** | none | every STT commit | `data/transcript.md` — verbatim, anchored, append-only |
-| **Classifier** | Nemotron via NVIDIA NIM | every 2–5 s of new speech | placeholder cards (< 5 s) + a signal |
-| **Notes agent** | Nemotron via NVIDIA NIM | every ~20 s | `data/notes.md` — the shared context window |
+| **Classifier** | Nemotron 3 Super 120B (A12B) via NVIDIA NIM, reasoning off | every 2–5 s of new speech | placeholder cards (< 5 s) + a signal |
+| **Notes agent** | same, reasoning off | every ~20 s | `data/notes.md` — the shared context window |
 | **Front desk** | Claude Agent SDK, one resident session | woken by a signal or a returning sub-agent | tool calls only: `recall · investigate · say · note` |
 | **Sub-agents** | Claude Agent SDK + WebSearch | on `investigate`, max 3 | an HTML page per card + a summary |
 | **TTS** | ElevenLabs, streamed | on every `say` the harness lets through | audio to the board, with an echo guard |
+
+The two Nemotron components are on the 5-second clock, so they run Super
+with reasoning off: a one-second JSON answer matters more than deep thinking.
 
 Between `say` and the speakers sits the **harness**, plain code: `say` must
 carry a reason the runtime can check (`asked` — someone addressed Heard in the
@@ -127,7 +130,7 @@ There is also a type-a-line box in the board's top bar.
 
 Everything is in `.env.example`. The ones that matter on stage:
 
-- `NEMOTRON_MODEL_ID` — the classifier is on the 5-second path; use a small one (`nvidia/nemotron-3-super-120b-a12b`).
+- `NEMOTRON_MODEL_ID` — defaults to `nvidia/nemotron-3-super-120b-a12b` with reasoning off (`HEARD_DISABLE_THINKING=true`); the classifier is on the 5-second path.
 - `HEARD_STT_KEYTERMS` — names Scribe is biased towards (`Heard`, the product names). Add the ideas you plan to pitch.
 - `HEARD_UNSOLICITED_GAP_S` — how often it may speak without being asked.
 - `HEARD_RESEARCH_EFFORT` / `HEARD_RESEARCH_MODEL` — research speed vs depth.
