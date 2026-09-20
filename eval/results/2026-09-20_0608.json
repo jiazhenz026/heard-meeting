@@ -1,0 +1,5681 @@
+{
+ "stamp": "2026-09-20_0608",
+ "repeats": 1,
+ "cases": 26,
+ "results": [
+  {
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "thinking": false,
+   "rows": [
+    {
+     "case": "about-heard",
+     "rep": 0,
+     "latency": 0.8446283340454102,
+     "error": null,
+     "signal": {
+      "at": 1789894101.3002062,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard is listening right now, so it should pick this up.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "other",
+      "request": "Heard is listening right now, so it should pick this up.",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": false,
+      "addressed_pred": true,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "about-the-meeting",
+     "rep": 0,
+     "latency": 4.120368167001288,
+     "error": null,
+     "signal": {
+      "at": 1789894105.822124,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Can you make the sticky notes a bit smaller? They look too big on the projector.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "other",
+      "request": "Can you make the sticky notes a bit smaller? They look too big on the projector.",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": false,
+      "addressed_pred": true,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-hey-heard",
+     "rep": 0,
+     "latency": 0.9889930000063032,
+     "error": null,
+     "signal": {
+      "at": 1789894088.209356,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey Heard, has anyone built this before?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "has anyone built this before?",
+        "subject": null,
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "has anyone built this before?",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-how-built",
+     "rep": 0,
+     "latency": 0.9647024169680662,
+     "error": null,
+     "signal": {
+      "at": 1789894089.575477,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "So how did you build Heard? Heard, how were you built?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "how_built",
+      "request": "Heard, how were you built?",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-lookup",
+     "rep": 0,
+     "latency": 2.1509565000305884,
+     "error": null,
+     "signal": {
+      "at": 1789894092.127171,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard, look up whether Chrome already groups tabs on its own.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "whether Chrome already groups tabs on its own",
+        "subject": null,
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "look up whether Chrome already groups tabs on its own",
+      "discussing": null,
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-misheard-herd",
+     "rep": 0,
+     "latency": 1.4784070840105414,
+     "error": null,
+     "signal": {
+      "at": 1789894094.007215,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey herd, what do you think about the kitchen one?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "opinion",
+      "request": "Hey herd, what do you think about the kitchen one?",
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-opinion",
+     "rep": 0,
+     "latency": 1.6346851660055108,
+     "error": null,
+     "signal": {
+      "at": 1789894086.819124,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Let's see what Heard thinks.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "opinion",
+      "request": "Let's see what Heard thinks.",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "claim-nobody-does-this",
+     "rep": 0,
+     "latency": 3.7230940830195323,
+     "error": null,
+     "signal": {
+      "at": 1789894084.7827158,
+      "utterances": [
+       "u0002",
+       "u0003"
+      ],
+      "text": "That's the better one. Nobody is doing that. Right, we'd be first.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Aye-Eye",
+      "salience": 2
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": false,
+      "investigate_pred": false,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-charger",
+     "rep": 0,
+     "latency": 1.171042290981859,
+     "error": null,
+     "signal": {
+      "at": 1789894107.394075,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Did anyone bring a charger? Mine's in the bag.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-food",
+     "rep": 0,
+     "latency": 1.0835436250199564,
+     "error": null,
+     "signal": {
+      "at": 1789894110.017097,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Pizza's here. Ten minutes?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-where-were-we",
+     "rep": 0,
+     "latency": 0.736889332998544,
+     "error": null,
+     "signal": {
+      "at": 1789894108.53248,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "...so anyway, where were we. The vision one.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-lab",
+     "rep": 0,
+     "latency": 4.05324279202614,
+     "error": null,
+     "signal": {
+      "at": 1789894016.649354,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I want to try experiment three again, the one where we swap the encoder for the contrastive one and measure the transfer on the held-out set.",
+      "new_subject": {
+       "title": "contrastive encoder experiment",
+       "named_by": "heard",
+       "one_liner": "Swap the encoder for a contrastive version and measure transfer on a held-out set.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "contrastive encoder experiment",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "contrastive encoder experiment",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "contrastive encoder experiment",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named",
+     "rep": 0,
+     "latency": 3.1795238750055432,
+     "error": null,
+     "signal": {
+      "at": 1789894007.978919,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've been working on the architecture for a product called YesChef. It listens to a restaurant kitchen during service, turns what cooks call out into a live board, and speaks up before anyone has to ask.",
+      "new_subject": {
+       "title": "YesChef",
+       "named_by": "speaker",
+       "one_liner": "A system that listens to restaurant kitchen chatter during service, displays it on a live board, and proactively speaks up before anyone has to ask.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named-2",
+     "rep": 0,
+     "latency": 1.964643542014528,
+     "error": null,
+     "signal": {
+      "at": 1789894012.1940448,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "One more pitch: a browser extension called TabTamer that groups your open tabs by task and closes the stale ones automatically.",
+      "new_subject": {
+       "title": "TabTamer",
+       "named_by": "speaker",
+       "one_liner": "A browser extension that groups open tabs by task and closes stale ones automatically.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "TabTamer",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-then-react",
+     "rep": 0,
+     "latency": 6.440721666964237,
+     "error": null,
+     "signal": {
+      "at": 1789894120.528369,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Different idea: a Slack bot called Quietude that mutes channels for you when you're heads-down. Oh, that's neat.",
+      "new_subject": {
+       "title": "Quietude",
+       "named_by": "speaker",
+       "one_liner": "A Slack bot that mutes channels for you when you're heads-down.",
+       "anchor": "u0001"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Quietude",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-two-sentences",
+     "rep": 0,
+     "latency": 2.1226566249970347,
+     "error": null,
+     "signal": {
+      "at": 1789894019.173097,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Here's mine. It's called PlantPulse. A pocket-sized soil sensor for houseplants that texts you when to water.",
+      "new_subject": {
+       "title": "PlantPulse",
+       "named_by": "speaker",
+       "one_liner": "A pocket-sized soil sensor for houseplants that texts you when to water.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "PlantPulse",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-unnamed",
+     "rep": 0,
+     "latency": 1.4254445420228876,
+     "error": null,
+     "signal": {
+      "at": 1789894009.8270469,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Okay, different idea. I've been thinking about an on-demand vision assistant for the visually impaired. It activates your personal AI eye right when you need help, replacing slow static photos with immediate live help.",
+      "new_subject": {
+       "title": "on-demand vision assistant",
+       "named_by": "speaker",
+       "one_liner": "An on-demand vision assistant for the visually impaired that activates a personal AI eye for immediate live help instead of relying on slow static photos.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "on-demand vision assistant",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "on-demand vision assistant",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "on-demand vision assistant",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-price",
+     "rep": 0,
+     "latency": 1.6976243329700083,
+     "error": null,
+     "signal": {
+      "at": 1789894112.116114,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "What does a kitchen display system actually cost a restaurant per month?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "What does a kitchen display system actually cost a restaurant per month?",
+        "subject": null,
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "lookup",
+      "request": "What does a kitchen display system actually cost a restaurant per month?",
+      "discussing": null,
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-rhetorical",
+     "rep": 0,
+     "latency": 1.1695189580204897,
+     "error": null,
+     "signal": {
+      "at": 1789894113.686362,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Why would anyone not want this, honestly?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-agree",
+     "rep": 0,
+     "latency": 1.134342416014988,
+     "error": null,
+     "signal": {
+      "at": 1789894076.060947,
+      "utterances": [
+       "u0003"
+      ],
+      "text": "Okay, agreed. Let's go with the vision assistant then.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 2
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-like",
+     "rep": 0,
+     "latency": 2.038580542022828,
+     "error": null,
+     "signal": {
+      "at": 1789894021.613457,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Wow, I really like that idea. It bridges a gap I've never thought about before. Maybe for good reason, because it might be too niche.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-respelt",
+     "rep": 0,
+     "latency": 0.5916204169625416,
+     "error": null,
+     "signal": {
+      "at": 1789894080.658109,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Going back to Yes Chef, I think the kitchen board is the one the judges will get.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-restate-existing",
+     "rep": 0,
+     "latency": 3.202267332992051,
+     "error": null,
+     "signal": {
+      "at": 1789894079.6648068,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Right, YesChef, the kitchen board that listens to cooks calling out orders during service.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-sunk-cost",
+     "rep": 0,
+     "latency": 1.0933106250013225,
+     "error": null,
+     "signal": {
+      "at": 1789894025.098919,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've put a lot of thought into this project and I feel like pivoting now would be sunk cost.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-who-for",
+     "rep": 0,
+     "latency": 1.5885419590049423,
+     "error": null,
+     "signal": {
+      "at": 1789894023.6041431,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I don't know, I'm not really understanding who it would be useful for.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": false,
+      "investigate_pred": false,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "verb-heard",
+     "rep": 0,
+     "latency": 1.4281393749988638,
+     "error": null,
+     "signal": {
+      "at": 1789894100.053774,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "I heard that from the judges yesterday, they want a live demo.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    }
+   ],
+   "summary": {
+    "calls": 26,
+    "errors": 0,
+    "valid_rate": 1.0,
+    "latency_p50": 1.4784070840105414,
+    "latency_p95": 4.120368167001288,
+    "latency_mean": 2.001057269273308,
+    "under_budget": 0.9615384615384616,
+    "subject_acc": 1.0,
+    "spurious_card_rate": 0.0,
+    "missed_card_rate": 0.0,
+    "verbatim_name_rate": 1.0,
+    "named_by_heard_rate": 0.5,
+    "addressed_precision": 0.7142857142857143,
+    "addressed_recall": 1.0,
+    "investigate_acc": 0.9230769230769231,
+    "salience_exact": 0.8461538461538461,
+    "salience_within1": 1.0
+   }
+  },
+  {
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "thinking": true,
+   "rows": [
+    {
+     "case": "about-heard",
+     "rep": 0,
+     "latency": 4.703093082993291,
+     "error": null,
+     "signal": {
+      "at": 1789894352.7570271,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard is listening right now, so it should pick this up.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "about-the-meeting",
+     "rep": 0,
+     "latency": 12.145370459009428,
+     "error": null,
+     "signal": {
+      "at": 1789894365.303693,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Can you make the sticky notes a bit smaller? They look too big on the projector.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": "Can you make the sticky notes a bit smaller?",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-hey-heard",
+     "rep": 0,
+     "latency": 10.877891041978728,
+     "error": null,
+     "signal": {
+      "at": 1789894307.318759,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey Heard, has anyone built this before?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "has anyone built this before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "has anyone built this before?",
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-how-built",
+     "rep": 0,
+     "latency": 7.643968750024214,
+     "error": null,
+     "signal": {
+      "at": 1789894315.3638668,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "So how did you build Heard? Heard, how were you built?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "how_built",
+      "request": "Heard, how were you built?",
+      "discussing": null,
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-lookup",
+     "rep": 0,
+     "latency": 7.6039089590194635,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-misheard-herd",
+     "rep": 0,
+     "latency": 14.335536541999318,
+     "error": null,
+     "signal": {
+      "at": 1789894342.321205,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey herd, what do you think about the kitchen one?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "opinion",
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": false,
+      "addressed_pred": false,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-opinion",
+     "rep": 0,
+     "latency": 10.46706399996765,
+     "error": null,
+     "signal": {
+      "at": 1789894283.592267,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Let's see what Heard thinks.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "opinion",
+      "request": "Let's see what Heard thinks.",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "claim-nobody-does-this",
+     "rep": 0,
+     "latency": 10.545883084007073,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-charger",
+     "rep": 0,
+     "latency": 1.3072839589440264,
+     "error": null,
+     "signal": {
+      "at": 1789894367.0119512,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Did anyone bring a charger? Mine's in the bag.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-food",
+     "rep": 0,
+     "latency": 2.5216047919820994,
+     "error": null,
+     "signal": {
+      "at": 1789894379.434648,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Pizza's here. Ten minutes?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-where-were-we",
+     "rep": 0,
+     "latency": 4.868115958000999,
+     "error": null,
+     "signal": {
+      "at": 1789894376.509724,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "...so anyway, where were we. The vision one.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-lab",
+     "rep": 0,
+     "latency": 8.65211729198927,
+     "error": null,
+     "signal": {
+      "at": 1789894169.921352,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I want to try experiment three again, the one where we swap the encoder for the contrastive one and measure the transfer on the held-out set.",
+      "new_subject": {
+       "title": "experiment three",
+       "named_by": "speaker",
+       "one_liner": "Swap encoder for contrastive version and measure transfer on held-out set.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "experiment three",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "experiment three",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "experiment three",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named",
+     "rep": 0,
+     "latency": 12.721570499998052,
+     "error": null,
+     "signal": {
+      "at": 1789894133.654159,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've been working on the architecture for a product called YesChef. It listens to a restaurant kitchen during service, turns what cooks call out into a live board, and speaks up before anyone has to ask.",
+      "new_subject": {
+       "title": "YesChef",
+       "named_by": "speaker",
+       "one_liner": "A product that listens to a restaurant kitchen during service, turns cooks' calls into a live board, and speaks up before anyone has to ask.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named-2",
+     "rep": 0,
+     "latency": 8.675698333012406,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-then-react",
+     "rep": 0,
+     "latency": 6.061098792008124,
+     "error": null,
+     "signal": {
+      "at": 1789894407.89007,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Different idea: a Slack bot called Quietude that mutes channels for you when you're heads-down. Oh, that's neat.",
+      "new_subject": {
+       "title": "Quietude",
+       "named_by": "speaker",
+       "one_liner": "A Slack bot that mutes channels for you when you're heads-down.",
+       "anchor": "u0001"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Quietude",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-two-sentences",
+     "rep": 0,
+     "latency": 17.62776208302239,
+     "error": null,
+     "signal": {
+      "at": 1789894187.950335,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Here's mine. It's called PlantPulse. A pocket-sized soil sensor for houseplants that texts you when to water.",
+      "new_subject": {
+       "title": "PlantPulse",
+       "named_by": "speaker",
+       "one_liner": "A pocket-sized soil sensor for houseplants that texts you when to water.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "PlantPulse",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-unnamed",
+     "rep": 0,
+     "latency": 17.735671625006944,
+     "error": null,
+     "signal": {
+      "at": 1789894151.791531,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Okay, different idea. I've been thinking about an on-demand vision assistant for the visually impaired. It activates your personal AI eye right when you need help, replacing slow static photos with immediate live help.",
+      "new_subject": {
+       "title": "Vision Aid",
+       "named_by": "heard",
+       "one_liner": "On-demand vision assistant that provides live AI help for visually impaired users.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "Vision Aid",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "Vision Aid",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Vision Aid",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-price",
+     "rep": 0,
+     "latency": 5.820051458955277,
+     "error": null,
+     "signal": {
+      "at": 1789894389.886165,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "What does a kitchen display system actually cost a restaurant per month?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "What does a kitchen display system actually cost a restaurant per month?",
+        "subject": null,
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "lookup",
+      "request": null,
+      "discussing": null,
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-rhetorical",
+     "rep": 0,
+     "latency": 11.139359666965902,
+     "error": null,
+     "signal": {
+      "at": 1789894401.427108,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Why would anyone not want this, honestly?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "Why would anyone not want this, honestly?",
+        "subject": "YesChef",
+        "worth_investigating": false
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-agree",
+     "rep": 0,
+     "latency": 11.616840999980923,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-like",
+     "rep": 0,
+     "latency": 9.122157333011273,
+     "error": null,
+     "signal": {
+      "at": 1789894197.4745831,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Wow, I really like that idea. It bridges a gap I've never thought about before. Maybe for good reason, because it might be too niche.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-respelt",
+     "rep": 0,
+     "latency": 18.080676667043008,
+     "error": null,
+     "signal": {
+      "at": 1789894261.775847,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Going back to Yes Chef, I think the kitchen board is the one the judges will get.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-restate-existing",
+     "rep": 0,
+     "latency": 5.216901500010863,
+     "error": null,
+     "signal": {
+      "at": 1789894243.294144,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Right, YesChef, the kitchen board that listens to cooks calling out orders during service.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-sunk-cost",
+     "rep": 0,
+     "latency": 7.522668124991469,
+     "error": null,
+     "signal": {
+      "at": 1789894221.376221,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've put a lot of thought into this project and I feel like pivoting now would be sunk cost.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-who-for",
+     "rep": 0,
+     "latency": 15.573996166000143,
+     "error": null,
+     "signal": {
+      "at": 1789894213.451981,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I don't know, I'm not really understanding who it would be useful for.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "I don't know, I'm not really understanding who it would be useful for.",
+        "subject": "YesChef",
+        "worth_investigating": false
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": false,
+      "investigate_pred": false,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "verb-heard",
+     "rep": 0,
+     "latency": 4.929615625005681,
+     "error": null,
+     "signal": {
+      "at": 1789894347.652447,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "I heard that from the judges yesterday, they want a live demo.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    }
+   ],
+   "summary": {
+    "calls": 26,
+    "errors": 4,
+    "valid_rate": 0.8461538461538461,
+    "latency_p50": 8.65211729198927,
+    "latency_p95": 17.735671625006944,
+    "latency_mean": 9.503344337223098,
+    "under_budget": 0.22727272727272727,
+    "subject_acc": 1.0,
+    "spurious_card_rate": 0.0,
+    "missed_card_rate": 0.0,
+    "verbatim_name_rate": 1.0,
+    "named_by_heard_rate": 0.5,
+    "addressed_precision": 1.0,
+    "addressed_recall": 0.75,
+    "investigate_acc": 0.9545454545454546,
+    "salience_exact": 0.9090909090909091,
+    "salience_within1": 1.0
+   }
+  },
+  {
+   "model": "nvidia/nemotron-nano-3-30b-a3b",
+   "thinking": false,
+   "rows": [
+    {
+     "case": "about-heard",
+     "rep": 0,
+     "latency": 0.11992037500021979,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "about-the-meeting",
+     "rep": 0,
+     "latency": 0.1303954579634592,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-hey-heard",
+     "rep": 0,
+     "latency": 0.12699937500292435,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-how-built",
+     "rep": 0,
+     "latency": 0.1258777500479482,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-lookup",
+     "rep": 0,
+     "latency": 0.12984966696240008,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-misheard-herd",
+     "rep": 0,
+     "latency": 0.14506154204718769,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-opinion",
+     "rep": 0,
+     "latency": 0.11120712500996888,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "claim-nobody-does-this",
+     "rep": 0,
+     "latency": 0.1204163750517182,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-charger",
+     "rep": 0,
+     "latency": 0.1254973750328645,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-food",
+     "rep": 0,
+     "latency": 0.14198666700394824,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-where-were-we",
+     "rep": 0,
+     "latency": 0.12186145898886025,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-lab",
+     "rep": 0,
+     "latency": 0.09388499998021871,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-named",
+     "rep": 0,
+     "latency": 0.10573891701642424,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-named-2",
+     "rep": 0,
+     "latency": 0.09664541704114527,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-then-react",
+     "rep": 0,
+     "latency": 0.1230982500128448,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-two-sentences",
+     "rep": 0,
+     "latency": 0.057212833024095744,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-unnamed",
+     "rep": 0,
+     "latency": 0.061995333002414554,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "question-price",
+     "rep": 0,
+     "latency": 0.10531254200031981,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "question-rhetorical",
+     "rep": 0,
+     "latency": 0.1249346670228988,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-agree",
+     "rep": 0,
+     "latency": 0.1237513329833746,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-like",
+     "rep": 0,
+     "latency": 0.09722937498008832,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-respelt",
+     "rep": 0,
+     "latency": 0.11855179199483246,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-restate-existing",
+     "rep": 0,
+     "latency": 0.1239914579782635,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-sunk-cost",
+     "rep": 0,
+     "latency": 0.11027079197810963,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-who-for",
+     "rep": 0,
+     "latency": 0.13012895901920274,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "verb-heard",
+     "rep": 0,
+     "latency": 0.09260866697877645,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    }
+   ],
+   "summary": {
+    "calls": 26,
+    "errors": 26,
+    "valid_rate": 0.0,
+    "latency_p50": NaN,
+    "latency_p95": NaN,
+    "latency_mean": NaN,
+    "under_budget": 0,
+    "subject_acc": null,
+    "spurious_card_rate": null,
+    "missed_card_rate": null,
+    "verbatim_name_rate": null,
+    "named_by_heard_rate": null,
+    "addressed_precision": null,
+    "addressed_recall": null,
+    "investigate_acc": null,
+    "salience_exact": null,
+    "salience_within1": null
+   }
+  },
+  {
+   "model": "nvidia/nemotron-nano-3-30b-a3b",
+   "thinking": true,
+   "rows": [
+    {
+     "case": "about-heard",
+     "rep": 0,
+     "latency": 0.11876425001537427,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "about-the-meeting",
+     "rep": 0,
+     "latency": 0.11051745800068602,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-hey-heard",
+     "rep": 0,
+     "latency": 0.13884049997432157,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-how-built",
+     "rep": 0,
+     "latency": 0.10106958303367719,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-lookup",
+     "rep": 0,
+     "latency": 0.11747791699599475,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-misheard-herd",
+     "rep": 0,
+     "latency": 0.2026255420059897,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-opinion",
+     "rep": 0,
+     "latency": 0.132333584013395,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "claim-nobody-does-this",
+     "rep": 0,
+     "latency": 0.11135604197625071,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-charger",
+     "rep": 0,
+     "latency": 0.13308625004719943,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-food",
+     "rep": 0,
+     "latency": 0.12767454097047448,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-where-were-we",
+     "rep": 0,
+     "latency": 0.12044270802289248,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-lab",
+     "rep": 0,
+     "latency": 0.14460079197306186,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-named",
+     "rep": 0,
+     "latency": 0.1145097499829717,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-named-2",
+     "rep": 0,
+     "latency": 0.11976737499935552,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-then-react",
+     "rep": 0,
+     "latency": 0.17351341695757583,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-two-sentences",
+     "rep": 0,
+     "latency": 0.1117072919732891,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-unnamed",
+     "rep": 0,
+     "latency": 0.11482058395631611,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "question-price",
+     "rep": 0,
+     "latency": 0.11261020798701793,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "question-rhetorical",
+     "rep": 0,
+     "latency": 0.12128720799228176,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-agree",
+     "rep": 0,
+     "latency": 0.13554649997968227,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-like",
+     "rep": 0,
+     "latency": 0.12766474997624755,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-respelt",
+     "rep": 0,
+     "latency": 0.13112191698746756,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-restate-existing",
+     "rep": 0,
+     "latency": 0.11705675005214289,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-sunk-cost",
+     "rep": 0,
+     "latency": 0.12465350003913045,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-who-for",
+     "rep": 0,
+     "latency": 0.10977916698902845,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "verb-heard",
+     "rep": 0,
+     "latency": 0.057034291967283934,
+     "error": "NotFoundError:404",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    }
+   ],
+   "summary": {
+    "calls": 26,
+    "errors": 26,
+    "valid_rate": 0.0,
+    "latency_p50": NaN,
+    "latency_p95": NaN,
+    "latency_mean": NaN,
+    "under_budget": 0,
+    "subject_acc": null,
+    "spurious_card_rate": null,
+    "missed_card_rate": null,
+    "verbatim_name_rate": null,
+    "named_by_heard_rate": null,
+    "addressed_precision": null,
+    "addressed_recall": null,
+    "investigate_acc": null,
+    "salience_exact": null,
+    "salience_within1": null
+   }
+  },
+  {
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "thinking": false,
+   "rows": [
+    {
+     "case": "about-heard",
+     "rep": 0,
+     "latency": 0.8518055839813314,
+     "error": null,
+     "signal": {
+      "at": 1789894872.442537,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard is listening right now, so it should pick this up.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "about-the-meeting",
+     "rep": 0,
+     "latency": 2.191713207983412,
+     "error": null,
+     "signal": {
+      "at": 1789894937.050414,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Can you make the sticky notes a bit smaller? They look too big on the projector.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": "Can you make the sticky notes a bit smaller? They look too big on the projector.",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-hey-heard",
+     "rep": 0,
+     "latency": 2.230314582993742,
+     "error": null,
+     "signal": {
+      "at": 1789894766.227459,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey Heard, has anyone built this before?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "has anyone built this before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "has anyone built this before?",
+      "discussing": "YesChef",
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-how-built",
+     "rep": 0,
+     "latency": 4.217477999976836,
+     "error": null,
+     "signal": {
+      "at": 1789894832.858741,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "So how did you build Heard? Heard, how were you built?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "How were you built?",
+        "subject": "Heard",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "Heard, how were you built?",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": false,
+      "investigate_pred": true,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-lookup",
+     "rep": 0,
+     "latency": 1.1879148340085521,
+     "error": null,
+     "signal": {
+      "at": 1789894834.449322,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard, look up whether Chrome already groups tabs on its own.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "whether Chrome already groups tabs on its own",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "look up whether Chrome already groups tabs on its own",
+      "discussing": "TabTamer",
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-misheard-herd",
+     "rep": 0,
+     "latency": 1.5564232910401188,
+     "error": null,
+     "signal": {
+      "at": 1789894865.4140449,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey herd, what do you think about the kitchen one?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "other",
+      "request": "what do you think about the kitchen one?",
+      "discussing": "YesChef",
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-opinion",
+     "rep": 0,
+     "latency": 1.4467607920523733,
+     "error": null,
+     "signal": {
+      "at": 1789894734.586061,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Let's see what Heard thinks.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "Let's see what Heard thinks.",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "claim-nobody-does-this",
+     "rep": 0,
+     "latency": 8.379365957982372,
+     "error": null,
+     "signal": {
+      "at": 1789894732.7374651,
+      "utterances": [
+       "u0002",
+       "u0003"
+      ],
+      "text": "That's the better one. Nobody is doing that. Right, we'd be first.",
+      "new_subject": {
+       "title": "Aye-Eye",
+       "named_by": "speaker",
+       "one_liner": "Live vision for the visually impaired.",
+       "anchor": "u0001"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "Aye-Eye",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "Aye-Eye",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "Aye-Eye",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": false,
+      "spurious_card": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-charger",
+     "rep": 0,
+     "latency": 4.225409624981694,
+     "error": null,
+     "signal": {
+      "at": 1789894941.677012,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Did anyone bring a charger? Mine's in the bag.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-food",
+     "rep": 0,
+     "latency": 1.6123141669668257,
+     "error": null,
+     "signal": {
+      "at": 1789895044.510407,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Pizza's here. Ten minutes?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-where-were-we",
+     "rep": 0,
+     "latency": 1.402969959017355,
+     "error": null,
+     "signal": {
+      "at": 1789894943.48103,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "...so anyway, where were we. The vision one.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-lab",
+     "rep": 0,
+     "latency": 4.830793083994649,
+     "error": null,
+     "signal": {
+      "at": 1789894465.554199,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I want to try experiment three again, the one where we swap the encoder for the contrastive one and measure the transfer on the held-out set.",
+      "new_subject": {
+       "title": "Experiment three: swap encoder for contrastive and measure t",
+       "named_by": "speaker",
+       "one_liner": "Swap encoder for contrastive and measure transfer on held-out set",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this experiment been done before?",
+        "subject": "Experiment three: swap encoder for contrastive and measure transfer on held-out set",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is this experiment for?",
+        "subject": "Experiment three: swap encoder for contrastive and measure transfer on held-out set",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "Experiment three: swap encoder for contrastive and measure transfer on held-out set",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named",
+     "rep": 0,
+     "latency": 8.691408250015229,
+     "error": null,
+     "signal": {
+      "at": 1789894444.0675688,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've been working on the architecture for a product called YesChef. It listens to a restaurant kitchen during service, turns what cooks call out into a live board, and speaks up before anyone has to ask.",
+      "new_subject": {
+       "title": "YesChef",
+       "named_by": "speaker",
+       "one_liner": "A product that listens to a restaurant kitchen during service, turns cook calls into a live board, and speaks up before anyone has to ask.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named-2",
+     "rep": 0,
+     "latency": 12.981411458051298,
+     "error": null,
+     "signal": {
+      "at": 1789894460.321578,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "One more pitch: a browser extension called TabTamer that groups your open tabs by task and closes the stale ones automatically.",
+      "new_subject": {
+       "title": "TabTamer",
+       "named_by": "speaker",
+       "one_liner": "browser extension that groups open tabs by task and closes stale ones automatically",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "has this been done before?",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       },
+       {
+        "text": "who is it for?",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "TabTamer",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-then-react",
+     "rep": 0,
+     "latency": 25.00559279200388,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-two-sentences",
+     "rep": 0,
+     "latency": 18.28563379199477,
+     "error": null,
+     "signal": {
+      "at": 1789894546.283919,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Here's mine. It's called PlantPulse. A pocket-sized soil sensor for houseplants that texts you when to water.",
+      "new_subject": {
+       "title": "PlantPulse",
+       "named_by": "speaker",
+       "one_liner": "A pocket-sized soil sensor for houseplants that texts you when to water.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "PlantPulse",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-unnamed",
+     "rep": 0,
+     "latency": 2.4703616250189953,
+     "error": null,
+     "signal": {
+      "at": 1789894446.9386828,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Okay, different idea. I've been thinking about an on-demand vision assistant for the visually impaired. It activates your personal AI eye right when you need help, replacing slow static photos with immediate live help.",
+      "new_subject": {
+       "title": "on-demand vision assistant for the visually impaired",
+       "named_by": "heard",
+       "one_liner": "AI eye that activates on-demand to provide live help instead of static photos",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "has this been done before?",
+        "subject": "on-demand vision assistant for the visually impaired",
+        "worth_investigating": true
+       },
+       {
+        "text": "who is it for?",
+        "subject": "on-demand vision assistant for the visually impaired",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-price",
+     "rep": 0,
+     "latency": 2.2401612090179697,
+     "error": null,
+     "signal": {
+      "at": 1789895146.178467,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "What does a kitchen display system actually cost a restaurant per month?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "What does a kitchen display system actually cost a restaurant per month?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "lookup",
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-rhetorical",
+     "rep": 0,
+     "latency": 1.298550667008385,
+     "error": null,
+     "signal": {
+      "at": 1789895147.878036,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Why would anyone not want this, honestly?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-agree",
+     "rep": 0,
+     "latency": 1.1746092080138624,
+     "error": null,
+     "signal": {
+      "at": 1789894716.594833,
+      "utterances": [
+       "u0003"
+      ],
+      "text": "Okay, agreed. Let's go with the vision assistant then.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 2
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-like",
+     "rep": 0,
+     "latency": 1.5945592080242932,
+     "error": null,
+     "signal": {
+      "at": 1789894548.280423,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Wow, I really like that idea. It bridges a gap I've never thought about before. Maybe for good reason, because it might be too niche.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-respelt",
+     "rep": 0,
+     "latency": 1.3588940419722348,
+     "error": null,
+     "signal": {
+      "at": 1789894723.957453,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Going back to Yes Chef, I think the kitchen board is the one the judges will get.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-restate-existing",
+     "rep": 0,
+     "latency": 5.200568333035335,
+     "error": null,
+     "signal": {
+      "at": 1789894722.19693,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Right, YesChef, the kitchen board that listens to cooks calling out orders during service.",
+      "new_subject": {
+       "title": "YesChef",
+       "named_by": "speaker",
+       "one_liner": "the kitchen board that listens to cooks calling out orders during service",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "has this been done before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "who is it for?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": false,
+      "spurious_card": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": false,
+      "investigate_pred": true,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-sunk-cost",
+     "rep": 0,
+     "latency": 1.5645097499946132,
+     "error": null,
+     "signal": {
+      "at": 1789894715.018875,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've put a lot of thought into this project and I feel like pivoting now would be sunk cost.",
+      "new_subject": {
+       "title": "pivoting from YesChef",
+       "named_by": "speaker",
+       "one_liner": "J feels pivoting would be sunk cost after putting thought into the project",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has pivoting been done before in similar projects?",
+        "subject": "pivoting from YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is YesChef for, if pivoting happens?",
+        "subject": "pivoting from YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": "other",
+      "request": null,
+      "discussing": "pivoting from YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": false,
+      "spurious_card": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": false,
+      "investigate_pred": true,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-who-for",
+     "rep": 0,
+     "latency": 24.292128166998737,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "verb-heard",
+     "rep": 0,
+     "latency": 5.373998708033469,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    }
+   ],
+   "summary": {
+    "calls": 26,
+    "errors": 3,
+    "valid_rate": 0.8846153846153846,
+    "latency_p50": 2.191713207983412,
+    "latency_p95": 12.981411458051298,
+    "latency_mean": 3.956257853353315,
+    "under_budget": 0.782608695652174,
+    "subject_acc": 0.8695652173913043,
+    "spurious_card_rate": 0.16666666666666666,
+    "missed_card_rate": 0.0,
+    "verbatim_name_rate": 1.0,
+    "named_by_heard_rate": 0.5,
+    "addressed_precision": 1.0,
+    "addressed_recall": 1.0,
+    "investigate_acc": 0.8695652173913043,
+    "salience_exact": 0.6086956521739131,
+    "salience_within1": 1.0
+   }
+  },
+  {
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "thinking": true,
+   "rows": [
+    {
+     "case": "about-heard",
+     "rep": 0,
+     "latency": 25.00127824995434,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "about-the-meeting",
+     "rep": 0,
+     "latency": 20.31261437496869,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-hey-heard",
+     "rep": 0,
+     "latency": 25.021379542013165,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-how-built",
+     "rep": 0,
+     "latency": 22.634037792042363,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-lookup",
+     "rep": 0,
+     "latency": 19.615581209014636,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-misheard-herd",
+     "rep": 0,
+     "latency": 24.37377624999499,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-opinion",
+     "rep": 0,
+     "latency": 21.002584667003248,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "claim-nobody-does-this",
+     "rep": 0,
+     "latency": 19.02662658400368,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-charger",
+     "rep": 0,
+     "latency": 25.00246116699418,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-food",
+     "rep": 0,
+     "latency": 22.481758334033657,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "filler-where-were-we",
+     "rep": 0,
+     "latency": 16.325582749966998,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-lab",
+     "rep": 0,
+     "latency": 25.01192879199516,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-named",
+     "rep": 0,
+     "latency": 10.676717458991334,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-named-2",
+     "rep": 0,
+     "latency": 21.105577417009044,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-then-react",
+     "rep": 0,
+     "latency": 25.008594917017035,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-two-sentences",
+     "rep": 0,
+     "latency": 20.933355292014312,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-unnamed",
+     "rep": 0,
+     "latency": 17.996224125032313,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "question-price",
+     "rep": 0,
+     "latency": 25.011974957946222,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "question-rhetorical",
+     "rep": 0,
+     "latency": 9.843156332965009,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-agree",
+     "rep": 0,
+     "latency": 19.150048958021216,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-like",
+     "rep": 0,
+     "latency": 24.1379603749956,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-respelt",
+     "rep": 0,
+     "latency": 22.2510839580209,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-restate-existing",
+     "rep": 0,
+     "latency": 22.98949991603149,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-sunk-cost",
+     "rep": 0,
+     "latency": 9.795319165976252,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-who-for",
+     "rep": 0,
+     "latency": 20.12696516700089,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "verb-heard",
+     "rep": 0,
+     "latency": 21.402882541995496,
+     "error": "no-json",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    }
+   ],
+   "summary": {
+    "calls": 26,
+    "errors": 26,
+    "valid_rate": 0.0,
+    "latency_p50": NaN,
+    "latency_p95": NaN,
+    "latency_mean": NaN,
+    "under_budget": 0,
+    "subject_acc": null,
+    "spurious_card_rate": null,
+    "missed_card_rate": null,
+    "verbatim_name_rate": null,
+    "named_by_heard_rate": null,
+    "addressed_precision": null,
+    "addressed_recall": null,
+    "investigate_acc": null,
+    "salience_exact": null,
+    "salience_within1": null
+   }
+  },
+  {
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "thinking": false,
+   "rows": [
+    {
+     "case": "about-heard",
+     "rep": 0,
+     "latency": 16.23788287502248,
+     "error": null,
+     "signal": {
+      "at": 1789897715.858857,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard is listening right now, so it should pick this up.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "other",
+      "request": "Heard is listening right now, so it should pick this up.",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": false,
+      "addressed_pred": true,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "about-the-meeting",
+     "rep": 0,
+     "latency": 0.20904154202435166,
+     "error": "RateLimitError:429",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "ask-hey-heard",
+     "rep": 0,
+     "latency": 1.918139124987647,
+     "error": null,
+     "signal": {
+      "at": 1789897669.2544289,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey Heard, has anyone built this before?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "has anyone built this before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "has anyone built this before?",
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-how-built",
+     "rep": 0,
+     "latency": 1.1144222910515964,
+     "error": null,
+     "signal": {
+      "at": 1789897670.769856,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "So how did you build Heard? Heard, how were you built?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "how_built",
+      "request": "how were you built",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-lookup",
+     "rep": 0,
+     "latency": 6.063704125001095,
+     "error": null,
+     "signal": {
+      "at": 1789897677.236144,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard, look up whether Chrome already groups tabs on its own.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "whether Chrome already groups tabs on its own",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "look up whether Chrome already groups tabs on its own",
+      "discussing": "TabTamer",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-misheard-herd",
+     "rep": 0,
+     "latency": 4.484330959036015,
+     "error": null,
+     "signal": {
+      "at": 1789897682.122606,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey herd, what do you think about the kitchen one?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "opinion",
+      "request": "what do you think about the kitchen one?",
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-opinion",
+     "rep": 0,
+     "latency": 25.006936917023268,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "claim-nobody-does-this",
+     "rep": 0,
+     "latency": 3.541449208976701,
+     "error": null,
+     "signal": {
+      "at": 1789897571.8902159,
+      "utterances": [
+       "u0002",
+       "u0003"
+      ],
+      "text": "That's the better one. Nobody is doing that. Right, we'd be first.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "Aye-Eye",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "Aye-Eye",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Aye-Eye",
+      "salience": 2
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-charger",
+     "rep": 0,
+     "latency": 1.6933310409658588,
+     "error": null,
+     "signal": {
+      "at": 1789897771.584215,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Did anyone bring a charger? Mine's in the bag.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-food",
+     "rep": 0,
+     "latency": 8.100262625026517,
+     "error": null,
+     "signal": {
+      "at": 1789897834.151108,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Pizza's here. Ten minutes?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-where-were-we",
+     "rep": 0,
+     "latency": 4.419115124968812,
+     "error": null,
+     "signal": {
+      "at": 1789897825.64887,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "...so anyway, where were we. The vision one.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-lab",
+     "rep": 0,
+     "latency": 2.8375970420311205,
+     "error": null,
+     "signal": {
+      "at": 1789897435.95218,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I want to try experiment three again, the one where we swap the encoder for the contrastive one and measure the transfer on the held-out set.",
+      "new_subject": {
+       "title": "Experiment Three: Contrastive Encoder Swap",
+       "named_by": "speaker",
+       "one_liner": "Swap the encoder for a contrastive one and measure transfer on the held-out set.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this experiment been done before?",
+        "subject": "Experiment Three: Contrastive Encoder Swap",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is this experiment for?",
+        "subject": "Experiment Three: Contrastive Encoder Swap",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Experiment Three: Contrastive Encoder Swap",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named",
+     "rep": 0,
+     "latency": 6.428428124985658,
+     "error": null,
+     "signal": {
+      "at": 1789897376.528885,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've been working on the architecture for a product called YesChef. It listens to a restaurant kitchen during service, turns what cooks call out into a live board, and speaks up before anyone has to ask.",
+      "new_subject": {
+       "title": "YesChef",
+       "named_by": "speaker",
+       "one_liner": "Listens to a restaurant kitchen during service, turns what cooks call out into a live board, and speaks up before anyone has to ask.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named-2",
+     "rep": 0,
+     "latency": 1.8991811249870807,
+     "error": null,
+     "signal": {
+      "at": 1789897428.578122,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "One more pitch: a browser extension called TabTamer that groups your open tabs by task and closes the stale ones automatically.",
+      "new_subject": {
+       "title": "TabTamer",
+       "named_by": "speaker",
+       "one_liner": "Browser extension that groups open tabs by task and closes stale ones automatically.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "TabTamer",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-then-react",
+     "rep": 0,
+     "latency": 16.521747416991275,
+     "error": null,
+     "signal": {
+      "at": 1789897878.9648378,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Different idea: a Slack bot called Quietude that mutes channels for you when you're heads-down. Oh, that's neat.",
+      "new_subject": {
+       "title": "Quietude",
+       "named_by": "speaker",
+       "one_liner": "A Slack bot that mutes channels for you when you're heads-down.",
+       "anchor": "u0001"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Quietude",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-two-sentences",
+     "rep": 0,
+     "latency": 4.85052675002953,
+     "error": null,
+     "signal": {
+      "at": 1789897453.586844,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Here's mine. It's called PlantPulse. A pocket-sized soil sensor for houseplants that texts you when to water.",
+      "new_subject": {
+       "title": "PlantPulse",
+       "named_by": "speaker",
+       "one_liner": "A pocket-sized soil sensor for houseplants that texts you when to water.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "PlantPulse",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-unnamed",
+     "rep": 0,
+     "latency": 20.337814500031527,
+     "error": null,
+     "signal": {
+      "at": 1789897426.2768419,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Okay, different idea. I've been thinking about an on-demand vision assistant for the visually impaired. It activates your personal AI eye right when you need help, replacing slow static photos with immediate live help.",
+      "new_subject": {
+       "title": "On-Demand Vision Assistant",
+       "named_by": "heard",
+       "one_liner": "Activates a personal AI eye on demand for the visually impaired, replacing slow static photos with immediate live help.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "On-Demand Vision Assistant",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "On-Demand Vision Assistant",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "On-Demand Vision Assistant",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-price",
+     "rep": 0,
+     "latency": 1.3591334159718826,
+     "error": null,
+     "signal": {
+      "at": 1789897835.9118662,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "What does a kitchen display system actually cost a restaurant per month?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "What does a kitchen display system actually cost a restaurant per month?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-rhetorical",
+     "rep": 0,
+     "latency": 1.2468806660035625,
+     "error": null,
+     "signal": {
+      "at": 1789897837.560301,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Why would anyone not want this, honestly?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-agree",
+     "rep": 0,
+     "latency": 10.936545874981675,
+     "error": null,
+     "signal": {
+      "at": 1789897513.25992,
+      "utterances": [
+       "u0003"
+      ],
+      "text": "Okay, agreed. Let's go with the vision assistant then.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Aye-Eye",
+      "salience": 2
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-like",
+     "rep": 0,
+     "latency": 3.916654540982563,
+     "error": null,
+     "signal": {
+      "at": 1789897457.9052238,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Wow, I really like that idea. It bridges a gap I've never thought about before. Maybe for good reason, because it might be too niche.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Is it too niche?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": false,
+      "investigate_pred": true,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-respelt",
+     "rep": 0,
+     "latency": 6.001155000005383,
+     "error": null,
+     "signal": {
+      "at": 1789897530.871809,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Going back to Yes Chef, I think the kitchen board is the one the judges will get.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-restate-existing",
+     "rep": 0,
+     "latency": 2.7180978340329602,
+     "error": null,
+     "signal": {
+      "at": 1789897520.4276621,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Right, YesChef, the kitchen board that listens to cooks calling out orders during service.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": false,
+      "investigate_pred": true,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-sunk-cost",
+     "rep": 0,
+     "latency": 0.9089115409879014,
+     "error": null,
+     "signal": {
+      "at": 1789897461.485462,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've put a lot of thought into this project and I feel like pivoting now would be sunk cost.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-who-for",
+     "rep": 0,
+     "latency": 1.8683690830366686,
+     "error": null,
+     "signal": {
+      "at": 1789897460.17486,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I don't know, I'm not really understanding who it would be useful for.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "who would this be useful for",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "verb-heard",
+     "rep": 0,
+     "latency": 4.583108542021364,
+     "error": null,
+     "signal": {
+      "at": 1789897687.10714,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "I heard that from the judges yesterday, they want a live demo.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    }
+   ],
+   "summary": {
+    "calls": 26,
+    "errors": 2,
+    "valid_rate": 0.9230769230769231,
+    "latency_p50": 4.419115124968812,
+    "latency_p95": 16.521747416991275,
+    "latency_mean": 5.58278286800487,
+    "under_budget": 0.6666666666666666,
+    "subject_acc": 1.0,
+    "spurious_card_rate": 0.0,
+    "missed_card_rate": 0.0,
+    "verbatim_name_rate": 1.0,
+    "named_by_heard_rate": 0.5,
+    "addressed_precision": 0.8,
+    "addressed_recall": 1.0,
+    "investigate_acc": 0.9166666666666666,
+    "salience_exact": 0.875,
+    "salience_within1": 1.0
+   }
+  },
+  {
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "thinking": true,
+   "rows": [
+    {
+     "case": "about-heard",
+     "rep": 0,
+     "latency": 4.0957439999911,
+     "error": null,
+     "signal": {
+      "at": 1789898782.7616699,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard is listening right now, so it should pick this up.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "about-the-meeting",
+     "rep": 0,
+     "latency": 6.034180249960627,
+     "error": null,
+     "signal": {
+      "at": 1789898789.1975281,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Can you make the sticky notes a bit smaller? They look too big on the projector.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-hey-heard",
+     "rep": 0,
+     "latency": 17.135644499969203,
+     "error": null,
+     "signal": {
+      "at": 1789898605.720957,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey Heard, has anyone built this before?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "has anyone built this before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "has anyone built this before?",
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-how-built",
+     "rep": 0,
+     "latency": 10.759182208043057,
+     "error": null,
+     "signal": {
+      "at": 1789898616.881859,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "So how did you build Heard? Heard, how were you built?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "how_built",
+      "request": "how were you built?",
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-lookup",
+     "rep": 0,
+     "latency": 15.419777208997402,
+     "error": null,
+     "signal": {
+      "at": 1789898661.719477,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Heard, look up whether Chrome already groups tabs on its own.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "whether Chrome already groups tabs on its own",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": true,
+      "intent": "lookup",
+      "request": "look up whether Chrome already groups tabs on its own",
+      "discussing": "TabTamer",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-misheard-herd",
+     "rep": 0,
+     "latency": 12.702224125037901,
+     "error": null,
+     "signal": {
+      "at": 1789898674.823911,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Hey herd, what do you think about the kitchen one?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": true,
+      "intent": "opinion",
+      "request": "what do you think about the kitchen one?",
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": true,
+      "addressed_exp": true,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "ask-opinion",
+     "rep": 0,
+     "latency": 25.005472916993313,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "claim-nobody-does-this",
+     "rep": 0,
+     "latency": 14.60672170802718,
+     "error": null,
+     "signal": {
+      "at": 1789898467.7187572,
+      "utterances": [
+       "u0002",
+       "u0003"
+      ],
+      "text": "That's the better one. Nobody is doing that. Right, we'd be first.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "Aye-Eye",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "Aye-Eye",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Aye-Eye",
+      "salience": 2
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-charger",
+     "rep": 0,
+     "latency": 4.660890458035283,
+     "error": null,
+     "signal": {
+      "at": 1789898806.540879,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Did anyone bring a charger? Mine's in the bag.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-food",
+     "rep": 0,
+     "latency": 3.8362871250137687,
+     "error": null,
+     "signal": {
+      "at": 1789898829.420865,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Pizza's here. Ten minutes?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "filler-where-were-we",
+     "rep": 0,
+     "latency": 14.139241083990782,
+     "error": null,
+     "signal": {
+      "at": 1789898821.081565,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "...so anyway, where were we. The vision one.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 0
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-lab",
+     "rep": 0,
+     "latency": 25.007283333980013,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "pitch-named",
+     "rep": 0,
+     "latency": 5.645886084006634,
+     "error": null,
+     "signal": {
+      "at": 1789897885.019416,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've been working on the architecture for a product called YesChef. It listens to a restaurant kitchen during service, turns what cooks call out into a live board, and speaks up before anyone has to ask.",
+      "new_subject": {
+       "title": "YesChef",
+       "named_by": "speaker",
+       "one_liner": "Listens to a restaurant kitchen during service, turns what cooks call out into a live board, and speaks up before anyone has to ask.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-named-2",
+     "rep": 0,
+     "latency": 8.817892291990574,
+     "error": null,
+     "signal": {
+      "at": 1789898027.280892,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "One more pitch: a browser extension called TabTamer that groups your open tabs by task and closes the stale ones automatically.",
+      "new_subject": {
+       "title": "TabTamer",
+       "named_by": "speaker",
+       "one_liner": "Browser extension that groups open tabs by task and auto-closes stale ones.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "TabTamer",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "TabTamer",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-then-react",
+     "rep": 0,
+     "latency": 21.756890333024785,
+     "error": null,
+     "signal": {
+      "at": 1789898930.79449,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Different idea: a Slack bot called Quietude that mutes channels for you when you're heads-down. Oh, that's neat.",
+      "new_subject": {
+       "title": "Quietude",
+       "named_by": "speaker",
+       "one_liner": "a Slack bot that mutes channels for you when you're heads-down",
+       "anchor": "u0001"
+      },
+      "questions": [
+       {
+        "text": "has this been done before?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       },
+       {
+        "text": "who is it for?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       },
+       {
+        "text": "how would we build a Slack bot that mutes channels based on focus state?",
+        "subject": "Quietude",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "Quietude",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-two-sentences",
+     "rep": 0,
+     "latency": 12.114163958001882,
+     "error": null,
+     "signal": {
+      "at": 1789898184.7498748,
+      "utterances": [
+       "u0001",
+       "u0002"
+      ],
+      "text": "Here's mine. It's called PlantPulse. A pocket-sized soil sensor for houseplants that texts you when to water.",
+      "new_subject": {
+       "title": "PlantPulse",
+       "named_by": "speaker",
+       "one_liner": "A pocket-sized soil sensor for houseplants that texts you when to water.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "PlantPulse",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "PlantPulse",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "verbatim": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "pitch-unnamed",
+     "rep": 0,
+     "latency": 13.500127832987346,
+     "error": null,
+     "signal": {
+      "at": 1789897989.050269,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Okay, different idea. I've been thinking about an on-demand vision assistant for the visually impaired. It activates your personal AI eye right when you need help, replacing slow static photos with immediate live help.",
+      "new_subject": {
+       "title": "LiveSight",
+       "named_by": "heard",
+       "one_liner": "On-demand vision assistant for the visually impaired that activates a personal AI eye for immediate live help instead of slow static photos.",
+       "anchor": "u0002"
+      },
+      "questions": [
+       {
+        "text": "Has this been done before?",
+        "subject": "LiveSight",
+        "worth_investigating": true
+       },
+       {
+        "text": "Who is it for?",
+        "subject": "LiveSight",
+        "worth_investigating": true
+       },
+       {
+        "text": "How would we build this?",
+        "subject": "LiveSight",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "LiveSight",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "missed_card": false,
+      "named_by_heard": true,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-price",
+     "rep": 0,
+     "latency": 17.61956816696329,
+     "error": null,
+     "signal": {
+      "at": 1789898896.6215549,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "What does a kitchen display system actually cost a restaurant per month?",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "What does a kitchen display system actually cost a restaurant per month?",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "question-rhetorical",
+     "rep": 0,
+     "latency": 11.612528541998472,
+     "error": null,
+     "signal": {
+      "at": 1789898908.635957,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Why would anyone not want this, honestly?",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-agree",
+     "rep": 0,
+     "latency": 19.056912708038,
+     "error": null,
+     "signal": {
+      "at": 1789898305.8471098,
+      "utterances": [
+       "u0003"
+      ],
+      "text": "Okay, agreed. Let's go with the vision assistant then.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": null,
+      "salience": 2
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-like",
+     "rep": 0,
+     "latency": 7.548293250030838,
+     "error": null,
+     "signal": {
+      "at": 1789898196.980174,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "Wow, I really like that idea. It bridges a gap I've never thought about before. Maybe for good reason, because it might be too niche.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-respelt",
+     "rep": 0,
+     "latency": 5.852442000003066,
+     "error": null,
+     "signal": {
+      "at": 1789898452.7106361,
+      "utterances": [
+       "u0001"
+      ],
+      "text": "Going back to Yes Chef, I think the kitchen board is the one the judges will get.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": false,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-restate-existing",
+     "rep": 0,
+     "latency": 25.01035412499914,
+     "error": "TimeoutError:",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    },
+    {
+     "case": "react-sunk-cost",
+     "rep": 0,
+     "latency": 3.0796108339563943,
+     "error": null,
+     "signal": {
+      "at": 1789898221.140033,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I've put a lot of thought into this project and I feel like pivoting now would be sunk cost.",
+      "new_subject": null,
+      "questions": [],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": false,
+      "investigate_exp": false,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "react-who-for",
+     "rep": 0,
+     "latency": 7.9596874580020085,
+     "error": null,
+     "signal": {
+      "at": 1789898217.6586702,
+      "utterances": [
+       "u0002"
+      ],
+      "text": "I don't know, I'm not really understanding who it would be useful for.",
+      "new_subject": null,
+      "questions": [
+       {
+        "text": "who it would be useful for",
+        "subject": "YesChef",
+        "worth_investigating": true
+       }
+      ],
+      "addressed": false,
+      "intent": null,
+      "request": null,
+      "discussing": "YesChef",
+      "salience": 1
+     },
+     "score": {
+      "valid": true,
+      "subject_ok": true,
+      "spurious_card": false,
+      "addressed_ok": true,
+      "addressed_pred": false,
+      "addressed_exp": false,
+      "investigate_ok": true,
+      "investigate_pred": true,
+      "investigate_exp": true,
+      "salience_exact": true,
+      "salience_within1": true
+     }
+    },
+    {
+     "case": "verb-heard",
+     "rep": 0,
+     "latency": 0.4949338750448078,
+     "error": "InternalServerError:503",
+     "signal": null,
+     "score": {
+      "valid": false
+     }
+    }
+   ],
+   "summary": {
+    "calls": 26,
+    "errors": 4,
+    "valid_rate": 0.8461538461538461,
+    "latency_p50": 10.759182208043057,
+    "latency_p95": 19.056912708038,
+    "latency_mean": 10.816086187548619,
+    "under_budget": 0.18181818181818182,
+    "subject_acc": 1.0,
+    "spurious_card_rate": 0.0,
+    "missed_card_rate": 0.0,
+    "verbatim_name_rate": 1.0,
+    "named_by_heard_rate": 1.0,
+    "addressed_precision": 1.0,
+    "addressed_recall": 1.0,
+    "investigate_acc": 1.0,
+    "salience_exact": 0.9090909090909091,
+    "salience_within1": 1.0
+   }
+  }
+ ]
+}

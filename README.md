@@ -153,3 +153,13 @@ board/            React + Vite: canvas, task rail, transcript strip, notes view,
 fixtures/demo.txt the scripted demo meeting
 scripts/replay.py posts a fixture to /inject with timing
 ```
+
+## Nemotron
+
+The classifier and the notes agent run on Nemotron through NVIDIA NIM: the two
+components on the clock, where a one-second JSON answer matters more than deep
+reasoning. [`docs/NEMOTRON.md`](docs/NEMOTRON.md) explains the split, and
+`eval/classifier_bench.py` scores the classifier across Nemotron models and
+reasoning modes on a labelled set of meeting moments (latency, valid JSON,
+spurious cards, verbatim names, addressed precision/recall). Results are in
+`eval/results/`.
