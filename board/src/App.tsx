@@ -31,7 +31,7 @@ export default function App() {
   const [typed, setTyped] = useState("");
   const [speaker, setSpeaker] = useState("J");
   const [thinking, setThinking] = useState<string>(() => {
-    try { return localStorage.getItem("heard.thinking") || "normal"; } catch { return "normal"; }
+    try { return localStorage.getItem("heard.thinking") || "light"; } catch { return "light"; }
   });
   const pickThinking = (level: string) => {
     setThinking(level);
