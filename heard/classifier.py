@@ -33,6 +33,7 @@ Return ONE JSON object and nothing else:
   "addressed": true|false,
   "intent": "opinion"|"how_built"|"lookup"|"other"|null,
   "request": "<what they asked Heard to do, verbatim-ish>"|null,
+  "discussing": "<the title of the existing card these new lines are about, or the new subject's title, or null>",
   "salience": 0|1|2
 }
 
@@ -42,6 +43,7 @@ Rules:
 - "anchor" is the [uXXXX] id of the line where the subject was introduced.
 - "questions" are things said out loud that could be checked or looked up: has it been done, who does this, is X true, how would we build Y. Mark worth_investigating true only for questions a web search could actually answer. An idea being pitched always implies at least "has this been done before?" and "who is it for?" — list those as questions on the new subject.
 - "addressed" is true ONLY when someone speaks to Heard by name ("Heard", "hey Heard", "let's see what Heard thinks", "Heard, look up...") with a question or request. Precision over recall: if unsure, false. intent: "opinion" = what does Heard think of the current subject; "how_built" = how was Heard itself built / what is the tech stack; "lookup" = look something up; else "other".
+- "discussing" is which card the room is talking about RIGHT NOW in the new lines: an existing card title (exactly as listed), the new subject's title, or null if the lines are not about any card.
 - "salience" 2 = the room is converging on a decision or making a strong claim ("nobody does this", "let's go with it", "agreed"); 1 = substantive discussion; 0 = filler.
 """
 
@@ -126,6 +128,14 @@ class Classifier:
             existing = self.store.find_card(ns["title"])
             signal["new_subject"] = None
             signal["card_id"] = existing.id if existing else None
+        focus = None
+        if signal.get("card_id"):
+            focus = signal["card_id"]
+        elif signal.get("discussing"):
+            c = self.store.find_card(signal["discussing"])
+            focus = c.id if c else None
+        if focus:
+            self.store.set_focus(focus)
         if signal.get("addressed"):
             self.store.mark_asked(new[-1].id, signal.get("request") or new[-1].text,
                                   signal.get("intent") or "other")
@@ -177,6 +187,7 @@ def _normalise(r: dict[str, Any], new: list[Utterance]) -> Signal:
         "addressed": bool(r.get("addressed")),
         "intent": r.get("intent") if isinstance(r.get("intent"), str) else None,
         "request": r.get("request") if isinstance(r.get("request"), str) else None,
+        "discussing": r.get("discussing") if isinstance(r.get("discussing"), str) and r.get("discussing").strip() else None,
         "salience": int(r.get("salience") or 0) if str(r.get("salience", "0")).isdigit() else 0,
     }
 

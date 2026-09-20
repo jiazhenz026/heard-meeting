@@ -89,6 +89,8 @@ export interface StatePayload {
   log: LogEntry[];
   asked: { at: number; utterance_id: string; text: string; intent: string; replied: boolean } | null;
   expanded: string | null;
+  focus: string | null;
+  focus_at: number;
   health: Health;
 }
 
@@ -106,6 +108,8 @@ export const EMPTY_STATE: StatePayload = {
   log: [],
   asked: null,
   expanded: null,
+  focus: null,
+  focus_at: 0,
   health: {
     stt: null,
     tts: null,

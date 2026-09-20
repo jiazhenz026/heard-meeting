@@ -199,6 +199,7 @@ class Heard:
         self.store.log.clear()
         self.store.asked = None
         self.store.expanded = None
+        self.store.focus = None
         self.store.notes = ""
         self.store.notes_version = 0
         self.store.started_at = now()
@@ -310,7 +311,7 @@ def _heard_page() -> str:
   h1 {{ font-size:28px; margin:6px 0 10px; }} h2 {{ color:#1b1f24; font-size:17px; margin:26px 0 8px; }}
   li {{ margin:6px 0; }} pre {{ background:#eef1f4; padding:14px; border-radius:6px; overflow:auto; font-size:13px; }}
 </style></head><body><main>
-<div class="kicker">Heard! · how it is built</div>
+<div class="kicker">How Heard! is built</div>
 <h1>Five parts, two with no model in them</h1>
 <p>{HEARD_CARD_SUMMARY}</p>
 <h2>Pipeline</h2>

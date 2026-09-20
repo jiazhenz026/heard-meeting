@@ -192,7 +192,7 @@ def _render_page(title: str, brief: str, body_md: str, sources: list[str], secs:
   .brief {{ color: #5b6b7c; font-style: italic; margin: 0 0 10px; }}
   .meta {{ color: #93a1af; font-size: 12px; margin-top: 30px; }}
 </style></head><body><main>
-<div class="kicker">Heard! · investigation</div>
+<div class="kicker">Investigated by Heard!</div>
 <h1>{html.escape(title)}</h1>
 <p class="brief">{html.escape(brief)}</p>
 {inner}

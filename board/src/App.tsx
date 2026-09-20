@@ -5,7 +5,7 @@
  * REPLACED on every push, never merged.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AudioOut } from "./audio";
 import { Mic } from "./mic";
 import { BoardSocket } from "./socket";
@@ -26,6 +26,8 @@ export default function App() {
   const [banner, setBanner] = useState<Said | null>(null);
   const [view, setView] = useState<View>("canvas");
   const [open, setOpen] = useState<string | null>(null);
+  const [closing, setClosing] = useState(false);
+  const [settled, setSettled] = useState(false);
   const [typed, setTyped] = useState("");
   const [speaker, setSpeaker] = useState("J");
 
@@ -35,6 +37,71 @@ export default function App() {
   const offsetRef = useRef(0);
   const lastSaidId = useRef<string | null>(null);
   const bannerTimer = useRef<number | null>(null);
+  const canvasRef = useRef<HTMLElement | null>(null);
+  const cardEls = useRef<Map<string, HTMLElement>>(new Map());
+  const expandedEl = useRef<HTMLDivElement | null>(null);
+  const fromRect = useRef<DOMRect | null>(null);
+  const openRef = useRef<string | null>(null);
+
+  /** Open a card in place of the grid, growing out of its own rectangle. */
+  const openCard = useCallback((id: string) => {
+    if (openRef.current === id) return;
+    const el = cardEls.current.get(id);
+    fromRect.current = el ? el.getBoundingClientRect() : null;
+    openRef.current = id;
+    setSettled(false);
+    setClosing(false);
+    setOpen(id);
+  }, []);
+
+  const closeCard = useCallback(() => {
+    if (!openRef.current) return;
+    fetch("/expand/none", { method: "POST" }).catch(() => {});
+    const node = expandedEl.current;
+    const from = fromRect.current;
+    if (!node || !from) {
+      openRef.current = null;
+      setOpen(null);
+      return;
+    }
+    setSettled(false);
+    setClosing(true);
+    const to = node.getBoundingClientRect();
+    node.style.transition = "transform .36s cubic-bezier(.4,0,.2,1), opacity .3s";
+    node.style.transformOrigin = "top left";
+    node.style.transform = `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`;
+    node.style.opacity = "0.4";
+    window.setTimeout(() => {
+      openRef.current = null;
+      setClosing(false);
+      setOpen(null);
+    }, 370);
+  }, []);
+
+  // The grow: start at the card's rectangle, end filling the canvas.
+  useLayoutEffect(() => {
+    const node = expandedEl.current;
+    if (!open || closing || !node) return;
+    const from = fromRect.current;
+    const to = node.getBoundingClientRect();
+    if (!from) {
+      setSettled(true);
+      return;
+    }
+    node.style.transition = "none";
+    node.style.transformOrigin = "top left";
+    node.style.transform = `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`;
+    node.style.opacity = "0.7";
+    node.getBoundingClientRect();
+    node.style.transition = "transform .45s cubic-bezier(.2,.8,.2,1), opacity .35s";
+    node.style.transform = "none";
+    node.style.opacity = "1";
+    const id = window.setTimeout(() => {
+      node.style.transition = "";
+      setSettled(true);
+    }, 470);
+    return () => window.clearTimeout(id);
+  }, [open, closing]);
 
   useSecondTick();
 
@@ -55,7 +122,7 @@ export default function App() {
           if (bannerTimer.current) window.clearTimeout(bannerTimer.current);
           bannerTimer.current = window.setTimeout(() => setBanner(null), 14000);
         }
-        if (next.expanded) setOpen(next.expanded);
+        if (next.expanded && next.expanded !== openRef.current) openCard(next.expanded);
       },
       onPartial: (text) => setPartial(text),
       onAudio: (msg) => {
@@ -69,7 +136,7 @@ export default function App() {
       off();
       s.stop();
     };
-  }, []);
+  }, [openCard]);
 
   const begin = useCallback(async () => {
     await audio.current.unlock();
@@ -96,7 +163,7 @@ export default function App() {
     () => state.cards.filter((c) => !c.seeded).concat(state.cards.filter((c) => c.seeded)),
     [state.cards],
   );
-  const openCard = open ? state.cards.find((c) => c.id === open) ?? null : null;
+  const shown = open ? state.cards.find((c) => c.id === open) ?? null : null;
   const minute = state.started_at ? elapsed(now - state.started_at) : "0:00";
   const status = statusLine(link, state, micNote);
 
@@ -142,14 +209,41 @@ export default function App() {
       </header>
 
       <main className="body">
-        <section className="canvas">
+        <section className="canvas" ref={canvasRef}>
+          {shown && (
+            <div className={`expanded ${settled ? "settled" : ""}`} ref={expandedEl}>
+              <div className="expanded-top">
+                <span className="expanded-title">{shown.title}</span>
+                <span className="expanded-meta">{cardState(shown)}</span>
+                <span className="grow" />
+                <button className="back" onClick={closeCard}>Back to the board</button>
+              </div>
+              {shown.page ? (
+                <iframe title={shown.title} src={`/cards/${shown.id}`} sandbox="allow-same-origin allow-popups" />
+              ) : (
+                <div className="expanded-empty">
+                  <p>{shown.one_liner || "Named, not yet understood."}</p>
+                  {shown.notes.map((n, i) => <p key={i}>{n}</p>)}
+                  <p className="muted">The page appears when the investigation comes back.</p>
+                </div>
+              )}
+            </div>
+          )}
           {view === "canvas" ? (
             cards.length === 0 ? (
               <p className="empty">Listening. The first idea someone pitches gets a card here.</p>
             ) : (
               <div className="grid">
                 {cards.map((c) => (
-                  <CardView key={c.id} card={c} tasks={state.tasks.filter((t) => t.card_id === c.id)} now={now} onOpen={() => setOpen(c.id)} />
+                  <CardView
+                    key={c.id}
+                    card={c}
+                    tasks={state.tasks.filter((t) => t.card_id === c.id)}
+                    now={now}
+                    focused={state.focus === c.id && now - state.focus_at < 75}
+                    onOpen={() => openCard(c.id)}
+                    register={(el) => { if (el) cardEls.current.set(c.id, el); else cardEls.current.delete(c.id); }}
+                  />
                 ))}
               </div>
             )
@@ -185,38 +279,18 @@ export default function App() {
         </div>
       )}
 
-      {openCard && (
-        <div className="sheet" onClick={() => { setOpen(null); fetch("/expand/none", { method: "POST" }).catch(() => {}); }}>
-          <div className="sheet-body" onClick={(e) => e.stopPropagation()}>
-            <div className="sheet-top">
-              <span className="sheet-title">{openCard.title}</span>
-              <span className="sheet-meta">{cardState(openCard)}</span>
-              <span className="grow" />
-              <button className="close" onClick={() => setOpen(null)} aria-label="close">×</button>
-            </div>
-            {openCard.page ? (
-              <iframe title={openCard.title} src={`/cards/${openCard.id}`} sandbox="allow-same-origin allow-popups" />
-            ) : (
-              <div className="sheet-empty">
-                <p>{openCard.one_liner || "Named, not yet understood."}</p>
-                {openCard.notes.map((n, i) => <p key={i}>{n}</p>)}
-                <p className="muted">The page appears when the investigation comes back.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
-function CardView({ card, tasks, now, onOpen }: { card: Card; tasks: Task[]; now: number; onOpen: () => void }) {
+function CardView({ card, tasks, now, onOpen, register, focused }: { card: Card; tasks: Task[]; now: number; onOpen: () => void; register: (el: HTMLElement | null) => void; focused: boolean }) {
   const running = tasks.some((t) => t.status === "RUNNING");
   const age = now - card.created_at;
   const tagline = card.seeded ? card.one_liner : shorten(card.summary) || card.one_liner || "";
   return (
     <article
-      className={`card ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${age < 1.2 ? "landed" : ""}`}
+      ref={register}
+      className={`card ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${focused ? "focus" : ""} ${age < 1.2 ? "landed" : ""}`}
       onClick={onOpen}
       title={card.named_by === "heard" ? "Heard named this one" : undefined}
     >

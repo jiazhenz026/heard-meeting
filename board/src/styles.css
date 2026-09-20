@@ -82,7 +82,7 @@ h2, h3, p { margin: 0; }
 
 /* body */
 .body { display: grid; grid-template-columns: minmax(0, 1fr) var(--rail-w); min-height: 0; }
-.canvas { overflow: auto; padding: 26px 26px 40px; }
+.canvas { position: relative; overflow: auto; padding: 26px 26px 40px; }
 .empty { color: var(--faint); font-size: 16px; padding: 40px 0; max-width: 40ch; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; align-content: start; }
 
@@ -95,6 +95,9 @@ h2, h3, p { margin: 0; }
 .card.ready { border-left-color: var(--ready); }
 .card.seeded { border-left-color: var(--marigold); }
 .card.spoken { border-left-color: var(--marigold); background: #fffbe6; }
+/* the card the room is talking about right now */
+.card { transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, border-color .35s; }
+.card.focus { transform: scale(1.035); border-left-color: var(--marigold); box-shadow: 0 0 0 3px rgba(245, 197, 24, .35), 0 10px 26px rgba(27, 31, 36, .1); z-index: 1; }
 .card.landed { animation: land .5s ease-out; }
 @keyframes land { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
 .card h3 { font-size: 21px; font-weight: 700; letter-spacing: -.015em; line-height: 1.2; }
@@ -150,14 +153,16 @@ h2, h3, p { margin: 0; }
 .close { margin-left: auto; color: inherit; opacity: .6; font-size: 20px; line-height: 1; }
 .close:hover { opacity: 1; }
 
-/* a card's page, opened in place */
-.sheet { position: fixed; inset: 0; background: rgba(27, 31, 36, .3); display: grid; place-items: center; z-index: 30; }
-.sheet-body { width: min(1100px, 94vw); height: 88vh; background: var(--surface); border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 30px 80px rgba(27, 31, 36, .28); }
-.sheet-top { display: flex; align-items: baseline; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--rule); }
-.sheet-title { font-size: 19px; font-weight: 700; }
-.sheet-meta { color: var(--muted); font-size: 14px; }
-.sheet-body iframe { flex: 1; border: 0; background: var(--surface); }
-.sheet-empty { padding: 26px; color: var(--ink); max-width: 60ch; display: grid; gap: 10px; }
+/* a card, grown to fill the canvas */
+.expanded { position: absolute; inset: 0; z-index: 5; background: var(--surface); border-left: 3px solid var(--ready); display: flex; flex-direction: column; overflow: hidden; will-change: transform; }
+.expanded-top { display: flex; align-items: baseline; gap: 12px; padding: 16px 22px; border-bottom: 1px solid var(--rule); }
+.expanded-title { font-size: 24px; font-weight: 700; letter-spacing: -.015em; }
+.expanded-meta { color: var(--muted); font-size: 14px; }
+.back { color: var(--muted); font-weight: 500; padding: 6px 10px; border-radius: 4px; }
+.back:hover { color: var(--ink); background: var(--paper); }
+.expanded iframe { flex: 1; border: 0; background: var(--surface); opacity: 0; transition: opacity .25s; }
+.expanded.settled iframe { opacity: 1; }
+.expanded-empty { padding: 26px; color: var(--ink); max-width: 60ch; display: grid; gap: 10px; }
 
 /* notes and transcript, read as documents */
 .doc { max-width: 760px; margin: 0 auto; }

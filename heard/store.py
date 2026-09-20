@@ -104,6 +104,9 @@ class Store:
         self.log: deque[dict[str, Any]] = deque(maxlen=300)
         self.asked: Asked | None = None
         self.expanded: str | None = None
+        #: The card the room is talking about right now, per the classifier.
+        self.focus: str | None = None
+        self.focus_at: float = 0.0
         self.started_at = now()
         #: Last moment the room was audibly speaking: a partial or a commit.
         self.last_speech_at: float = 0.0
@@ -238,6 +241,11 @@ class Store:
         card.updated_at = now()
         self.touch()
 
+    def set_focus(self, card_id: str | None) -> None:
+        self.focus = card_id
+        self.focus_at = now()
+        self.touch()
+
     def expand(self, card_id: str | None) -> None:
         self.expanded = card_id
         self.touch()
@@ -311,6 +319,8 @@ class Store:
             "log": list(self.log)[-60:],
             "asked": asdict(self.asked) if self.asked else None,
             "expanded": self.expanded,
+            "focus": self.focus,
+            "focus_at": self.focus_at,
         }
 
 
