@@ -12,27 +12,16 @@
 
 ## What it does
 
-Heard! is an ambient agent that sits in a working meeting.
+Heard! is an ambient agent teammate that sits in a working meeting. It
+writes down the ideas and the threads of discussion, looks things up, brings
+information to the table, answers questions, and joins the discussion when it
+has something to add.
 
-- **Keeps live meeting notes** as people talk.
-- **Gives every project or idea a card** on a shared board, within seconds of it being named.
-- **Sends sub-agents to research** the open questions, unprompted.
-- **Answers when asked**, and speaks up on its own only when it has found something worth saying. Otherwise it keeps quiet.
-
-```
-J   "I've been working on a product called YesChef — it listens to a kitchen
-     during service and turns call-outs into a live board."
-                          →  CARD  YesChef · named            (< 5 s)
-                          →  RESEARCH  has this been done? who is it for?   (unprompted)
-HEARD!                       (nothing)
-
-G   "Let's see what Heard thinks."
-HEARD!  "Voice KDS exists — SoundHound and Veovox both ship one…"     [asked]
-
-S   "Okay, agreed. Let's go with the vision assistant then."
-HEARD!  "Heads up — Devpost has at least six hackathon projects
-         doing exactly this…"                                        [finding]
-```
+- **Takes the meeting notes**, live, as people talk.
+- **Sorts what comes up** — ideas, projects, points of discussion — into cards on a shared board.
+- **Investigates when needed**: researches an open question and brings back supporting information and options.
+- **Speaks up when it should**, joining the discussion with an opinion of its own.
+- **Answers questions** from the room, in real time.
 
 ## SteelHacks XIII
 
@@ -55,19 +44,21 @@ Built in 24 hours at **SteelHacks XIII** (University of Pittsburgh, Sept 19–20
 - Speech: ElevenLabs Scribe v2 (STT) and ElevenLabs TTS
 - Models: Nemotron via NVIDIA NIM (classifier, notes agent); Claude via the Claude Agent SDK (front desk, research sub-agents)
 - Stack: Python, FastAPI, React + Vite
-- The code was written with Claude Code (Claude Fable 5.1). See [What carried over](#what-carried-over-from-the-kitchen-build) for the parts that predate the event.
+- The code was written with Claude Code (Claude Fable 5.1).
 
 ## Architecture
 
-Five components. Two have no model in them.
+Speech in, five components, speech out. The Scribe and the harness are plain code.
 
 | Component | Model | Runs | Writes |
 |---|---|---|---|
+| **STT** | ElevenLabs Scribe v2, realtime | on the room microphone, continuously | committed lines of speech |
 | **Scribe** | none | every STT commit | `data/transcript.md` — verbatim, anchored, append-only |
 | **Classifier** | Nemotron via NVIDIA NIM | every 2–5 s of new speech | placeholder cards (< 5 s) + a signal |
 | **Notes agent** | Nemotron via NVIDIA NIM | every ~20 s | `data/notes.md` — the shared context window |
 | **Front desk** | Claude Agent SDK, one resident session | woken by a signal or a returning sub-agent | tool calls only: `recall · investigate · say · note` |
 | **Sub-agents** | Claude Agent SDK + WebSearch | on `investigate`, max 3 | an HTML page per card + a summary |
+| **TTS** | ElevenLabs, streamed | on every `say` the harness lets through | audio to the board, with an echo guard |
 
 Between `say` and the speakers sits the **harness**, plain code: `say` must
 carry a reason the runtime can check (`asked` — someone addressed Heard in the
@@ -147,26 +138,9 @@ heard/
   research.py     one SDK run per investigation → HTML page
   harness.py      say → reason check → budget → floor → TTS
   nim.py          NIM client + loose JSON parsing
-  speech/         Scribe v2 realtime, TTS streaming, echo guard (ported from the kitchen build)
+  speech/         Scribe v2 realtime, TTS streaming, echo guard
   server/         FastAPI app, WebSocket hub
 board/            React + Vite: canvas, task rail, transcript strip, notes view, banner
 fixtures/demo.txt the scripted demo meeting
 scripts/replay.py posts a fixture to /inject with timing
 ```
-
-## Nemotron
-
-The classifier and the notes agent run on Nemotron through NVIDIA NIM: the two
-components on the clock, where a one-second JSON answer matters more than deep
-reasoning. [`docs/NEMOTRON.md`](docs/NEMOTRON.md) explains the split, and
-`eval/classifier_bench.py` scores the classifier across Nemotron models and
-reasoning modes on a labelled set of meeting moments (latency, valid JSON,
-spurious cards, verbatim names, addressed precision/recall). Results are in
-`eval/results/`.
-
-## What carried over from the kitchen build
-
-The ElevenLabs Scribe socket reader, TTS streaming with the echo guard,
-the FastAPI/asyncio skeleton, the WebSocket hub with full-state resync, the
-browser mic capture and audio unlock, and the loose-JSON NIM parsing.
-Everything above the transcript is new.
