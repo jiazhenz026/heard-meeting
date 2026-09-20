@@ -15,6 +15,7 @@ import asyncio
 import contextlib
 import json
 import logging
+import re
 from typing import Any, Awaitable, Callable
 
 from . import nim
@@ -48,6 +49,16 @@ Rules:
 """
 
 Signal = dict[str, Any]
+
+#: Heard's name as speech-to-text writes it. The model may only claim someone
+#: addressed Heard if one of these is actually in the lines.
+_NAME = re.compile(r"\b(?:heard|herd|hurd|hird)\b", re.IGNORECASE)
+_VERB = re.compile(r"\b(?:i|we|you|they|he|she|i've|we've|you've|never|just|have|has|had|haven't)\s+(?:heard|herd)\b", re.IGNORECASE)
+
+
+def names_heard(text: str) -> bool:
+    """True when the text says Heard's name, not the verb ("I heard that")."""
+    return bool(_NAME.search(_VERB.sub(" ", text)))
 
 
 class Classifier:
@@ -150,6 +161,11 @@ class Classifier:
             focus = c.id if c else None
         if focus:
             self.store.set_focus(focus)
+        if signal.get("addressed") and not names_heard(signal.get("text") or ""):
+            # Nobody said its name: a question to a teammate is not a question to Heard.
+            log.info("addressed overruled: no name in %r", (signal.get("text") or "")[:80])
+            signal["addressed"] = False
+            signal["intent"] = None
         if signal.get("addressed"):
             a = self.store.asked
             if a is not None and a.utterance_id in {u.id for u in new}:
