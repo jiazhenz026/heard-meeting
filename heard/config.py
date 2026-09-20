@@ -71,7 +71,7 @@ class Config:
     #: The front desk and the researchers run on the Claude Agent SDK. Empty
     #: means the CLI's default model. Aliases ("opus", "sonnet") are accepted.
     frontdesk_model: str = field(default_factory=lambda: _s("HEARD_FRONTDESK_MODEL", ""))
-    research_model: str = field(default_factory=lambda: _s("HEARD_RESEARCH_MODEL", ""))
+    research_model: str = field(default_factory=lambda: _s("HEARD_RESEARCH_MODEL", "haiku"))
     frontdesk_effort: str = field(default_factory=lambda: _s("HEARD_FRONTDESK_EFFORT", "low"))
     research_effort: str = field(default_factory=lambda: _s("HEARD_RESEARCH_EFFORT", "low"))
     #: "off" runs the process without a front desk: cards and notes only.
@@ -101,7 +101,8 @@ class Config:
     max_sentences: int = field(default_factory=lambda: _i("HEARD_MAX_SENTENCES", 2))
     #: Concurrent researchers.
     max_research: int = field(default_factory=lambda: _i("HEARD_MAX_RESEARCH", 3))
-    research_timeout_s: float = field(default_factory=lambda: _f("HEARD_RESEARCH_TIMEOUT_S", 180.0))
+    #: No hard stop on a researcher: it is kept fast by the model, the two-search
+    #: budget and max_turns instead, so a slow run never leaves half a report.
     #: How long after a line is spoken a matching transcript is the mic
     #: hearing the speaker.
     playback_echo_guard_s: float = field(default_factory=lambda: _f("HEARD_ECHO_GUARD_S", 2.0))
