@@ -53,7 +53,14 @@ h2, h3, p { margin: 0; }
 .t, .clock, .task-time { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
 
 /* gate */
-.gate { height: 100%; display: grid; place-items: center; background: var(--paper); }
+.gate { position: relative; height: 100%; display: grid; place-items: center; background: var(--paper); overflow: hidden; }
+.flock { position: absolute; left: 50%; top: 50%; width: min(1100px, 96vw); height: 0; transform: translate(-50%, -215px); pointer-events: none; }
+.sheep { position: absolute; bottom: 0; width: 112px; height: auto; transform-origin: 50% 80%; transform: translateY(calc(-1 * var(--lift))) rotate(var(--rot)); animation: hop 1.6s cubic-bezier(.45,0,.55,1) infinite; filter: drop-shadow(0 8px 10px rgba(27, 31, 36, .18)); }
+@keyframes hop {
+  0%, 100% { transform: translateY(calc(-1 * var(--lift))) rotate(var(--rot)); }
+  50% { transform: translateY(calc(-1 * var(--lift) - 26px)) rotate(calc(var(--rot) - 4deg)); }
+}
+@media (max-width: 720px) { .sheep { width: 72px; } .flock { transform: translate(-50%, -200px); } }
 .gate-inner { max-width: 460px; padding: 40px; text-align: left; }
 .gate-kicker { color: var(--muted); font-size: 20px; margin: 0 0 4px 2px; }
 .gate .wordmark { font-size: 56px; line-height: 1; }

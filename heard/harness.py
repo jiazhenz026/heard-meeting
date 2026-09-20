@@ -47,20 +47,26 @@ class Harness:
         self.voice = voice
         self.config = config
         self._last_unsolicited_at: float = 0.0
-        self._floor_lock = asyncio.Lock()
+        #: Everything spoken goes through one FIFO: acks, answers, findings,
+        #: in the order they were accepted. One worker drains it.
+        self._queue: asyncio.Queue[tuple[str, str, list[str], list[str], bool]] = asyncio.Queue()
+        self._worker: asyncio.Task[None] | None = None
         self.rejections: list[dict[str, Any]] = []
 
     # -- the check ---------------------------------------------------------
 
-    def check(self, text: str, reason: str, refs: list[str]) -> Verdict:
+    def check(self, text: str, reason: str, refs: list[str], answering: str | None = None) -> Verdict:
         text = _tidy(text, self.config.max_sentences)
         if not text:
             return Verdict(False, "empty line")
         if reason not in REASONS:
             return Verdict(False, f"reason must be one of {REASONS}")
         if reason == "asked":
-            a = self.store.asked
-            if a is None or a.replied:
+            a = self._ask_for(answering)
+            if a is None:
+                open_ids = [x.utterance_id for x in self.store.open_asks(self.config.asked_window_s)]
+                if answering and open_ids:
+                    return Verdict(False, f"no open question {answering!r}; open: {', '.join(open_ids)}")
                 return Verdict(False, "nobody asked: no open direct address")
             if now() - a.at > self.config.asked_window_s:
                 return Verdict(False, f"the question was {now() - a.at:.0f}s ago; the moment passed")
@@ -84,6 +90,14 @@ class Harness:
                                   f"{self.config.unsolicited_gap_s - gap:.0f}s to go")
         return Verdict(True, "finding", text)
 
+    def _ask_for(self, answering: str | None):
+        """The open address `say` is answering: the named one, else the oldest open."""
+        if answering:
+            a = self.store.find_ask(answering)
+            return a if a is not None and not a.replied else None
+        opens = self.store.open_asks(self.config.asked_window_s)
+        return opens[0] if opens else None
+
     # -- the quick acknowledgement ------------------------------------------
 
     async def ack(self) -> None:
@@ -98,13 +112,13 @@ class Harness:
             return
         text = random.choice(lines)
         self.store.log_event("said", f"[ack] {text}")
-        asyncio.create_task(self._floor(text, "ack", [], [], record=False))
+        self._enqueue(text, "ack", [], [], record=False)
 
     # -- the door ----------------------------------------------------------
 
-    async def say(self, text: str, reason: str, refs: list[str] | None = None) -> Verdict:
+    async def say(self, text: str, reason: str, refs: list[str] | None = None, answering: str | None = None) -> Verdict:
         refs = refs or []
-        v = self.check(text, reason, refs)
+        v = self.check(text, reason, refs, answering)
         if not v.accepted:
             self.rejections.append({"at": now(), "text": text, "reason": reason, "why": v.why})
             self.store.log_event("rejected", f"[{reason}] {text} — {v.why}")
@@ -112,8 +126,10 @@ class Harness:
             return v
         # Commit the budget and the flags now, before the floor: a second
         # call arriving while this one waits must see the door closed.
-        if reason == "asked" and self.store.asked is not None:
-            self.store.asked.replied = True
+        if reason == "asked":
+            a = self._ask_for(answering)
+            if a is not None:
+                a.replied = True
         if reason == "finding":
             self._last_unsolicited_at = now()
             for ref in refs:
@@ -126,11 +142,28 @@ class Harness:
             if t is not None:
                 evidence.extend(t.sources[:4])
         self.store.work_start("floor", "Waiting for a gap to speak")
-        asyncio.create_task(self._floor(v.text, reason, refs, evidence))
+        self._enqueue(v.text, reason, refs, evidence, record=True)
         return v
 
+    # -- the FIFO ----------------------------------------------------------
+
+    def _enqueue(self, text: str, reason: str, refs: list[str], evidence: list[str], *, record: bool) -> None:
+        self._queue.put_nowait((text, reason, refs, evidence, record))
+        if self._worker is None or self._worker.done():
+            self._worker = asyncio.create_task(self._drain(), name="heard.floor")
+
+    async def _drain(self) -> None:
+        while True:
+            text, reason, refs, evidence, record = await self._queue.get()
+            try:
+                await self._floor(text, reason, refs, evidence, record=record)
+            except asyncio.CancelledError:
+                raise
+            except Exception:
+                log.exception("floor failed for %r", text)
+
     async def _floor(self, text: str, reason: str, refs: list[str], evidence: list[str], *, record: bool = True) -> None:
-        async with self._floor_lock:
+        if True:
             started = now()
             timeout = 4.0 if not record else self.config.floor_timeout_s
             while True:

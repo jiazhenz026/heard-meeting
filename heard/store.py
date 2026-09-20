@@ -102,7 +102,8 @@ class Store:
         self.tasks: dict[str, Task] = {}
         self.said: list[Said] = []
         self.log: deque[dict[str, Any]] = deque(maxlen=300)
-        self.asked: Asked | None = None
+        #: Open direct addresses, oldest first. `asked` is the newest open one.
+        self.asks: list[Asked] = []
         self.expanded: str | None = None
         #: The card the room is talking about right now, per the classifier.
         self.focus: str | None = None
@@ -331,9 +332,30 @@ class Store:
 
     # -- said / asked / log ------------------------------------------------
 
-    def mark_asked(self, utterance_id: str, text: str, intent: str) -> None:
-        self.asked = Asked(at=now(), utterance_id=utterance_id, text=text, intent=intent)
+    @property
+    def asked(self) -> Asked | None:
+        """The newest open direct address, or None."""
+        for a in reversed(self.asks):
+            if not a.replied:
+                return a
+        return None
+
+    def open_asks(self, window_s: float) -> list[Asked]:
+        cutoff = now() - window_s
+        return [a for a in self.asks if not a.replied and a.at >= cutoff]
+
+    def find_ask(self, utterance_id: str) -> Asked | None:
+        for a in self.asks:
+            if a.utterance_id == utterance_id:
+                return a
+        return None
+
+    def mark_asked(self, utterance_id: str, text: str, intent: str) -> Asked:
+        a = Asked(at=now(), utterance_id=utterance_id, text=text, intent=intent)
+        self.asks.append(a)
+        self.asks = self.asks[-12:]
         self.touch()
+        return a
 
     def record_said(self, text: str, reason: str, refs: list[str], evidence: list[str], delivered: bool) -> Said:
         s = Said(id=mint_id("say"), at=now(), text=text, reason=reason, refs=refs,
@@ -365,6 +387,7 @@ class Store:
             "said": [asdict(s) for s in self.said[-20:]],
             "log": list(self.log)[-60:],
             "asked": asdict(self.asked) if self.asked else None,
+            "asks": [asdict(a) for a in self.asks[-6:]],
             "expanded": self.expanded,
             "focus": self.focus,
             "focus_at": self.focus_at,

@@ -55,6 +55,14 @@ export interface Said {
   delivered: boolean;
 }
 
+export interface Ask {
+  at: number;
+  utterance_id: string;
+  text: string;
+  intent: string;
+  replied: boolean;
+}
+
 export interface WorkItem {
   key: string;
   text: string;
@@ -96,7 +104,8 @@ export interface StatePayload {
   tasks: Task[];
   said: Said[];
   log: LogEntry[];
-  asked: { at: number; utterance_id: string; text: string; intent: string; replied: boolean } | null;
+  asked: Ask | null;
+  asks: Ask[];
   expanded: string | null;
   focus: string | null;
   focus_at: number;
@@ -117,6 +126,7 @@ export const EMPTY_STATE: StatePayload = {
   said: [],
   log: [],
   asked: null,
+  asks: [],
   expanded: null,
   focus: null,
   focus_at: 0,

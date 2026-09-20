@@ -227,6 +227,7 @@ export default function App() {
   if (!started) {
     return (
       <div className="gate">
+        <Flock />
         <div className="gate-inner">
           <p className="gate-kicker">Don't follow the</p>
           <div className="wordmark">Heard<span>!</span></div>
@@ -362,6 +363,31 @@ export default function App() {
         </div>
       )}
 
+    </div>
+  );
+}
+
+/** Five sheep hopping in an arc over the start screen. Don't follow them. */
+function Flock() {
+  const sheep = [
+    { left: "6%", lift: 0, rot: -14, delay: 0 },
+    { left: "26%", lift: 70, rot: -7, delay: 0.12 },
+    { left: "46%", lift: 110, rot: 0, delay: 0.24 },
+    { left: "66%", lift: 70, rot: 8, delay: 0.36 },
+    { left: "86%", lift: 0, rot: 15, delay: 0.48 },
+  ];
+  return (
+    <div className="flock" aria-hidden="true">
+      {sheep.map((s, i) => (
+        <img
+          key={i}
+          className="sheep"
+          src="/sheep.png"
+          alt=""
+          style={{ left: s.left, ["--lift" as string]: `${s.lift}px`, ["--rot" as string]: `${s.rot}deg`, animationDelay: `${s.delay}s` }}
+          onError={(e) => { const el = e.currentTarget; if (!el.src.endsWith("sheep-fallback.svg")) el.src = "/sheep-fallback.svg"; }}
+        />
+      ))}
     </div>
   );
 }

@@ -234,7 +234,7 @@ class Heard:
         self.store.tasks.clear()
         self.store.said.clear()
         self.store.log.clear()
-        self.store.asked = None
+        self.store.asks.clear()
         self.store.expanded = None
         self.store.focus = None
         self.store.notes = ""
