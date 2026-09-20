@@ -37,11 +37,11 @@ Built in 24 hours at **SteelHacks XIII** (University of Pittsburgh, Sept 19–20
 
 **Team**
 
-| Name | Email |
+| Name | Email | --- |
 |---|---|
-| Jiazhen Zhang | jiazhenz026@gmail.com |
-| Sam Gombiner | Sam.gombiner@gmail.com |
-| Gavin Zheng | gzheng227@gmail.com |
+| Jiazhen Zhang | jiazhenz026@gmail.com | jiazhenz@engineering.upenn.edu |
+| Sam Gombiner | Sam.gombiner@gmail.com | slg171@pitt.edu |
+| Gavin Zheng | gzheng227@gmail.com | --- |
 
 **Links:** [Devpost](https://devpost.com/software/heard-puhs0f) · Demo video / slides (coming soon)
 
