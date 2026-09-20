@@ -21,7 +21,7 @@ researchers) runs on the Claude Agent SDK. That split is deliberate:
   it is in the room. Waking the front desk costs a tool loop (3–8 s); the
   classifier has to answer in about a second and it fires 80–140 times per ten
   minutes. A small, fast, JSON-only model is the right tool, and Nemotron
-  Super with reasoning off answers in about 1.3 s median.
+  Super with reasoning off answers in 1.5 s median (see Results).
 - **The classifier is allowed to be wrong.** A bad pass costs one stray card
   or one unnecessary wake, never an utterance: it cannot speak. So it can be
   tuned for speed and let the slower agents adjudicate.
