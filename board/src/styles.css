@@ -82,10 +82,10 @@ h2, h3, p { margin: 0; }
 
 /* body */
 .body { display: grid; grid-template-columns: minmax(0, 1fr) var(--rail-w); min-height: 0; }
-.canvas { position: relative; overflow: auto; padding: 26px; display: flex; flex-direction: column; }
+.canvas { position: relative; overflow: auto; padding: 44px 48px; display: flex; flex-direction: column; }
 .canvas > .grid { flex: 1; }
 .empty { color: var(--faint); font-size: 16px; padding: 40px 0; max-width: 40ch; }
-.grid { display: grid; gap: 26px; align-content: start; justify-items: center; align-items: center; }
+.grid { display: grid; gap: 44px; align-content: start; justify-items: center; align-items: center; }
 /* The board fills the room: one note takes the whole canvas, two or three
    share it side by side, four make a 2x2, then 3x2 and 3x3. Past nine the
    grid flows. */
