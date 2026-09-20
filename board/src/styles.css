@@ -54,13 +54,12 @@ h2, h3, p { margin: 0; }
 
 /* gate */
 .gate { position: relative; height: 100%; display: grid; place-items: center; background: var(--paper); overflow: hidden; }
-.flock { position: absolute; left: 50%; top: 50%; width: min(1100px, 96vw); height: 0; transform: translate(-50%, -215px); pointer-events: none; }
-.sheep { position: absolute; bottom: 0; width: 112px; height: auto; transform-origin: 50% 80%; transform: translateY(calc(-1 * var(--lift))) rotate(var(--rot)); animation: hop 1.6s cubic-bezier(.45,0,.55,1) infinite; filter: drop-shadow(0 8px 10px rgba(27, 31, 36, .18)); }
-@keyframes hop {
-  0%, 100% { transform: translateY(calc(-1 * var(--lift))) rotate(var(--rot)); }
-  50% { transform: translateY(calc(-1 * var(--lift) - 26px)) rotate(calc(var(--rot) - 4deg)); }
-}
-@media (max-width: 720px) { .sheep { width: 72px; } .flock { transform: translate(-50%, -200px); } }
+/* the wheel: a circle of sheep turning below the title, top half visible */
+.wheel { --r: 340px; position: absolute; left: 50%; top: 50%; width: calc(var(--r) * 2 + 140px); height: calc(var(--r) + 90px); transform: translate(-50%, calc(-1 * var(--r) - 190px)); overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%); mask-image: linear-gradient(to bottom, #000 72%, transparent 100%); }
+.rim { position: absolute; left: 50%; top: calc(100% - 20px); width: 0; height: 0; animation: turn 28s linear infinite; }
+.sheep { position: absolute; left: -56px; top: -40px; width: 112px; height: auto; transform: rotate(var(--angle)) translateY(calc(-1 * var(--r))); transform-origin: 56px 40px; filter: drop-shadow(0 8px 10px rgba(27, 31, 36, .18)); }
+@keyframes turn { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@media (max-width: 720px) { .wheel { --r: 220px; } .sheep { width: 72px; left: -36px; top: -26px; transform-origin: 36px 26px; } }
 .gate-inner { max-width: 460px; padding: 40px; text-align: left; }
 .gate-kicker { color: var(--muted); font-size: 20px; margin: 0 0 4px 2px; }
 .gate .wordmark { font-size: 56px; line-height: 1; }
