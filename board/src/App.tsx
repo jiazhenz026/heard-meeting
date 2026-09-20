@@ -179,6 +179,7 @@ export default function App() {
   }, [typed, speaker]);
 
   const now = serverNow(offset);
+  const tones = useTones(state.cards);
   const cards = useMemo(
     () => state.cards.filter((c) => !c.seeded).concat(state.cards.filter((c) => c.seeded)),
     [state.cards],
@@ -269,6 +270,7 @@ export default function App() {
                     now={now}
                     focused={state.focus === c.id && now - state.focus_at < 75}
                     ripping={ripping.has(c.id)}
+                    tone={tones.get(c.id) ?? 1}
                     onOpen={() => openCard(c.id)}
                     onRemove={() => removeCard(c.id)}
                     register={(el) => { if (el) cardEls.current.set(c.id, el); else cardEls.current.delete(c.id); }}
@@ -325,14 +327,14 @@ export default function App() {
   );
 }
 
-function CardView({ card, tasks, now, onOpen, onRemove, register, focused, ripping }: { card: Card; tasks: Task[]; now: number; onOpen: () => void; onRemove: () => void; register: (el: HTMLElement | null) => void; focused: boolean; ripping: boolean }) {
+function CardView({ card, tasks, now, onOpen, onRemove, register, focused, ripping, tone }: { card: Card; tasks: Task[]; now: number; onOpen: () => void; onRemove: () => void; register: (el: HTMLElement | null) => void; focused: boolean; ripping: boolean; tone: number }) {
   const running = tasks.some((t) => t.status === "RUNNING");
   const age = now - card.created_at;
   const tagline = card.seeded ? card.one_liner : shorten(card.summary) || card.one_liner || "";
   return (
     <article
       ref={register}
-      className={`card tone-${tone(card)} tilt-${tilt(card)} ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${focused ? "focus" : ""} ${age < 1.2 ? "landed" : ""} ${ripping ? "ripping" : ""}`}
+      className={`card tone-${card.seeded ? 0 : tone} tilt-${tilt(card)} ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${focused ? "focus" : ""} ${age < 1.2 ? "landed" : ""} ${ripping ? "ripping" : ""}`}
       onClick={onOpen}
       title={card.named_by === "heard" ? "Heard named this one" : undefined}
     >
@@ -465,12 +467,46 @@ function cardState(c: Card): string {
   return "Looked into";
 }
 
-/** A pastel paper tone per card, fixed by its id so it never changes. */
-function tone(card: Card): number {
-  if (card.seeded) return 0;
-  let h = 0;
-  for (const ch of card.id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return 1 + (h % 11);
+const TONES = 11;
+
+/**
+ * A paper tone per card. A new card takes a tone no card on the board is
+ * using; once all eleven are taken, the least-used one. Assignments are
+ * remembered per card id and kept in the browser, so a note keeps its
+ * colour across reloads and after other notes are deleted.
+ */
+function useTones(cards: Card[]): Map<string, number> {
+  const ref = useRef<Map<string, number> | null>(null);
+  if (ref.current === null) {
+    ref.current = new Map();
+    try {
+      const raw = localStorage.getItem("heard.tones");
+      if (raw) for (const [id, t] of Object.entries(JSON.parse(raw) as Record<string, number>)) ref.current.set(id, t);
+    } catch { /* fresh */ }
+  }
+  const map = ref.current;
+  let changed = false;
+  const live = cards.filter((c) => !c.seeded).sort((a, b) => a.created_at - b.created_at);
+  for (const c of live) {
+    if (map.has(c.id)) continue;
+    const used = new Map<number, number>();
+    for (const other of live) {
+      const t = map.get(other.id);
+      if (t !== undefined) used.set(t, (used.get(t) ?? 0) + 1);
+    }
+    let pick = 1;
+    let best = Infinity;
+    for (let t = 1; t <= TONES; t++) {
+      const n = used.get(t) ?? 0;
+      if (n < best) { best = n; pick = t; }
+    }
+    map.set(c.id, pick);
+    changed = true;
+  }
+  if (changed) {
+    try { localStorage.setItem("heard.tones", JSON.stringify(Object.fromEntries(map))); } catch { /* fine */ }
+  }
+  return map;
 }
 
 function tilt(card: Card): number {
