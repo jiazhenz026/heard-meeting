@@ -216,15 +216,19 @@ class Stt:
     async def _session(self) -> None:
         from websockets.asyncio.client import connect  # imported late: see §6.2
 
-        query = urlencode(
-            {
-                "model_id": MODEL_ID,
-                "audio_format": AUDIO_FORMAT,
-                # Server-side VAD. §6.3.1: whatever Scribe decided was one
-                # segment stays one segment.
-                "commit_strategy": "vad",
-            }
-        )
+        params: dict[str, Any] = {
+            "model_id": MODEL_ID,
+            "audio_format": AUDIO_FORMAT,
+            # Server-side VAD. §6.3.1: whatever Scribe decided was one
+            # segment stays one segment.
+            "commit_strategy": "vad",
+        }
+        # Keyterm biasing: the product names and "Heard" itself, so a direct
+        # address is transcribed as the name and not as "herd" or "hurt".
+        keyterms = [k.strip() for k in (getattr(self._config, "stt_keyterms", "") or "").split(",") if k.strip()]
+        if keyterms:
+            params["keyterms"] = keyterms
+        query = urlencode(params, doseq=True)
         url = f"{REALTIME_URL}?{query}"
         headers = {"xi-api-key": self._config.elevenlabs_api_key}
 

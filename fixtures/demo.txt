@@ -1,0 +1,13 @@
+# The demo meeting. `+N` = seconds to wait before the line. `scripts/replay.py` posts these to /inject.
++1  J: Okay, we're replaying last night's product meeting with Heard on. Does anyone have any good ideas?
++4  J: I've been working on the architecture for a product called YesChef. It listens to a restaurant kitchen during service, turns what cooks call out into a live board, and speaks up before anyone has to ask.
++8  S: Wow, I really like that idea. It bridges a gap I've never thought about before. Maybe for good reason, because it might be too niche.
++7  G: I don't know, I'm not really understanding who it would be useful for.
++6  J: I've put a lot of thought into this project and I feel like pivoting now would be sunk cost.
++6  G: Let's see what Heard thinks.
++14 S: Okay, different idea. I've been thinking about an on-demand vision assistant for the visually impaired. It activates your personal AI eye right when you need help, replacing slow static photos with immediate live help.
++8  J: Hmm, I like that idea as well. It could be very helpful and it fits our Nemotron track.
++6  G: Yeah, me too. It could be an awesome tool that I could easily see being useful.
++6  S: Okay, agreed. Let's go with the vision assistant then.
++40 S: Wow, that's great to know. We could have spent hours on a CV mobile app and had to fully pivot.
++8  Q: So how did you build Heard? Heard, how were you built?
