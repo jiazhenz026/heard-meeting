@@ -266,7 +266,7 @@ def create_app(settings: Settings | None = None, config: Config = CONFIG) -> Fas
         path = heard.store.card_page_path(card_id)
         if not path.is_file():
             raise HTTPException(404, "no page for this card yet")
-        return path.read_text(encoding="utf-8")
+        return _light(path.read_text(encoding="utf-8"))
 
     @app.post("/inject")
     async def inject(body: InjectBody) -> dict[str, Any]:
@@ -298,6 +298,24 @@ def create_app(settings: Settings | None = None, config: Config = CONFIG) -> Fas
             return "<h1>Heard!</h1><p>The board is not built. <code>cd board && npm run build</code>, or <code>npm run dev</code>.</p>"
 
     return app
+
+
+_LIGHT_OVERRIDE = """<style id="heard-light">
+  :root { color-scheme: light !important; }
+  body { background: #ffffff !important; color: #1b1f24 !important; }
+  h1, h2, h3, strong { color: #1b1f24 !important; }
+  .kicker, .brief, .meta { color: #656c75 !important; }
+  a { color: #2f5fb3 !important; }
+  code, pre { background: #eef1f4 !important; color: #1b1f24 !important; }
+  h2 { border-bottom-color: #e3e4e6 !important; }
+</style></head>"""
+
+
+def _light(html_text: str) -> str:
+    """Pages written by an earlier build were dark. Serve every page light."""
+    if 'id="heard-light"' in html_text:
+        return html_text
+    return html_text.replace("</head>", _LIGHT_OVERRIDE, 1)
 
 
 def _heard_page() -> str:

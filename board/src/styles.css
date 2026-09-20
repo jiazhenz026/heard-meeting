@@ -128,7 +128,6 @@ h2, h3, p { margin: 0; }
 .card.tilt-1 { --tilt: 0.6deg; }
 .card.tilt-2 { --tilt: 1.3deg; }
 .card:hover { transform: rotate(0deg) translateY(-2px); box-shadow: 0 2px 2px rgba(27, 31, 36, .06), 0 14px 26px -8px rgba(27, 31, 36, .28); }
-.card.placeholder { background-image: repeating-linear-gradient(0deg, transparent, transparent 26px, rgba(0, 0, 0, .05) 26px, rgba(0, 0, 0, .05) 27px); background-position: 0 44px; }
 .card.placeholder h3 { color: rgba(42, 36, 23, .65); }
 .card.spoken { box-shadow: 0 0 0 3px rgba(245, 197, 24, .55), 0 6px 14px -4px rgba(27, 31, 36, .18); }
 .card.focus { transform: rotate(0deg) scale(1.05) translateY(-4px); box-shadow: 0 2px 2px rgba(27, 31, 36, .06), 0 22px 34px -10px rgba(27, 31, 36, .35); z-index: 1; }
