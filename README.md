@@ -4,7 +4,7 @@
 
 # Heard!
 
-**A meeting dashboard that joins the conversation.**
+**A meeting board that joins the conversation.**
 
 </div>
 
@@ -22,6 +22,12 @@ has something to add.
 - **Investigates when needed**: researches an open question and brings back supporting information and options.
 - **Speaks up when it should**, joining the discussion with an opinion of its own.
 - **Answers questions** from the room, in real time.
+
+<div align="center">
+
+<img src="docs/assets/homepage.png" alt="The Heard! board during a meeting" width="820" />
+
+</div>
 
 ## SteelHacks XIII
 
