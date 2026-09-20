@@ -3,6 +3,7 @@ name = "heard-meeting"
 version = "0.1.0"
 description = "Heard! — a meeting board that joins the conversation and conducts research in real time."
 requires-python = ">=3.11"
+license = { file = "LICENSE" }
 dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
