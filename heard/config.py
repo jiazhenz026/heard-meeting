@@ -55,6 +55,10 @@ class Config:
     )
     tts_model_id: str = field(default_factory=lambda: _s("ELEVENLABS_TTS_MODEL", "eleven_flash_v2_5"))
 
+    #: Words Scribe is biased towards: names the room will say that a general
+    #: model would otherwise mishear. Comma-separated.
+    stt_keyterms: str = field(default_factory=lambda: _s(
+        "HEARD_STT_KEYTERMS", "Heard,YesChef,Nemotron,ElevenLabs,Devpost,SteelHacks,Claude,NIM"))
     #: STT: "auto" tries Scribe and falls back to the board's own recogniser.
     #: TTS: "auto" is ElevenLabs, then a pre-rendered file, then silence.
     stt_provider: str = field(default_factory=lambda: _s("HEARD_STT", "auto"))

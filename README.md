@@ -97,6 +97,7 @@ There is also a type-a-line box in the board's top bar.
 Everything is in `.env.example`. The ones that matter on stage:
 
 - `NEMOTRON_MODEL_ID` — the classifier is on the 5-second path; use a small one (`nvidia/nemotron-3-super-120b-a12b`).
+- `HEARD_STT_KEYTERMS` — names Scribe is biased towards (`Heard`, the product names). Add the ideas you plan to pitch.
 - `HEARD_UNSOLICITED_GAP_S` — how often it may speak without being asked.
 - `HEARD_RESEARCH_EFFORT` / `HEARD_RESEARCH_MODEL` — research speed vs depth.
 - `--no-audio` — log spoken lines instead of synthesising them.

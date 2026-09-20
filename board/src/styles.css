@@ -86,25 +86,59 @@ h2, h3, p { margin: 0; }
 .empty { color: var(--faint); font-size: 16px; padding: 40px 0; max-width: 40ch; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; align-content: start; }
 
-/* cards: a title and one tagline, at most three lines. The left rule is the state. */
-.card { position: relative; background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--rule-2); border-radius: 4px; padding: 18px 20px 18px; cursor: pointer; min-height: 104px; display: flex; flex-direction: column; gap: 6px; }
-.card:hover { border-color: var(--rule-2); border-left-color: var(--ink); }
-.card.placeholder { border-style: dashed; border-left-style: solid; }
-.card.placeholder h3 { color: var(--muted); }
-.card.investigating { border-left-color: var(--research); }
-.card.ready { border-left-color: var(--ready); }
-.card.seeded { border-left-color: var(--marigold); }
-.card.spoken { border-left-color: var(--marigold); background: #fffbe6; }
-/* the card the room is talking about right now */
-.card { transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, border-color .35s; }
-.card.focus { transform: scale(1.035); border-left-color: var(--marigold); box-shadow: 0 0 0 3px rgba(245, 197, 24, .35), 0 10px 26px rgba(27, 31, 36, .1); z-index: 1; }
+/* cards: pastel sticky notes. A title and one tagline, at most three lines. */
+.grid { gap: 24px; padding: 6px; }
+.card {
+  --paper-tone: #fff3b0;
+  --paper-edge: rgba(0, 0, 0, .06);
+  position: relative;
+  background: var(--paper-tone);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .35), rgba(255, 255, 255, 0) 40%);
+  border: 0;
+  border-radius: 2px;
+  padding: 20px 22px 22px;
+  cursor: pointer;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #2a2417;
+  box-shadow: 0 1px 1px rgba(27, 31, 36, .06), 0 6px 14px -4px rgba(27, 31, 36, .18);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
+}
+.card::after {
+  /* the curled bottom-right corner */
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, .05) 50%, rgba(0, 0, 0, .12));
+  border-top-left-radius: 2px;
+}
+.card.tone-0 { --paper-tone: #fff3b0; }   /* the seeded Heard! card: marigold paper */
+.card.tone-1 { --paper-tone: #fde2e4; }   /* rose */
+.card.tone-2 { --paper-tone: #d9f2e3; }   /* mint */
+.card.tone-3 { --paper-tone: #dbe9ff; }   /* sky */
+.card.tone-4 { --paper-tone: #ece3ff; }   /* lavender */
+.card.tone-5 { --paper-tone: #ffe4cc; }   /* peach */
+.card.tilt-0 { --tilt: -1.1deg; }
+.card.tilt-1 { --tilt: 0.6deg; }
+.card.tilt-2 { --tilt: 1.3deg; }
+.card:hover { transform: rotate(0deg) translateY(-2px); box-shadow: 0 2px 2px rgba(27, 31, 36, .06), 0 14px 26px -8px rgba(27, 31, 36, .28); }
+.card.placeholder { background-image: repeating-linear-gradient(0deg, transparent, transparent 26px, rgba(0, 0, 0, .05) 26px, rgba(0, 0, 0, .05) 27px); background-position: 0 44px; }
+.card.placeholder h3 { color: rgba(42, 36, 23, .65); }
+.card.spoken { box-shadow: 0 0 0 3px rgba(245, 197, 24, .55), 0 6px 14px -4px rgba(27, 31, 36, .18); }
+.card.focus { transform: rotate(0deg) scale(1.05) translateY(-4px); box-shadow: 0 2px 2px rgba(27, 31, 36, .06), 0 22px 34px -10px rgba(27, 31, 36, .35); z-index: 1; }
 .card.landed { animation: land .5s ease-out; }
-@keyframes land { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
-.card h3 { font-size: 21px; font-weight: 700; letter-spacing: -.015em; line-height: 1.2; }
-.card p { color: var(--muted); font-size: 15px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.card p.ghost { color: var(--faint); font-style: italic; }
-.working { position: absolute; left: -3px; right: 0; bottom: 0; height: 3px; overflow: hidden; }
-.working::after { content: ""; display: block; height: 100%; width: 30%; background: var(--research); animation: slide 1.6s infinite linear; }
+@keyframes land { from { transform: rotate(var(--tilt, 0deg)) translateY(10px); opacity: 0; } to { transform: rotate(var(--tilt, 0deg)); opacity: 1; } }
+.card h3 { font-size: 22px; font-weight: 700; letter-spacing: -.015em; line-height: 1.2; }
+.card p { color: rgba(42, 36, 23, .72); font-size: 15px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card p.ghost { color: rgba(42, 36, 23, .5); font-style: italic; }
+.working { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; overflow: hidden; }
+.working::after { content: ""; display: block; height: 100%; width: 30%; background: rgba(27, 31, 36, .35); animation: slide 1.6s infinite linear; }
 @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(340%); } }
 
 /* rail: name, one line, timer */
@@ -154,7 +188,7 @@ h2, h3, p { margin: 0; }
 .close:hover { opacity: 1; }
 
 /* a card, grown to fill the canvas */
-.expanded { position: absolute; inset: 0; z-index: 5; background: var(--surface); border-left: 3px solid var(--ready); display: flex; flex-direction: column; overflow: hidden; will-change: transform; }
+.expanded { position: absolute; inset: 0; z-index: 5; background: var(--surface); display: flex; flex-direction: column; overflow: hidden; will-change: transform; }
 .expanded-top { display: flex; align-items: baseline; gap: 12px; padding: 16px 22px; border-bottom: 1px solid var(--rule); }
 .expanded-title { font-size: 24px; font-weight: 700; letter-spacing: -.015em; }
 .expanded-meta { color: var(--muted); font-size: 14px; }

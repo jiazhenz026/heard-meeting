@@ -290,7 +290,7 @@ function CardView({ card, tasks, now, onOpen, register, focused }: { card: Card;
   return (
     <article
       ref={register}
-      className={`card ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${focused ? "focus" : ""} ${age < 1.2 ? "landed" : ""}`}
+      className={`card tone-${tone(card)} tilt-${tilt(card)} ${card.status.toLowerCase()} ${card.seeded ? "seeded" : ""} ${card.highlight ? "spoken" : ""} ${focused ? "focus" : ""} ${age < 1.2 ? "landed" : ""}`}
       onClick={onOpen}
       title={card.named_by === "heard" ? "Heard named this one" : undefined}
     >
@@ -412,6 +412,20 @@ function cardState(c: Card): string {
   if (c.status === "PLACEHOLDER") return "Named, not yet understood";
   if (c.status === "INVESTIGATING") return "Being looked into";
   return "Looked into";
+}
+
+/** A pastel paper tone per card, fixed by its id so it never changes. */
+function tone(card: Card): number {
+  if (card.seeded) return 0;
+  let h = 0;
+  for (const ch of card.id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return 1 + (h % 5);
+}
+
+function tilt(card: Card): number {
+  let h = 7;
+  for (const ch of card.id) h = (h * 17 + ch.charCodeAt(0)) >>> 0;
+  return h % 3;
 }
 
 /** Unknown speakers show as nothing, never as a question mark. */
