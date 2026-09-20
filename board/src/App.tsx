@@ -211,7 +211,7 @@ export default function App() {
       <div className="gate">
         <div className="gate-inner">
           <div className="wordmark">Heard<span>!</span></div>
-          <p className="gate-lede">The meeting board that listens, goes and finds out, and speaks up.</p>
+          <p className="gate-lede">The meeting board that listens, searches, and joins your meeting.</p>
           <button className="gate-btn" onClick={begin}>Start listening</button>
           <p className="gate-note">This turns the microphone on and lets the board play sound.</p>
         </div>

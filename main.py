@@ -38,7 +38,7 @@ def validate(config: Config, args: argparse.Namespace) -> list[str]:
 
 
 def banner(config: Config, args: argparse.Namespace) -> None:
-    print("Heard! — the meeting board that listens, goes and finds out, and speaks up.\n")
+    print("Heard! — the meeting board that listens, searches, and joins your meeting.\n")
     for line in config.report():
         print(line)
     if args.no_audio:

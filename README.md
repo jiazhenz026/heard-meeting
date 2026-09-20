@@ -1,4 +1,4 @@
-# Heard! — the meeting board that listens, goes and finds out, and speaks up
+# Heard! — the meeting board that listens, searches, and joins your meeting
 
 Heard! is an ambient agent that sits in a working meeting. It keeps live
 meeting notes, gives every project or idea you discuss a card on a dashboard,

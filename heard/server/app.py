@@ -86,7 +86,7 @@ class Heard:
 
     def seed(self) -> None:
         c = self.store.create_card("Heard!", named_by="speaker", seeded=True,
-                                   one_liner="the meeting board that listens, goes and finds out, and speaks up")
+                                   one_liner="the meeting board that listens, searches, and joins your meeting")
         c.summary = HEARD_CARD_SUMMARY
         c.notes = list(HEARD_CARD_NOTES)
         c.status = "READY"

@@ -1,7 +1,7 @@
 [project]
 name = "heard-meeting"
 version = "0.1.0"
-description = "Heard! — the meeting board that listens, goes and finds out, and speaks up."
+description = "Heard! — the meeting board that listens, searches, and joins your meeting."
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115",
