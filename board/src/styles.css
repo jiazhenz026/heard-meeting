@@ -55,6 +55,7 @@ h2, h3, p { margin: 0; }
 /* gate */
 .gate { height: 100%; display: grid; place-items: center; background: var(--paper); }
 .gate-inner { max-width: 460px; padding: 40px; text-align: left; }
+.gate-kicker { color: var(--muted); font-size: 20px; margin: 0 0 4px 2px; }
 .gate .wordmark { font-size: 56px; line-height: 1; }
 .gate-lede { color: var(--muted); font-size: 18px; margin: 18px 0 32px; max-width: 34ch; }
 .gate-btn { background: var(--ink); color: var(--surface); font-weight: 500; padding: 14px 24px; border-radius: 4px; font-size: 16px; }

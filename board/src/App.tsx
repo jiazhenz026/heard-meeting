@@ -210,8 +210,9 @@ export default function App() {
     return (
       <div className="gate">
         <div className="gate-inner">
+          <p className="gate-kicker">Don't follow the</p>
           <div className="wordmark">Heard<span>!</span></div>
-          <p className="gate-lede">The meeting board that listens, searches, and joins your meeting.</p>
+          <p className="gate-lede">A meeting board that joins the conversation and conducts research in real time.</p>
           <button className="gate-btn" onClick={begin}>Start listening</button>
           <p className="gate-note">This turns the microphone on and lets the board play sound.</p>
         </div>
