@@ -134,6 +134,14 @@ class Heard:
         self._spawn("classifier", self.classifier.run())
         self._spawn("notes", self.notes.run())
         self._spawn("frontdesk", self.frontdesk.run())
+        self._spawn("heartbeat", self._heartbeat())
+
+    async def _heartbeat(self) -> None:
+        """A snapshot every few seconds even when nothing changed, so ages and
+        timers on the board never go stale."""
+        while True:
+            await asyncio.sleep(5.0)
+            await self.push_board()
 
     def _spawn(self, name: str, coro: Any) -> None:
         self.tasks.append(asyncio.create_task(_supervise(name, coro), name=name))

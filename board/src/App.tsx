@@ -23,6 +23,7 @@ export default function App() {
   const [micLevel, setMicLevel] = useState(0);
   const [micNote, setMicNote] = useState<string | null>(null);
   const [micOn, setMicOn] = useState(false);
+  const lastChunk = useRef(0);
   const [speaking, setSpeaking] = useState(false);
   const [banner, setBanner] = useState<Said | null>(null);
   const [view, setView] = useState<View>("canvas");
@@ -180,8 +181,8 @@ export default function App() {
   const begin = useCallback(async () => {
     await audio.current.unlock();
     const m = new Mic({
-      onChunk: (pcm_b64) => sock.current?.send({ type: "audio_chunk", pcm_b64 }),
-      onTranscript: (text, final) => sock.current?.send({ type: "transcript", text, final }),
+      onChunk: (pcm_b64) => { lastChunk.current = Date.now(); sock.current?.send({ type: "audio_chunk", pcm_b64 }); },
+      onTranscript: (text, final) => { lastChunk.current = Date.now(); sock.current?.send({ type: "transcript", text, final }); },
       onLevel: setMicLevel,
       onError: (what) => setMicNote(what),
     });
@@ -196,8 +197,8 @@ export default function App() {
     mic.current?.stop();
     await audio.current.unlock();
     const m = new Mic({
-      onChunk: (pcm_b64) => sock.current?.send({ type: "audio_chunk", pcm_b64 }),
-      onTranscript: (text, final) => sock.current?.send({ type: "transcript", text, final }),
+      onChunk: (pcm_b64) => { lastChunk.current = Date.now(); sock.current?.send({ type: "audio_chunk", pcm_b64 }); },
+      onTranscript: (text, final) => { lastChunk.current = Date.now(); sock.current?.send({ type: "transcript", text, final }); },
       onLevel: setMicLevel,
       onError: (what) => setMicNote(what),
     });
@@ -221,8 +222,11 @@ export default function App() {
   );
   const shown = open ? state.cards.find((c) => c.id === open) ?? null : null;
   const minute = state.started_at ? elapsed(now - state.started_at) : "0:00";
-  const status = statusLine(link, state, micNote, micOn);
-  const noAudio = started && (!micOn || state.health.audio_age === null || state.health.audio_age > 6);
+  // Judged from the board's own microphone stream, live; the server's view
+  // only arrives with snapshots and would go stale between them.
+  const micQuiet = Date.now() - lastChunk.current > 6000;
+  const status = statusLine(link, state, micNote, micOn, micQuiet);
+  const noAudio = started && (!micOn || micQuiet);
 
   if (!started) {
     return (
@@ -504,12 +508,11 @@ function NotesView({ notes, version }: { notes: string; version: number }) {
   );
 }
 
-function statusLine(link: LinkState, state: StatePayload, micNote: string | null, micOn: boolean): { text: string; tone: string } {
+function statusLine(link: LinkState, state: StatePayload, micNote: string | null, micOn: boolean, micQuiet: boolean): { text: string; tone: string } {
   if (link !== "open") return { text: "Reconnecting", tone: "warn" };
   if (micNote && micNote.includes("denied")) return { text: "Microphone off, typing only", tone: "warn" };
   if (!micOn) return { text: "Microphone not started", tone: "warn" };
-  const age = state.health.audio_age;
-  if (age === null || age > 6) return { text: "No audio reaching Heard", tone: "warn" };
+  if (micQuiet) return { text: "Microphone silent", tone: "warn" };
   const h = state.health;
   if (h.frontdesk !== "up") return { text: `Front desk ${h.frontdesk}`, tone: "warn" };
   const parts = ["Listening"];
