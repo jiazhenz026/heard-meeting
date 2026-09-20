@@ -204,3 +204,63 @@ def test_working_item_cannot_outlive_its_task(store: Store) -> None:
     assert all(w["done"] for w in store.snapshot()["working"])
     # finishing the orphaned task later must not raise, and ticks the item
     assert store.finish_task(t.id, summary="x", sources=[]) is None
+
+
+def test_nim_rotates_keys_and_benches_a_429(monkeypatch) -> None:
+    from heard import nim
+    from heard.config import CONFIG
+
+    monkeypatch.setattr(CONFIG, "nvidia_api_key", "key-a")
+    monkeypatch.setattr(CONFIG, "nvidia_api_keys_extra", "key-b, key-a")  # duplicate is ignored
+    assert CONFIG.nvidia_keys == ["key-a", "key-b"]
+    nim._benched.clear()
+    nim._CALLS.clear()
+    used: list[str] = []
+
+    class _Err(Exception):
+        status_code = 429
+
+    class _Completions:
+        def __init__(self, key: str) -> None:
+            self.key = key
+
+        async def create(self, **_kw):
+            used.append(self.key)
+            if self.key == "key-a":
+                raise _Err()
+            msg = type("M", (), {"content": "ok"})()
+            return type("R", (), {"choices": [type("C", (), {"message": msg})()]})()
+
+    class _Client:
+        def __init__(self, key: str) -> None:
+            self.chat = type("Chat", (), {"completions": _Completions(key)})()
+
+        def with_options(self, **_kw):
+            return self
+
+    monkeypatch.setattr(nim, "_client_for", lambda key: _Client(key))
+    monkeypatch.setattr(nim, "_turn", 0)
+
+    assert asyncio.run(nim.chat("s", "u")) == "ok"
+    assert used == ["key-a", "key-b"]          # 429 on a, straight to b
+    assert nim.key_state() == {"keys": 2, "benched": 1}
+    used.clear()
+    assert asyncio.run(nim.chat("s", "u")) == "ok"
+    assert used == ["key-b"]                   # a is benched, so b goes first
+
+
+def test_broken_classifier_json_is_repaired() -> None:
+    from heard.nim import parse_object
+
+    # the exact shape Nemotron returned live: a stray quoted brace inside new_subject
+    broken = (
+        '{\n  "new_subject": {\n    "{\n    "title": "AI eye software",\n'
+        '    "named_by": "speaker"\n  },\n  "addressed": false\n}'
+    )
+    got = parse_object(broken)
+    assert got is not None and got["new_subject"]["title"] == "AI eye software"
+    # cut off before the closing braces, with a trailing comma
+    cut = '{"new_subject": null, "questions": [{"text": "has it been done", "worth_investigating": true},'
+    got = parse_object(cut)
+    assert got is not None and got["questions"][0]["text"] == "has it been done"
+    assert parse_object("I could not decide.") is None

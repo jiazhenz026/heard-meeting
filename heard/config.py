@@ -41,6 +41,9 @@ def _b(key: str, default: bool) -> bool:
 class Config:
     # -- providers ---------------------------------------------------------
     nvidia_api_key: str = field(repr=False, default_factory=lambda: _s("NVIDIA_API_KEY"))
+    #: More NIM keys, comma-separated. NIM's limit is per key (and per model),
+    #: so calls are spread across all keys and a 429 moves on to the next one.
+    nvidia_api_keys_extra: str = field(repr=False, default_factory=lambda: _s("NVIDIA_API_KEYS_EXTRA"))
     nvidia_base_url: str = field(
         default_factory=lambda: _s("NVIDIA_BASE_URL", "https://integrate.api.nvidia.com/v1")
     )
@@ -118,8 +121,17 @@ class Config:
 
     # -- readiness ---------------------------------------------------------
     @property
+    def nvidia_keys(self) -> list[str]:
+        extra = [k.strip() for k in (self.nvidia_api_keys_extra or "").split(",") if k.strip()]
+        seen: list[str] = []
+        for k in [self.nvidia_api_key, *extra]:
+            if k and k not in seen:
+                seen.append(k)
+        return seen
+
+    @property
     def has_nvidia(self) -> bool:
-        return bool(self.nvidia_api_key)
+        return bool(self.nvidia_keys)
 
     @property
     def has_elevenlabs(self) -> bool:
@@ -137,7 +149,7 @@ class Config:
     def report(self) -> list[str]:
         """One line per provider, printed at startup. Never prints a key."""
         return [
-            f"  classifier  {'NIM · ' + self.model_id if self.has_nvidia else 'NO KEY — no cards, no notes'}",
+            f"  classifier  {'NIM · ' + self.model_id + ' · ' + str(len(self.nvidia_keys)) + ' key(s)' if self.has_nvidia else 'NO KEY — no cards, no notes'}",
             f"  notes       {'NIM · ' + self.model_id if self.has_nvidia else 'off'}",
             f"  front desk  {'off' if self.frontdesk == 'off' else 'Claude Agent SDK · ' + (self.frontdesk_model or 'default')}",
             f"  research    Claude Agent SDK · {self.research_model or 'default'} · WebSearch",

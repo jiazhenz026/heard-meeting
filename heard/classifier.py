@@ -67,6 +67,7 @@ class Classifier:
         self.fires = 0
         self.last_fire_at: float | None = None
         self.last_error: str | None = None
+        self._misses = 0
 
     def notify(self) -> None:
         """Called on every commit."""
@@ -91,9 +92,12 @@ class Classifier:
                     break
             try:
                 await self.fire()
-            except Exception as exc:  # a bad pass costs nothing but this pass
+            except Exception as exc:
+                # The call itself failed. Its lines stay unseen for the next pass.
                 self.last_error = f"{type(exc).__name__}: {exc}"
-                log.warning("classifier pass failed: %s", self.last_error)
+                log.warning("classifier pass failed, lines kept: %s", self.last_error)
+                await asyncio.sleep(1.0)
+                self._wake.set()
 
     async def close(self) -> None:
         self._closing.set()
@@ -103,16 +107,26 @@ class Classifier:
         new = self.store.since(self._last_seen)
         if not new:
             return None
-        self._last_seen = new[-1].id
+        new = new[-12:]
         context = self.store.tail(45.0)
         # Context first (older), then the fresh span marked as such.
         older = [u for u in context if u.at < new[0].at][-12:]
         user = _prompt(older, new, self.store)
         self.fires += 1
         self.last_fire_at = now()
-        result = await nim.chat_json(SYSTEM, user, max_tokens=500)
+        result = await nim.chat_json(SYSTEM, user, max_tokens=700)
         if not result:
+            # Nothing usable came back. The lines stay unseen, so the next pass
+            # classifies them again together with whatever was said since.
+            self._misses += 1
+            if self._misses >= 3:          # never loop on the same span forever
+                self._last_seen = new[-1].id
+                self._misses = 0
+            else:
+                self._wake.set()
             return None
+        self._misses = 0
+        self._last_seen = new[-1].id
         signal = _normalise(result, new)
         # Placeholder card, directly, on the 5-second path.
         ns = signal.get("new_subject")

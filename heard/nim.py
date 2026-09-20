@@ -28,18 +28,37 @@ class RateLimited(RuntimeError):
     pass
 
 
-def _get_client() -> Any:
-    global _client
-    if _client is None:
-        from openai import AsyncOpenAI
+_clients: dict[str, Any] = {}
+_turn = 0
+#: Per key: the moment it may be used again after a 429.
+_benched: dict[str, float] = {}
+_BENCH_S = 20.0
 
-        _client = AsyncOpenAI(
-            base_url=CONFIG.nvidia_base_url,
-            api_key=CONFIG.nvidia_api_key or "missing",
-            timeout=CONFIG.nim_timeout_s,
-            max_retries=0,
-        )
-    return _client
+
+def _client_for(key: str) -> Any:
+    from openai import AsyncOpenAI
+
+    if key not in _clients:
+        _clients[key] = AsyncOpenAI(base_url=CONFIG.nvidia_base_url, api_key=key,
+                                    timeout=CONFIG.nim_timeout_s, max_retries=0)
+    return _clients[key]
+
+
+def _key_order() -> list[str]:
+    """Every key, starting from the next one in rotation; benched keys last."""
+    global _turn
+    keys = CONFIG.nvidia_keys or ["missing"]
+    start = _turn % len(keys)
+    _turn += 1
+    order = keys[start:] + keys[:start]
+    t = time.monotonic()
+    return sorted(order, key=lambda k: _benched.get(k, 0.0) > t)  # stable: fresh keys first
+
+
+def key_state() -> dict[str, Any]:
+    t = time.monotonic()
+    keys = CONFIG.nvidia_keys
+    return {"keys": len(keys), "benched": sum(1 for k in keys if _benched.get(k, 0.0) > t)}
 
 
 def _pace() -> None:
@@ -66,18 +85,35 @@ async def chat(system: str, user: str, *, max_tokens: int | None = None, timeout
         request["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
     started = time.perf_counter()
     budget = timeout or CONFIG.nim_timeout_s
-    client = _get_client().with_options(timeout=budget)
-    try:
-        resp = await asyncio.wait_for(client.chat.completions.create(**request), timeout=budget + 1.0)
-    except Exception as exc:
-        # A 429 or 503 is the provider's window, not the model's decision. One
-        # short backoff and one more try; after that the pass is lost, not the
-        # meeting.
-        if getattr(exc, "status_code", None) not in (429, 503):
+    resp = None
+    last: Exception | None = None
+    order = _key_order()
+    for n, key in enumerate(order):
+        client = _client_for(key).with_options(timeout=budget)
+        try:
+            resp = await asyncio.wait_for(client.chat.completions.create(**request), timeout=budget + 1.0)
+            break
+        except Exception as exc:
+            last = exc
+            code = getattr(exc, "status_code", None)
+            if code == 429:
+                # This key's window is full. Bench it and try the next one now.
+                _benched[key] = time.monotonic() + _BENCH_S
+                log.warning("nim 429 on key %d of %d%s", CONFIG.nvidia_keys.index(key) + 1 if key in CONFIG.nvidia_keys else 0,
+                            len(order), "; trying the next key" if n + 1 < len(order) else "")
+                continue
+            if code == 503 and n + 1 == len(order):
+                # A busy replica, and no other key to try: one short retry.
+                log.warning("nim 503; retrying once after 2 s")
+                await asyncio.sleep(2.0)
+                resp = await asyncio.wait_for(client.chat.completions.create(**request), timeout=budget + 1.0)
+                break
+            if code == 503:
+                continue
             raise
-        log.warning("nim %s; retrying once after 2 s", exc.status_code)
-        await asyncio.sleep(2.0)
-        resp = await asyncio.wait_for(client.chat.completions.create(**request), timeout=budget + 1.0)
+    if resp is None:
+        assert last is not None
+        raise last
     text = ""
     choices = getattr(resp, "choices", None) or []
     if choices:
@@ -89,13 +125,63 @@ async def chat(system: str, user: str, *, max_tokens: int | None = None, timeout
 
 
 async def chat_json(system: str, user: str, **kw: Any) -> dict[str, Any] | None:
-    text = await chat(system, user, **kw)
-    blobs = json_blobs(strip_reasoning(text))
-    for b in blobs:
-        if isinstance(b, dict):
-            return b
-    log.warning("nim returned no JSON object: %r", text[:200])
+    """One JSON object back. A response that will not parse is repaired if the
+    damage is a known glitch, and asked for once more if it is not."""
+    for attempt in (1, 2):
+        text = await chat(system, user, **kw)
+        found = parse_object(text)
+        if found is not None:
+            return found
+        log.warning("nim returned no JSON object (attempt %d): %r", attempt, text[:160])
     return None
+
+
+def parse_object(text: str) -> dict[str, Any] | None:
+    clean = strip_reasoning(text)
+    for candidate in (clean, _repair(clean)):
+        for b in json_blobs(candidate):
+            if isinstance(b, dict):
+                return b
+    return None
+
+
+_STRAY_OPEN = re.compile(r'([{\[,:]\s*)"\{\s*(?=")')   #  {\n "{\n "title": ...   ->  {\n "title": ...
+_TRAILING_COMMA = re.compile(r",(\s*[}\]])")
+
+
+def _repair(text: str) -> str:
+    """Known Nemotron glitches: a stray quoted brace, trailing commas, and a
+    response cut off before its closing braces."""
+    t = _STRAY_OPEN.sub(r"\1", text)
+    start = t.find("{")
+    if start < 0:
+        return t
+    t = t[start:]
+    depth_c = depth_s = 0
+    in_str = esc = False
+    for ch in t:
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            depth_c += 1
+        elif ch == "}":
+            depth_c -= 1
+        elif ch == "[":
+            depth_s += 1
+        elif ch == "]":
+            depth_s -= 1
+    if in_str:
+        t += '"'
+    t = t.rstrip().rstrip(",") + "]" * max(depth_s, 0) + "}" * max(depth_c, 0)
+    return _TRAILING_COMMA.sub(r"\1", t)
 
 
 # -- parsing ---------------------------------------------------------------

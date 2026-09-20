@@ -180,6 +180,7 @@ class Heard:
             "frontdesk_error": self.frontdesk.last_error,
             "wakes": self.frontdesk.wakes,
             "research_running": len(self.store.running_tasks()),
+            "nim": _nim_state(),
             "audio_age": (now() - self.audio_at) if self.audio_at else None,
         }
 
@@ -256,6 +257,12 @@ class Heard:
 
     async def _on_finding(self, task: Any) -> None:
         await self.frontdesk.on_finding(task)
+
+
+def _nim_state() -> dict[str, Any]:
+    from heard import nim
+
+    return nim.key_state()
 
 
 def _silent(config: Config) -> Config:
