@@ -163,3 +163,7 @@ reasoning. [`docs/NEMOTRON.md`](docs/NEMOTRON.md) explains the split, and
 reasoning modes on a labelled set of meeting moments (latency, valid JSON,
 spurious cards, verbatim names, addressed precision/recall). Results are in
 `eval/results/`.
+
+## License
+
+[MIT](LICENSE). Copyright (c) 2026 Jiazhen Zhang, Sam Gombiner, Gavin Zheng.
