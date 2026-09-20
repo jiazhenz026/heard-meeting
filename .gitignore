@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node / board
+node_modules/
+board/dist/
+.vite/
+
+# Secrets — NIM and ElevenLabs keys live here, never in git
+.env
+.env.*
+!.env.example
+
+# Recordings and generated audio are large; keep the demo track out of git
+# history unless it is small enough to matter. Track exceptions explicitly.
+audio/*.wav
+audio/*.mp3
+!audio/demo.wav
+
+# Run artefacts
+logs/
+*.log
+.heard-cache/
+
+# OS
+.DS_Store
+
+# Board build output — rebuilt by `npm run build`, served by main.py
+board/dist/
+data/*
+!data/.gitkeep

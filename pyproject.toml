@@ -1,0 +1,30 @@
+[project]
+name = "heard-meeting"
+version = "0.1.0"
+description = "Heard! — the meeting board that listens, goes and finds out, and speaks up."
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "websockets>=13.0",
+    "httpx>=0.27",
+    "openai>=1.54",
+    "python-dotenv>=1.0",
+    "claude-agent-sdk>=0.2.150",
+    "markdown>=3.6",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.24"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["heard"]
