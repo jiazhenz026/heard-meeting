@@ -48,7 +48,7 @@ class PcmDownsampler extends AudioWorkletProcessor {
       pos += this.ratio;
     }
     this.carry = pos - ch.length;
-    if (this.out.length >= ${TARGET_RATE / 5}) {
+    if (this.out.length >= ${TARGET_RATE / 10}) {
       const pcm = new Int16Array(this.out);
       this.out = [];
       this.port.postMessage({ pcm, rms }, [pcm.buffer]);
@@ -170,7 +170,7 @@ export class Mic {
         pos += ratio;
       }
       carry = pos - ch.length;
-      if (out.length >= TARGET_RATE / 5) {
+      if (out.length >= TARGET_RATE / 10) {
         this.h.onChunk(encodePcm(Int16Array.from(out)));
         out = [];
       }
