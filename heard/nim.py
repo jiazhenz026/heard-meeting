@@ -125,13 +125,63 @@ async def chat(system: str, user: str, *, max_tokens: int | None = None, timeout
 
 
 async def chat_json(system: str, user: str, **kw: Any) -> dict[str, Any] | None:
-    text = await chat(system, user, **kw)
-    blobs = json_blobs(strip_reasoning(text))
-    for b in blobs:
-        if isinstance(b, dict):
-            return b
-    log.warning("nim returned no JSON object: %r", text[:200])
+    """One JSON object back. A response that will not parse is repaired if the
+    damage is a known glitch, and asked for once more if it is not."""
+    for attempt in (1, 2):
+        text = await chat(system, user, **kw)
+        found = parse_object(text)
+        if found is not None:
+            return found
+        log.warning("nim returned no JSON object (attempt %d): %r", attempt, text[:160])
     return None
+
+
+def parse_object(text: str) -> dict[str, Any] | None:
+    clean = strip_reasoning(text)
+    for candidate in (clean, _repair(clean)):
+        for b in json_blobs(candidate):
+            if isinstance(b, dict):
+                return b
+    return None
+
+
+_STRAY_OPEN = re.compile(r'([{\[,:]\s*)"\{\s*(?=")')   #  {\n "{\n "title": ...   ->  {\n "title": ...
+_TRAILING_COMMA = re.compile(r",(\s*[}\]])")
+
+
+def _repair(text: str) -> str:
+    """Known Nemotron glitches: a stray quoted brace, trailing commas, and a
+    response cut off before its closing braces."""
+    t = _STRAY_OPEN.sub(r"\1", text)
+    start = t.find("{")
+    if start < 0:
+        return t
+    t = t[start:]
+    depth_c = depth_s = 0
+    in_str = esc = False
+    for ch in t:
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            depth_c += 1
+        elif ch == "}":
+            depth_c -= 1
+        elif ch == "[":
+            depth_s += 1
+        elif ch == "]":
+            depth_s -= 1
+    if in_str:
+        t += '"'
+    t = t.rstrip().rstrip(",") + "]" * max(depth_s, 0) + "}" * max(depth_c, 0)
+    return _TRAILING_COMMA.sub(r"\1", t)
 
 
 # -- parsing ---------------------------------------------------------------

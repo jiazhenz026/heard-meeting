@@ -247,3 +247,17 @@ def test_nim_rotates_keys_and_benches_a_429(monkeypatch) -> None:
     used.clear()
     assert asyncio.run(nim.chat("s", "u")) == "ok"
     assert used == ["key-b"]                   # a is benched, so b goes first
+
+
+def test_broken_classifier_json_is_repaired() -> None:
+    from heard.nim import parse_object
+
+    # the exact shape Nemotron returned live: a stray quoted brace inside new_subject
+    broken = '{\\n  "new_subject": {\\n    "{\\n    "title": "AI eye software",\\n    "named_by": "speaker"\\n  },\\n  "addressed": false\\n}'
+    got = parse_object(broken)
+    assert got is not None and got["new_subject"]["title"] == "AI eye software"
+    # cut off before the closing braces, with a trailing comma
+    cut = '{"new_subject": null, "questions": [{"text": "has it been done", "worth_investigating": true},'
+    got = parse_object(cut)
+    assert got is not None and got["questions"][0]["text"] == "has it been done"
+    assert parse_object("I could not decide.") is None
