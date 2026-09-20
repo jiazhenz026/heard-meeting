@@ -231,8 +231,8 @@ export default function App() {
   if (!started) {
     return (
       <div className="gate">
-        <Flock />
         <div className="gate-inner">
+          <Flock />
           <p className="gate-kicker">Don't follow the</p>
           <div className="wordmark">Heard<span>!</span></div>
           <p className="gate-lede">A meeting board that joins the conversation and conducts research in real time.</p>
@@ -371,13 +371,11 @@ export default function App() {
   );
 }
 
-/** Five stop-motion sheep hopping over an arc above the wordmark. Don't follow them. */
+/** One small stop-motion sheep jumping back and forth above the wordmark. Don't follow it. */
 function Flock() {
   return (
-    <div className="gate-flock" aria-hidden="true">
-      <div className="flock">
-        <div className="sheep" /><div className="sheep" /><div className="sheep" /><div className="sheep" /><div className="sheep" />
-      </div>
+    <div className="gate-sheep" aria-hidden="true">
+      <div className="sheep-stage"><div className="sheep" /></div>
     </div>
   );
 }
