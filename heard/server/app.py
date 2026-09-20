@@ -273,6 +273,12 @@ def create_app(settings: Settings | None = None, config: Config = CONFIG) -> Fas
         await heard.on_inject(body.text, body.speaker)
         return {"ok": True, "utterances": len(heard.store.transcript)}
 
+    @app.delete("/cards/{card_id}")
+    async def delete_card(card_id: str) -> dict[str, Any]:
+        if not heard.store.delete_card(card_id):
+            raise HTTPException(404, "no such card")
+        return {"ok": True}
+
     @app.post("/expand/{card_id}")
     async def expand(card_id: str) -> dict[str, Any]:
         heard.store.expand(card_id if card_id != "none" else None)

@@ -229,6 +229,25 @@ class Store:
                 return c
         return None
 
+    def delete_card(self, card_id: str) -> bool:
+        """Remove a card by hand, with its tasks and page."""
+        card = self.cards.pop(card_id, None)
+        if card is None:
+            return False
+        for tid in [t.id for t in self.tasks.values() if t.card_id == card_id]:
+            self.tasks.pop(tid, None)
+        try:
+            self.card_page_path(card_id).unlink(missing_ok=True)
+        except OSError:
+            pass
+        if self.focus == card_id:
+            self.focus = None
+        if self.expanded == card_id:
+            self.expanded = None
+        self.log_event("card", f"{card.title} removed by hand")
+        self.touch()
+        return True
+
     def card_page_path(self, card_id: str) -> Path:
         return self.cards_dir / f"{card_id}.html"
 

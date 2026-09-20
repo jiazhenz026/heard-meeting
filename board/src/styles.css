@@ -171,6 +171,17 @@ h2, h3, p { margin: 0; }
 .working::after { content: ""; display: block; height: 100%; width: 30%; background: rgba(27, 31, 36, .35); animation: slide 1.6s infinite linear; }
 @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(340%); } }
 
+.card .remove { position: absolute; top: 8px; right: 10px; width: 26px; height: 26px; border-radius: 50%; color: rgba(42, 36, 23, .45); font-size: 18px; line-height: 1; opacity: 0; transition: opacity .15s, background .15s; }
+.card:hover .remove, .card .remove:focus-visible { opacity: 1; }
+.card .remove:hover { background: rgba(0, 0, 0, .08); color: #2a2417; }
+
+/* the thinking level: a switch the room can see */
+.levels { display: inline-flex; align-items: center; gap: 2px; margin-left: 10px; padding: 2px; border: 1px solid var(--rule-2); border-radius: 6px; background: var(--surface); }
+.levels-label { color: var(--faint); font-size: 13px; padding: 0 8px 0 6px; }
+.levels button { padding: 4px 10px; border-radius: 4px; color: var(--muted); font-size: 13px; font-weight: 500; white-space: nowrap; }
+.levels button:hover { color: var(--ink); }
+.levels button.on { background: var(--ink); color: var(--surface); }
+
 /* rail: name, one line, timer */
 .rail { border-left: 1px solid var(--rule); overflow: auto; padding: 22px 18px; background: var(--surface); }
 .rail h2 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
@@ -224,6 +235,7 @@ h2, h3, p { margin: 0; }
 .expanded-meta { color: var(--muted); font-size: 14px; }
 .back { color: var(--muted); font-weight: 500; padding: 6px 10px; border-radius: 4px; }
 .back:hover { color: var(--ink); background: var(--paper); }
+.back.danger:hover { color: var(--held); }
 .expanded iframe { flex: 1; border: 0; background: var(--surface); opacity: 0; transition: opacity .25s; }
 .expanded.settled iframe { opacity: 1; }
 .expanded-empty { padding: 26px; color: var(--ink); max-width: 60ch; display: grid; gap: 10px; }

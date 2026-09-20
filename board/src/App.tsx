@@ -30,6 +30,20 @@ export default function App() {
   const [settled, setSettled] = useState(false);
   const [typed, setTyped] = useState("");
   const [speaker, setSpeaker] = useState("J");
+  const [thinking, setThinking] = useState<string>(() => {
+    try { return localStorage.getItem("heard.thinking") || "normal"; } catch { return "normal"; }
+  });
+  const pickThinking = (level: string) => {
+    setThinking(level);
+    try { localStorage.setItem("heard.thinking", level); } catch { /* fine */ }
+  };
+  const removeCard = useCallback((id: string) => {
+    if (openRef.current === id) {
+      openRef.current = null;
+      setOpen(null);
+    }
+    fetch(`/cards/${id}`, { method: "DELETE" }).catch(() => {});
+  }, []);
 
   const audio = useRef(new AudioOut());
   const mic = useRef<Mic | null>(null);
@@ -190,6 +204,12 @@ export default function App() {
           <button className={view === "notes" ? "on" : ""} onClick={() => setView("notes")}>Notes</button>
           <button className={view === "transcript" ? "on" : ""} onClick={() => setView("transcript")}>Transcript</button>
         </nav>
+        <div className="levels" role="radiogroup" aria-label="thinking">
+          <span className="levels-label">Thinking</span>
+          {[["light", "Extra light"], ["normal", "Normal"], ["hard", "Hard"]].map(([v, name]) => (
+            <button key={v} role="radio" aria-checked={thinking === v} className={thinking === v ? "on" : ""} onClick={() => pickThinking(v)}>{name}</button>
+          ))}
+        </div>
         <span className="grow" />
         <label className="typein">
           <select value={speaker} onChange={(e) => setSpeaker(e.target.value)} aria-label="speaker">
@@ -216,6 +236,7 @@ export default function App() {
                 <span className="expanded-title">{shown.title}</span>
                 <span className="expanded-meta">{cardState(shown)}</span>
                 <span className="grow" />
+                <button className="back danger" onClick={() => removeCard(shown.id)}>Delete this note</button>
                 <button className="back" onClick={closeCard}>Back to the board</button>
               </div>
               {shown.page ? (
@@ -242,6 +263,7 @@ export default function App() {
                     now={now}
                     focused={state.focus === c.id && now - state.focus_at < 75}
                     onOpen={() => openCard(c.id)}
+                    onRemove={() => removeCard(c.id)}
                     register={(el) => { if (el) cardEls.current.set(c.id, el); else cardEls.current.delete(c.id); }}
                   />
                 ))}
@@ -283,7 +305,7 @@ export default function App() {
   );
 }
 
-function CardView({ card, tasks, now, onOpen, register, focused }: { card: Card; tasks: Task[]; now: number; onOpen: () => void; register: (el: HTMLElement | null) => void; focused: boolean }) {
+function CardView({ card, tasks, now, onOpen, onRemove, register, focused }: { card: Card; tasks: Task[]; now: number; onOpen: () => void; onRemove: () => void; register: (el: HTMLElement | null) => void; focused: boolean }) {
   const running = tasks.some((t) => t.status === "RUNNING");
   const age = now - card.created_at;
   const tagline = card.seeded ? card.one_liner : shorten(card.summary) || card.one_liner || "";
@@ -294,6 +316,7 @@ function CardView({ card, tasks, now, onOpen, register, focused }: { card: Card;
       onClick={onOpen}
       title={card.named_by === "heard" ? "Heard named this one" : undefined}
     >
+      <button className="remove" aria-label={`Delete ${card.title}`} title="Delete this note" onClick={(e) => { e.stopPropagation(); onRemove(); }}>×</button>
       <h3>{card.title}</h3>
       {tagline ? <p>{tagline}</p> : <p className="ghost">Named, not yet understood.</p>}
       {running && <span className="working" aria-label="investigating" />}
