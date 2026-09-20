@@ -222,6 +222,8 @@ class Stt:
             # Server-side VAD. §6.3.1: whatever Scribe decided was one
             # segment stays one segment.
             "commit_strategy": "vad",
+            # How long a silence ends a line. Lower = lines land sooner.
+            "vad_silence_threshold_secs": float(getattr(self._config, "stt_silence_s", 1.0) or 1.0),
         }
         # Keyterm biasing: the product names and "Heard" itself, so a direct
         # address is transcribed as the name and not as "herd" or "hurt".
